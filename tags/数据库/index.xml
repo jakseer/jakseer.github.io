@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据库 on Jakseer&#39;s Blog</title>
+    <link>https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on Jakseer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 15 Aug 2020 16:27:47 +0800</lastBuildDate>
+    
+	<atom:link href="https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>InnoDB 幻读简述</title>
+      <link>https://blog.jakseer.cn/post/innodb-phantom-reads-summary/</link>
+      <pubDate>Sat, 15 Aug 2020 16:27:47 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.cn/post/innodb-phantom-reads-summary/</guid>
+      <description>什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了事务的隔离性。 举个例子，下图是两个事务，第 3、5 步执行了相同的 sql 查询语句，但是后一次查询比前一次查询，多出了 age = 10 的这一条数据。 MySQL 的 InnoDB 存储引</description>
+    </item>
+    
+  </channel>
+</rss>

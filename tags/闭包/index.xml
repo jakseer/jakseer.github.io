@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>闭包 on Jakseer&#39;s Blog</title>
+    <link>https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/</link>
+    <description>Recent content in 闭包 on Jakseer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 23 Feb 2020 15:32:17 +0800</lastBuildDate>
+    
+	<atom:link href="https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PHP Closure 类</title>
+      <link>https://blog.jakseer.cn/post/php-closure-class/</link>
+      <pubDate>Sun, 23 Feb 2020 15:32:17 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.cn/post/php-closure-class/</guid>
+      <description>概述 闭包是指在创建时封装周围状态的函数，即使闭包所在的环境的不存在了，闭包中封装的状态依然存在。 匿名函数其实就是没有名称的函数，匿名函数可以赋值给变量，还能像其他任何PHP函数对象那样传递。不过匿名函数仍然是函数，因此可以调用，还可以传入参数，适合作为函数或方法的回调。 但在 php 中，</description>
+    </item>
+    
+  </channel>
+</rss>

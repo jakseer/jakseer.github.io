@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/InnoDB/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/innodb-phantom-reads-summary/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/MySQL/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2020-08-15T16:27:47+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/Laravel/</loc>
+    <lastmod>2020-04-06T11:09:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/</loc>
+    <lastmod>2020-04-06T11:09:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/PHP/</loc>
+    <lastmod>2020-04-06T11:09:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/Docker/</loc>
+    <lastmod>2020-03-29T20:46:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/docker-network-mode/</loc>
+    <lastmod>2020-03-29T20:46:18+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/macroable-trait-in-laravel/</loc>
+    <lastmod>2020-02-23T18:26:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/php-closure-class/</loc>
+    <lastmod>2020-02-23T15:32:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/</loc>
+    <lastmod>2020-02-23T15:32:17+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/talking-php-params/</loc>
+    <lastmod>2020-02-13T20:48:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/php-keywords-static-self-parent/</loc>
+    <lastmod>2019-11-16T17:51:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/PHPStorm/</loc>
+    <lastmod>2019-10-19T12:11:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/tags/Xdebug/</loc>
+    <lastmod>2019-10-19T12:11:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/post/using-xdebug-to-debug-php-code/</loc>
+    <lastmod>2019-10-19T12:11:16+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.cn/archives/</loc>
+  </url>
+  
+</urlset>

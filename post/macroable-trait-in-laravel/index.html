@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Laravel 中的 Macroable Trait | Jakseer&#39;s Blog</title>
+    <meta property="og:title" content="Laravel 中的 Macroable Trait - Jakseer&#39;s Blog">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-02-23T18:26:34&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-02-23T18:26:34&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,php">
+    <meta name="description" content="Laravel 中的 Macroable Trait">
+        
+    <meta name="author" content="jakseer">
+    <meta property="og:url" content="https://blog.jakseer.cn/post/macroable-trait-in-laravel/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.jakseer.cn">
+                        Jakseer&#39;s Blog
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.jakseer.cn">首页</a>
+                    
+                    <a  href="https://blog.jakseer.cn/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#hasmacro">hasMacro</a></li>
+    <li><a href="#macro">macro</a></li>
+    <li><a href="#minix">minix</a></li>
+    <li><a href="#__callstatic">__callStatic</a></li>
+    <li><a href="#__call">__call</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Laravel 中的 Macroable Trait</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年2月23日
+        </date>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="post-content">
+            <p>在 <code>Laravel</code> 中，<code>Collection</code> 类本身实现了不少方法，比如 <code>sum</code>、<code>groupBy</code> 等，若想给这个类加上一些自定义的方法，有如下方案：
+方法一：通过修改 <code>Collection</code> 类的源码，在其中加入自定义方法的代码。但是这样就要修改框架源码，并且升级框架源码后，要把自定义方法重新在框架源码中加上，比较麻烦。
+方法二：通过 <code>Macroable</code>，在不修改框架源码的情况下，动态地把自定义方法加到 <code>Collection</code> 中。</p>
+<p>本文主要介绍 <code>Macroable</code> 相关的知识。</p>
+<h1 id="macroable-用法">Macroable 用法</h1>
+<p><code>Macroable</code> 共有 5 个方法：<code>macro</code>、<code>minix</code>、<code>hasMacro</code>、<code>__callStatic</code>、<code>__call</code> ，其中后两个为魔术方法。接下来通过代码示例来了解这几个方法的用法</p>
+<p>首先定义两个类：<code>Car</code>、<code>Plane</code>，后面的示例都是以这两个类为基础的。
+<code>Car</code> 类中引用了 <code>Macroable</code> 这个 <code>trait</code>，而 <code>Plane</code> 类中的 <code>fly</code> 方法，返回的是一个闭包。</p>
+<pre><code>&lt;?php
+
+class Car
+{
+    use Macroable;
+
+    private $name = 'php';
+
+    public function drive()
+    {
+        echo $this-&gt;name;
+        echo &quot; drive car\n&quot;;
+    }
+}
+
+class Plane
+{
+    public function fly()
+    {
+        return function(){
+            echo &quot;plane can fly\n&quot;;
+        };
+    }
+}
+</code></pre><p>可在 <code>Car</code> 类中，通过 <code>macro</code> 方法给 <code>Car</code> 类动态添加方法，然后可将其作为方法、静态方法进行调用：</p>
+<pre><code>Car::macro('door', function(){
+    echo &quot;open car door\n&quot;;
+});
+
+Car::door();
+$car-&gt;door();
+</code></pre><p>假如，我想使用某个类中的所有方法，可先用 <code>minix</code> 方法进行批量添加：</p>
+<pre><code>Car::mixin(new Plane());
+
+$car-&gt;fly();
+$car::fly();
+</code></pre><p>注意 <code>Plane</code> 类中方法，返回的是闭包，否则用 <code>minix</code> 导入后会无法调用该方法。</p>
+<h1 id="macroable-源码解析">Macroable 源码解析</h1>
+<p>本文分析的代码为 <code>Lavavel 5.7</code> 版本，<code>Macroable</code> 源码地址： <a href="https://github.com/laravel/framework/blob/5.7/src/Illuminate/Support/Traits/Macroable.php">Macroable 源码</a></p>
+<p><code>Macroable.php</code> 文件代码 100 行出头，其中还包括不少注释，因此是比较容易理解的，其结构如下：</p>
+<pre><code>&lt;?php
+
+namespace Illuminate\Support\Traits;
+
+trait Macroable
+{
+    protected static $macros = [];
+
+    public static function macro($name, $macro){}
+
+    public static function mixin($mixin){}
+
+    public static function hasMacro($name){}
+
+    public static function __callStatic($method, $parameters){}
+
+    public function __call($method, $parameters){}
+}
+</code></pre><p>共 6 个方法，还有一个类静态变量，用来存储用户添加的自定义方法。</p>
+<h2 id="hasmacro">hasMacro</h2>
+<p>判断某个自定义方法是否存在</p>
+<pre><code>/**
+ * Checks if macro is registered.
+ *
+ * @param  string  $name
+ * @return bool
+ */
+public static function hasMacro($name)
+{
+    return isset(static::$macros[$name]);
+}
+</code></pre><h2 id="macro">macro</h2>
+<p>添加一个自定义方法。其中 <code>$macro</code> 为对象或闭包。
+如果传入的是对象，则该对象需实现 <code>__invoke</code> 魔术方法。</p>
+<pre><code>/**
+ * Register a custom macro.
+ *
+ * @param  string $name
+ * @param  object|callable  $macro
+ *
+ * @return void
+ */
+public static function macro($name, $macro)
+{
+    static::$macros[$name] = $macro;
+}
+</code></pre><h2 id="minix">minix</h2>
+<pre><code>/**
+ * Mix another object into the class.
+ *
+ * @param  object  $mixin
+ * @return void
+ *
+ * @throws \ReflectionException
+ */
+public static function mixin($mixin)
+{
+    $methods = (new ReflectionClass($mixin))-&gt;getMethods(
+        ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED
+    );
+
+    foreach ($methods as $method) {
+        $method-&gt;setAccessible(true);
+
+        static::macro($method-&gt;name, $method-&gt;invoke($mixin));
+    }
+}
+</code></pre><p>这里使用 <code>php</code> 的反射，首先获取 <code>minix</code> 对象中所有的 <code>public</code>、<code>protected</code> 的方法。遍历各个方法，<code>invoke</code> 该方法，并把 <code>invoke</code> 的结果存入 <code>macro</code> 静态变量中。</p>
+<p>上文提到过，被 <code>mixin</code> 的类中的方法，返回的必须是闭包，才能使用 <code>mixin</code> 方法被动态添加。
+所以可能有人有这样的想法，把 <code>$method-&gt;invoke($mixin)</code> 改成 <code>$method-&gt;getClosure($mixin)</code>，这样一来，被 <code>mixin</code> 的类中的方法就不用返回闭包，而是正常地写就行了。
+实际上是不行的。因为通过 <code>ReflectionMethod::getClosure()</code> 获取的闭包，均不能进行重新绑定。</p>
+<h2 id="__callstatic">__callStatic</h2>
+<pre><code>/**
+ * Dynamically handle calls to the class.
+ *
+ * @param  string  $method
+ * @param  array   $parameters
+ * @return mixed
+ *
+ * @throws \BadMethodCallException
+ */
+public static function __callStatic($method, $parameters)
+{
+    if (! static::hasMacro($method)) {
+        throw new BadMethodCallException(sprintf(
+            'Method %s::%s does not exist.', static::class, $method
+        ));
+    }
+
+    if (static::$macros[$method] instanceof Closure) {
+        return call_user_func_array(Closure::bind(static::$macros[$method], null, static::class), $parameters);
+    }
+
+    return call_user_func_array(static::$macros[$method], $parameters);
+}
+</code></pre><p>首先判断被调用的方法，是否已被添加到 <code>macro</code> 静态变量中。
+如果被调用的方法是个闭包，则绑定 <code>static</code> 的类作用域，并调用该闭包。
+否则，被调用的是对象（该对象需实现 <code>__invoke</code> 方法）。</p>
+<h2 id="__call">__call</h2>
+<pre><code>/**
+ * Dynamically handle calls to the class.
+ *
+ * @param  string  $method
+ * @param  array   $parameters
+ * @return mixed
+ *
+ * @throws \BadMethodCallException
+ */
+public function __call($method, $parameters)
+{
+    if (! static::hasMacro($method)) {
+        throw new BadMethodCallException(sprintf(
+            'Method %s::%s does not exist.', static::class, $method
+        ));
+    }
+
+    $macro = static::$macros[$method];
+
+    if ($macro instanceof Closure) {
+        return call_user_func_array($macro-&gt;bindTo($this, static::class), $parameters);
+    }
+
+    return call_user_func_array($macro, $parameters);
+}
+</code></pre><p>代码逻辑同 <code>__callStatic</code></p>
+<h1 id="参考资料">参考资料</h1>
+<p><a href="https://blog.csdn.net/pharaoh_shi/article/details/80984437">https://blog.csdn.net/pharaoh_shi/article/details/80984437</a></p>
+<p><a href="https://www.php.net/manual/zh/class.reflectionclass.php">https://www.php.net/manual/zh/class.reflectionclass.php</a></p>
+<p><a href="https://learnku.com/laravel/t/2915/how-to-use-the-macro-method-to-extend-the-function-of-the-base-class-of-laravel">https://learnku.com/laravel/t/2915/how-to-use-the-macro-method-to-extend-the-function-of-the-base-class-of-laravel</a></p>
+<p><a href="https://stackoverflow.com/questions/47165930/php-binding-method-to-another-class">https://stackoverflow.com/questions/47165930/php-binding-method-to-another-class</a></p>
+
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>原文作者：</strong><a rel="author" href="https://blog.jakseer.cn">jakseer</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="https://blog.jakseer.cn/post/macroable-trait-in-laravel/">https://blog.jakseer.cn/post/macroable-trait-in-laravel/</a></li>
+        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/php-closure-class/">PHP Closure 类</a></li>
+        
+        <li><a href="/post/talking-php-params/">浅谈 PHP 的参数</a></li>
+        
+        <li><a href="/post/php-keywords-static-self-parent/">PHP 关键字对比：static、self、parent</a></li>
+        
+        <li><a href="/post/using-xdebug-to-debug-php-code/">使用 Xdebug 进行 PHP 代码调试</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/PHP'>PHP</a></li>
+                
+                <li><a href='/tags/Laravel'>Laravel</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "your github repo"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.jakseer.cn/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.jakseer.cn">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/innodb-phantom-reads-summary/" title="InnoDB 幻读简述">InnoDB 幻读简述</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/" title="Laravel 管道模式的实现">Laravel 管道模式的实现</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/docker-network-mode/" title="Docker 网络模式">Docker 网络模式</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/macroable-trait-in-laravel/" title="Laravel 中的 Macroable Trait">Laravel 中的 Macroable Trait</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/php-keywords-static-self-parent/" title="PHP 关键字对比：static、self、parent">PHP 关键字对比：static、self、parent</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/using-xdebug-to-debug-php-code/" title="使用 Xdebug 进行 PHP 代码调试">使用 Xdebug 进行 PHP 代码调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.jakseer.cn/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.jakseer.cn/tags/InnoDB/">InnoDB</a>
+    
+    <a href="https://blog.jakseer.cn/tags/Laravel/">Laravel</a>
+    
+    <a href="https://blog.jakseer.cn/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.jakseer.cn/tags/PHP/">PHP</a>
+    
+    <a href="https://blog.jakseer.cn/tags/PHPStorm/">PHPStorm</a>
+    
+    <a href="https://blog.jakseer.cn/tags/Xdebug/">Xdebug</a>
+    
+    <a href="https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/">闭包</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.jakseer.cn/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
