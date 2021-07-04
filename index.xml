@@ -6,10 +6,19 @@
     <description>Recent content on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 15 Aug 2020 16:27:47 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 04 Jul 2021 15:15:23 +0800</lastBuildDate>
     
 	<atom:link href="https://blog.jakseer.cn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>总结 MySQL 中的锁</title>
+      <link>https://blog.jakseer.cn/post/the-summary-of-lock-in-mysql/</link>
+      <pubDate>Sun, 04 Jul 2021 15:15:23 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.cn/post/the-summary-of-lock-in-mysql/</guid>
+      <description>众所周知，mysql 中有很多种锁的概念，如行锁、乐观锁、排它锁等等，本文对此进行归纳。 锁的类型 加锁类型的不同，表现在对竞争资源的处理有不同的处理思想。 假设有这样的场景，A、B 两个用户要同时将机票价格从 2 元改成 6、3 元。 乐观锁 取数据时，假定别人不会修改该数据，因此只会对数据做简单的</description>
+    </item>
     
     <item>
       <title>InnoDB 幻读简述</title>
