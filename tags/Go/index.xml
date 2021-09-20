@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on Jakseer&#39;s Blog</title>
+    <link>https://blog.jakseer.cn/tags/Go/</link>
+    <description>Recent content in Go on Jakseer&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 05 Sep 2021 15:26:16 +0800</lastBuildDate>
+    
+	<atom:link href="https://blog.jakseer.cn/tags/Go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go 反射</title>
+      <link>https://blog.jakseer.cn/post/go-reflect/</link>
+      <pubDate>Sun, 05 Sep 2021 15:26:16 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.cn/post/go-reflect/</guid>
+      <description>什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。 reflect 包的使用 Value 与 Type 对于对象，是由 类型 和 值 两部分组成的。 相应地 reflect 包也分为两大部分 value 与 type ，并提供了</description>
+    </item>
+    
+  </channel>
+</rss>

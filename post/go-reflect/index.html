@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go 反射 | Jakseer&#39;s Blog</title>
+    <meta property="og:title" content="Go 反射 - Jakseer&#39;s Blog">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-09-05T15:26:16&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-09-05T15:26:16&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,php">
+    <meta name="description" content="Go 反射">
+        <meta name="author" content="Jakseer">
+        
+    <meta property="og:url" content="https://blog.jakseer.cn/post/go-reflect/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.jakseer.cn">
+                        Jakseer&#39;s Blog
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.jakseer.cn">首页</a>
+                    
+                    <a  href="https://blog.jakseer.cn/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是反射">什么是反射</a></li>
+    <li><a href="#reflect-包的使用">reflect 包的使用</a>
+      <ul>
+        <li><a href="#value-与-type">Value 与 Type</a></li>
+        <li><a href="#读取">读取</a></li>
+        <li><a href="#修改">修改</a></li>
+      </ul>
+    </li>
+    <li><a href="#go-反射原理">Go 反射原理</a></li>
+    <li><a href="#应用json-编码">应用：json 编码</a></li>
+    <li><a href="#反射的缺点">反射的缺点</a>
+      <ul>
+        <li><a href="#使得程序可读性更差">使得程序可读性更差</a></li>
+        <li><a href="#大量使用反射导致程序性能低">大量使用反射导致程序性能低</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go 反射</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年9月5日
+        </date>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h2 id="什么是反射">什么是反射</h2>
+<p>反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。</p>
+<p>使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。</p>
+<h2 id="reflect-包的使用">reflect 包的使用</h2>
+<h3 id="value-与-type">Value 与 Type</h3>
+<p>对于对象，是由 类型 和 值 两部分组成的。</p>
+<p>相应地 reflect 包也分为两大部分 <code>value</code> 与  <code>type</code> ，并提供了两种初始化函数 <code>TypeOf()</code>、<code>ValueOf()</code>，用于获取对应的 类型 和 值。</p>
+<p>而对于值，它一定是依附于类型而存在的，故值一定有对应的类型。因此可通过 <code>ValueOf().Type</code> 获取对应的类型，其效果等同于 <code>TypeOf()</code></p>
+<h3 id="读取">读取</h3>
+<p>通过 <code>Value.Kind()</code> 来获取变量的类型，当然 <code>Type.Kind()</code> 也可以。</p>
+<h4 id="arrayslice">Array、Slice</h4>
+<p>使用 <code>reflect.Value.Len()</code> 获取数组长度，然后使用 <code>reflect.Value.Index()</code> 获取数组中的元素</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">v <span style="color:#000;font-weight:bold">:=</span> reflect.<span style="color:#900;font-weight:bold">ValueOf</span>(i)
+<span style="color:#000;font-weight:bold">for</span> i<span style="color:#000;font-weight:bold">:=</span><span style="color:#099">0</span>; i&lt;v.<span style="color:#900;font-weight:bold">Len</span>(); i<span style="color:#000;font-weight:bold">++</span> {
+  fmt.<span style="color:#900;font-weight:bold">Println</span>(v.<span style="color:#900;font-weight:bold">Index</span>(i))
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>还可使用 <code>reflect.Value.Cap()</code> 获取其容量大小</p>
+<h4 id="struct">Struct</h4>
+<h5 id="field">field</h5>
+<p>使用 <code>reflect.Value.NumField()</code> 获取结构体中成员个数。用 <code>reflect.Value.Field()</code> 获取结构体中的成员。用 <code>reflect.Value.Field().Tag</code> 获取结构体中的成员的 tag</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">v <span style="color:#000;font-weight:bold">:=</span> reflect.<span style="color:#900;font-weight:bold">ValueOf</span>(i)
+<span style="color:#000;font-weight:bold">for</span> i<span style="color:#000;font-weight:bold">:=</span><span style="color:#099">0</span>; i&lt;v.<span style="color:#900;font-weight:bold">NumField</span>(); i<span style="color:#000;font-weight:bold">++</span> {
+  fmt.<span style="color:#900;font-weight:bold">Println</span>(v.<span style="color:#900;font-weight:bold">Index</span>(i))
+}
+</code></pre></td></tr></table>
+</div>
+</div><h5 id="method">method</h5>
+<p>对于结构体中的方法，可用 <code>NumMethod</code>、<code>Method</code> 方法来操作。</p>
+<p>而方法的参数、返回值，则用 <code>NumOut</code>、<code>Out</code> 来操作</p>
+<p>当然也可使用 <code>Call</code> 来调用该方法</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">v <span style="color:#000;font-weight:bold">:=</span> reflect.<span style="color:#900;font-weight:bold">ValueOf</span>(i)
+<span style="color:#000;font-weight:bold">for</span> i<span style="color:#000;font-weight:bold">:=</span><span style="color:#099">0</span>; i&lt;v.<span style="color:#900;font-weight:bold">NumMethod</span>(); i<span style="color:#000;font-weight:bold">++</span> {
+  fmt.<span style="color:#900;font-weight:bold">Println</span>(v.<span style="color:#900;font-weight:bold">Index</span>(i))
+  fmt.<span style="color:#900;font-weight:bold">Printf</span>(<span style="color:#d14">&#34;has %d out and %d in&#34;</span>, v.<span style="color:#900;font-weight:bold">Index</span>(i).<span style="color:#900;font-weight:bold">NumOut</span>(), v.<span style="color:#900;font-weight:bold">Index</span>(i).<span style="color:#900;font-weight:bold">NumIn</span>())
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>虽然 <code>reflect.TypeOf().Method</code> 与 <code>reflect.ValueOf().Method</code> 均能表示对应的方法，但两者略有不同。</p>
+<p><code>Type.Method</code> 表示的是一个描述了返回值、参数、方法名称等信息的结构体，不绑定到任何对象上；而 <code>Value.Method</code> 在前者的基础上，还绑定了相应的额对象（receiver），可以调用 <code>Call</code> 方法。</p>
+<h3 id="修改">修改</h3>
+<p>在修改对象前，我们得先判断是否能修改，涉及以下两个方法：</p>
+<h5 id="canaddr">CanAddr</h5>
+<p>是否可取地址。</p>
+<p>Go 中部分类型的变量是不可寻址的：</p>
+<ul>
+<li>Map：map 内部会变动其元素</li>
+<li>String：string 是不可变值，修改了就会重新创建整个 string</li>
+<li>常量</li>
+<li>中间值</li>
+<li>等等</li>
+</ul>
+<h5 id="canset">CanSet</h5>
+<p>判断某对象是否可修改。</p>
+<p>只有当对象可取地址 且 可导出（为 struct 的 filed 时） 时，才能被修改</p>
+<p>确认对象可修改后，可使用<code>reflect.ValudOf(&amp;x).Elem().SetInt</code> 或者 <code>reflect.ValudOf(&amp;x).Elem().Set(reflect.ValueOf(66))</code> 来修改对象的值</p>
+<p>当然，除了 <code>SetInt</code> 还有 <code>SetString</code>、<code>SetBytes</code> 等方法，也可用 <code>SetCap</code> 来修改数组对象的容量</p>
+<h2 id="go-反射原理">Go 反射原理</h2>
+<p>为什么 <code>reflect</code> 能获取到变量的类型，就得先了解 Go 中变量的数据格式。</p>
+<p>
+        <img class="mx-auto" alt="image-20210920152124220" src="/images/image-20210920152124220.png" />   
+    </p>
+<p>在 Go 中，变量的内部结构分为两大部分：类型 和 值。相应地，反射对象的内部结构分为 类型 与 值。</p>
+<p>Go 反射通过将 变量 强制类型转化 为反射对象，然后读取反射对象中的 <code>Value</code> 与 <code>Type</code> 的值，就拿到变量相关的信息。</p>
+<h2 id="应用json-编码">应用：json 编码</h2>
+<p>Go 中的 json 包，能将任意数据类型编码为 json 字符串。</p>
+<p>我们可通过实现 json 编码器，来练习 <code>reflect</code> 包的使用，具体实现如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">Marshal</span>(v <span style="color:#000;font-weight:bold">interface</span>{}) (<span style="color:#458;font-weight:bold">string</span>, <span style="color:#458;font-weight:bold">error</span>) {
+	<span style="color:#000;font-weight:bold">return</span> <span style="color:#900;font-weight:bold">marshal</span>(reflect.<span style="color:#900;font-weight:bold">ValueOf</span>(v))
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">marshal</span>(v reflect.Value) (<span style="color:#458;font-weight:bold">string</span>, <span style="color:#458;font-weight:bold">error</span>) {
+	<span style="color:#000;font-weight:bold">switch</span> v.<span style="color:#900;font-weight:bold">Kind</span>() {
+	<span style="color:#000;font-weight:bold">case</span> reflect.String:
+		<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;\&#34;&#34;</span> <span style="color:#000;font-weight:bold">+</span> v.<span style="color:#900;font-weight:bold">String</span>() <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;\&#34;&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>
+	<span style="color:#000;font-weight:bold">case</span> reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		<span style="color:#000;font-weight:bold">return</span> fmt.<span style="color:#900;font-weight:bold">Sprintf</span>(<span style="color:#d14">&#34;%d&#34;</span>, v.<span style="color:#900;font-weight:bold">Int</span>()), <span style="color:#000;font-weight:bold">nil</span>
+
+	<span style="color:#000;font-weight:bold">case</span> reflect.Float32, reflect.Float64:
+		<span style="color:#000;font-weight:bold">return</span> fmt.<span style="color:#900;font-weight:bold">Sprintf</span>(<span style="color:#d14">&#34;%f&#34;</span>, v.<span style="color:#900;font-weight:bold">Float</span>()), <span style="color:#000;font-weight:bold">nil</span>
+
+	<span style="color:#000;font-weight:bold">case</span> reflect.Array, reflect.Slice:
+		<span style="color:#000;font-weight:bold">var</span> retArray []<span style="color:#458;font-weight:bold">string</span>
+		<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; v.<span style="color:#900;font-weight:bold">Len</span>(); i<span style="color:#000;font-weight:bold">++</span> {
+			retString, err <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">marshal</span>(v.<span style="color:#900;font-weight:bold">Index</span>(i))
+			<span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+				<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;&#34;</span>, err
+			}
+			retArray = <span style="color:#0086b3">append</span>(retArray, retString)
+		}
+		<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;[&#34;</span> <span style="color:#000;font-weight:bold">+</span> strings.<span style="color:#900;font-weight:bold">Join</span>(retArray, <span style="color:#d14">&#34;,&#34;</span>) <span style="color:#000;font-weight:bold">+</span> <span style="color:#d14">&#34;]&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>
+
+	<span style="color:#000;font-weight:bold">case</span> reflect.Bool:
+		<span style="color:#000;font-weight:bold">if</span> v.<span style="color:#900;font-weight:bold">Bool</span>() {
+			<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;true&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>
+		} <span style="color:#000;font-weight:bold">else</span> {
+			<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;false&#34;</span>, <span style="color:#000;font-weight:bold">nil</span>
+		}
+
+	<span style="color:#000;font-weight:bold">case</span> reflect.Map:
+		<span style="color:#000;font-weight:bold">var</span> retArray []<span style="color:#458;font-weight:bold">string</span>
+		<span style="color:#000;font-weight:bold">for</span> v.<span style="color:#900;font-weight:bold">MapRange</span>().<span style="color:#900;font-weight:bold">Next</span>() {
+			key, err1 <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">marshal</span>(v.<span style="color:#900;font-weight:bold">MapRange</span>().<span style="color:#900;font-weight:bold">Key</span>())
+			<span style="color:#000;font-weight:bold">if</span> err1 <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+				<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;&#34;</span>, err1
+			}
+			value, err2 <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">marshal</span>(v.<span style="color:#900;font-weight:bold">MapRange</span>().<span style="color:#900;font-weight:bold">Value</span>())
+			<span style="color:#000;font-weight:bold">if</span> err2 <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+				<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;&#34;</span>, err1
+			}
+			retArray = <span style="color:#0086b3">append</span>(retArray, <span style="color:#d14">&#34;\&#34;&#34;</span><span style="color:#000;font-weight:bold">+</span>key<span style="color:#000;font-weight:bold">+</span><span style="color:#d14">&#34;\&#34;:&#34;</span><span style="color:#000;font-weight:bold">+</span>value)
+		}
+		<span style="color:#000;font-weight:bold">return</span> fmt.<span style="color:#900;font-weight:bold">Sprintf</span>(<span style="color:#d14">&#34;{%s}&#34;</span>, strings.<span style="color:#900;font-weight:bold">Join</span>(retArray, <span style="color:#d14">&#34;,&#34;</span>)), <span style="color:#000;font-weight:bold">nil</span>
+
+	<span style="color:#000;font-weight:bold">case</span> reflect.Struct:
+		<span style="color:#000;font-weight:bold">var</span> retArray []<span style="color:#458;font-weight:bold">string</span>
+		<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; v.<span style="color:#900;font-weight:bold">NumField</span>(); i<span style="color:#000;font-weight:bold">++</span> {
+			value, err <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">marshal</span>(v.<span style="color:#900;font-weight:bold">Field</span>(i))
+			<span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+				<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;&#34;</span>, err
+			}
+			retArray = <span style="color:#0086b3">append</span>(retArray, fmt.<span style="color:#900;font-weight:bold">Sprintf</span>(<span style="color:#d14">&#34;\&#34;%s\&#34;:%s&#34;</span>, v.<span style="color:#900;font-weight:bold">Type</span>().<span style="color:#900;font-weight:bold">Field</span>(i).Name, value))
+		}
+		<span style="color:#000;font-weight:bold">return</span> fmt.<span style="color:#900;font-weight:bold">Sprintf</span>(<span style="color:#d14">&#34;{%s}&#34;</span>, strings.<span style="color:#900;font-weight:bold">Join</span>(retArray, <span style="color:#d14">&#34;,&#34;</span>)), <span style="color:#000;font-weight:bold">nil</span>
+
+	<span style="color:#000;font-weight:bold">default</span>:
+		<span style="color:#000;font-weight:bold">return</span> <span style="color:#d14">&#34;&#34;</span>, errors.<span style="color:#900;font-weight:bold">New</span>(<span style="color:#d14">&#34;unsupport type&#34;</span>)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>调用 <code>Marshal</code> 方法，将变量编码为 json 字符串。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">type</span> Person <span style="color:#000;font-weight:bold">struct</span> {
+	age   <span style="color:#458;font-weight:bold">int64</span>
+	Name  <span style="color:#458;font-weight:bold">string</span> 
+	Hobby []<span style="color:#458;font-weight:bold">string</span>
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+	p <span style="color:#000;font-weight:bold">:=</span> Person{
+		age:  <span style="color:#099">20</span>,
+		Name: <span style="color:#d14">&#34;www&#34;</span>,
+		Hobby: []<span style="color:#458;font-weight:bold">string</span>{
+			<span style="color:#d14">&#34;a&#34;</span>, <span style="color:#d14">&#34;b&#34;</span>,
+		},
+	}
+
+	s, err <span style="color:#000;font-weight:bold">:=</span> <span style="color:#900;font-weight:bold">Marshal</span>(p)
+	fmt.<span style="color:#900;font-weight:bold">Println</span>(s, err)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>输出为</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{<span style="color:#000080">&#34;age&#34;</span>:<span style="color:#099">20</span>,<span style="color:#000080">&#34;Name&#34;</span>:<span style="color:#d14">&#34;www&#34;</span>,<span style="color:#000080">&#34;Hobby&#34;</span>:[<span style="color:#d14">&#34;a&#34;</span>,<span style="color:#d14">&#34;b&#34;</span>]}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="反射的缺点">反射的缺点</h2>
+<p>虽然反射使用方便，功能强大，但是滥用它也会造成一些问题</p>
+<h3 id="使得程序可读性更差">使得程序可读性更差</h3>
+<p>由于反射是在程序运行时去获取变量类型并解析之，所以在开发阶段 IDE 无法知道其类型，无法给出有效的代码提示；在编译阶段无法获知其类型，编译时的类型错误检查机制也就失效了。</p>
+<h3 id="大量使用反射导致程序性能低">大量使用反射导致程序性能低</h3>
+<p>编写两个函数，用反射、直接读取 两种方式读取变量的值</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">import</span> (
+	<span style="color:#d14">&#34;reflect&#34;</span>
+	<span style="color:#d14">&#34;testing&#34;</span>
+)
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">BenchmarkNormal</span>(t <span style="color:#000;font-weight:bold">*</span>testing.B) {
+	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; t.N; i<span style="color:#000;font-weight:bold">++</span> {
+		<span style="color:#900;font-weight:bold">Normal</span>(<span style="color:#099">1</span>)
+	}
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">BenchmarkRef</span>(t <span style="color:#000;font-weight:bold">*</span>testing.B) {
+	<span style="color:#000;font-weight:bold">for</span> i <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>; i &lt; t.N; i<span style="color:#000;font-weight:bold">++</span> {
+		<span style="color:#900;font-weight:bold">Ref</span>(<span style="color:#099">1</span>)
+	}
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">Normal</span>(n <span style="color:#458;font-weight:bold">int64</span>) {
+	_ = n
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">Ref</span>(n <span style="color:#458;font-weight:bold">int64</span>) {
+	_ = reflect.<span style="color:#900;font-weight:bold">ValueOf</span>(n).<span style="color:#900;font-weight:bold">Int</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>压测结果如下</p>
+<pre><code>BenchmarkNormal-16      1000000000               0.2375 ns/op
+BenchmarkRef-16         242498898                4.589 ns/op
+</code></pre><p>结果来看，使用反射，运行速度慢约 1 个数量级。</p>
+<p>那么究竟慢在哪里？使用 profiler 来看看</p>
+<p>
+        <img class="mx-auto" alt="image-20210920144943352" src="/images/image-20210920111336463.png" />   
+    </p>
+<p>从图中看到，使用反射获取变量的值，要经过很多步骤，比如拷贝值、拼装相应的反射对象、类型转换等。经过这些操作就不如直接读取变量值来得快。</p>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="http://longlog.me/2019/10/23/go-addressable/">http://longlog.me/2019/10/23/go-addressable/</a></p>
+<p><a href="https://i6448038.github.io/2020/02/15/golang-reflection/">图解go反射实现原理</a></p>
+<p><a href="http://legendtkl.com/2016/08/06/reflect-inside/">http://legendtkl.com/2016/08/06/reflect-inside/</a></p>
+
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>原文作者：</strong><a rel="author" href="https://blog.jakseer.cn">jakseer</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="https://blog.jakseer.cn/post/go-reflect/">https://blog.jakseer.cn/post/go-reflect/</a></li>
+        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/Go'>Go</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "zileiwang/zileiwang.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.jakseer.cn/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.jakseer.cn">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/go-reflect/" title="Go 反射">Go 反射</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/the-summary-of-lock-in-mysql/" title="总结 MySQL 中的锁">总结 MySQL 中的锁</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/innodb-phantom-reads-summary/" title="InnoDB 幻读简述">InnoDB 幻读简述</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/" title="Laravel 管道模式的实现">Laravel 管道模式的实现</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/docker-network-mode/" title="Docker 网络模式">Docker 网络模式</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/macroable-trait-in-laravel/" title="Laravel 中的 Macroable Trait">Laravel 中的 Macroable Trait</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/php-keywords-static-self-parent/" title="PHP 关键字对比：static、self、parent">PHP 关键字对比：static、self、parent</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.jakseer.cn/post/using-xdebug-to-debug-php-code/" title="使用 Xdebug 进行 PHP 代码调试">使用 Xdebug 进行 PHP 代码调试</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.jakseer.cn/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.jakseer.cn/tags/Go/">Go</a>
+    
+    <a href="https://blog.jakseer.cn/tags/InnoDB/">InnoDB</a>
+    
+    <a href="https://blog.jakseer.cn/tags/Laravel/">Laravel</a>
+    
+    <a href="https://blog.jakseer.cn/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.jakseer.cn/tags/PHP/">PHP</a>
+    
+    <a href="https://blog.jakseer.cn/tags/PHPStorm/">PHPStorm</a>
+    
+    <a href="https://blog.jakseer.cn/tags/Xdebug/">Xdebug</a>
+    
+    <a href="https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/">闭包</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.jakseer.cn/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

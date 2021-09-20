@@ -9,20 +9,21 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>关于我 | Jakseer&#39;s Blog</title>
-    <meta property="og:title" content="关于我 - Jakseer&#39;s Blog">
+    <title>Go | Jakseer&#39;s Blog</title>
+    <meta property="og:title" content="Go - Jakseer&#39;s Blog">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="golang,php">
-    <meta name="description" content="Author">
+    <meta name="description" content="Go">
         
     <meta name="author" content="jakseer">
-    <meta property="og:url" content="https://blog.jakseer.cn/about/">
+    <meta property="og:url" content="https://blog.jakseer.cn/tags/Go/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml" href="https://blog.jakseer.cn/tags/Go/index.xml" title="Jakseer's Blog" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -69,164 +70,38 @@
                 <div class="col-8" id="main">
                     
 <div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">Go</span>
+        的文章
+    </h3>
+    
 
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-<div class="post-toc" style="position: absolute; top: 188px;">
-    <h2 class="post-toc-title">文章目录</h2>
-    <div class="post-toc-content">
-        <nav id="TableOfContents"></nav>
-    </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
-
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
+    
     <article class="post">
         <header>
-            <h1 class="post-title">关于我</h1>
+            <h1 class="post-title">
+                <a href="https://blog.jakseer.cn/post/go-reflect/">Go 反射</a>
+            </h1>
         </header>
         <date class="post-meta meta-date">
-            1年1月1日
+            2021年9月5日
         </date>
         
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
         <div class="post-content">
-            <p>About Me</p>
-
-        </div>
-
-        
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/the-implement-of-pipe-pattern-in-laravel/">Laravel 管道模式的实现</a></li>
-        
-        <li><a href="/post/docker-network-mode/">Docker 网络模式</a></li>
-        
-        <li><a href="/post/macroable-trait-in-laravel/">Laravel 中的 Macroable Trait</a></li>
-        
-        <li><a href="/post/php-closure-class/">PHP Closure 类</a></li>
-        
-        <li><a href="/post/talking-php-params/">浅谈 PHP 的参数</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            没有标签
-            
+            什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。 reflect 包的使用 Value 与 Type 对于对象，是由 类型 和 值 两部分组成的。 相应地 reflect 包也分为两大部分 value 与 type ，并提供了……
+            <p class="readmore"><a href="https://blog.jakseer.cn/post/go-reflect/">阅读全文</a></p>
         </div>
     </article>
     
-    
 
     
-    
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "zileiwang/zileiwang.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
+
+
+
+
+
 </div>
 
                     <footer id="footer">
@@ -247,16 +122,6 @@
 </footer>
 
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
