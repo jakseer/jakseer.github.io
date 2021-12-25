@@ -73,6 +73,22 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年12月19日
+        </date>
+        
+        <div class="post-content">
+            概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx 2 取消，……
+        </div>
+        <p class="readmore"><a href="https://blog.jakseer.cn/post/go-context/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://blog.jakseer.cn/post/introducation-of-linux-io-models-one/" title="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用">Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</a>
             </h1>
         </header>
@@ -214,22 +230,6 @@
         <p class="readmore"><a href="https://blog.jakseer.cn/post/talking-php-params/">阅读全文</a></p>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.jakseer.cn/post/php-keywords-static-self-parent/" title="PHP 关键字对比：static、self、parent">PHP 关键字对比：static、self、parent</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年11月16日
-        </date>
-        
-        <div class="post-content">
-            我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明这三种关键字有啥区别。 首先说明两个概念，转发调用与非转发调用 转发调用：进行静态调用时，代码中不显式指明调用的对象，而是在运行时来判断调用哪个……
-        </div>
-        <p class="readmore"><a href="https://blog.jakseer.cn/post/php-keywords-static-self-parent/">阅读全文</a></p>
-    </article>
-    
     
 
 
@@ -306,6 +306,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
+    </li>
+    
+    <li>
         <a href="https://blog.jakseer.cn/post/introducation-of-linux-io-models-one/" title="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用">Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</a>
     </li>
     
@@ -339,10 +343,6 @@
     
     <li>
         <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.cn/post/php-keywords-static-self-parent/" title="PHP 关键字对比：static、self、parent">PHP 关键字对比：static、self、parent</a>
     </li>
     
 </ul>
