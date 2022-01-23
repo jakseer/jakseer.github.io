@@ -199,7 +199,7 @@
 <p><code>Macroable</code> 共有 5 个方法：<code>macro</code>、<code>minix</code>、<code>hasMacro</code>、<code>__callStatic</code>、<code>__call</code> ，其中后两个为魔术方法。接下来通过代码示例来了解这几个方法的用法</p>
 <p>首先定义两个类：<code>Car</code>、<code>Plane</code>，后面的示例都是以这两个类为基础的。
 <code>Car</code> 类中引用了 <code>Macroable</code> 这个 <code>trait</code>，而 <code>Plane</code> 类中的 <code>fly</code> 方法，返回的是一个闭包。</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 
 class Car
 {
@@ -224,14 +224,14 @@ class Plane
     }
 }
 </code></pre><p>可在 <code>Car</code> 类中，通过 <code>macro</code> 方法给 <code>Car</code> 类动态添加方法，然后可将其作为方法、静态方法进行调用：</p>
-<pre><code>Car::macro('door', function(){
+<pre tabindex="0"><code>Car::macro('door', function(){
     echo &quot;open car door\n&quot;;
 });
 
 Car::door();
 $car-&gt;door();
 </code></pre><p>假如，我想使用某个类中的所有方法，可先用 <code>minix</code> 方法进行批量添加：</p>
-<pre><code>Car::mixin(new Plane());
+<pre tabindex="0"><code>Car::mixin(new Plane());
 
 $car-&gt;fly();
 $car::fly();
@@ -239,7 +239,7 @@ $car::fly();
 <h1 id="macroable-源码解析">Macroable 源码解析</h1>
 <p>本文分析的代码为 <code>Lavavel 5.7</code> 版本，<code>Macroable</code> 源码地址： <a href="https://github.com/laravel/framework/blob/5.7/src/Illuminate/Support/Traits/Macroable.php">Macroable 源码</a></p>
 <p><code>Macroable.php</code> 文件代码 100 行出头，其中还包括不少注释，因此是比较容易理解的，其结构如下：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 
 namespace Illuminate\Support\Traits;
 
@@ -260,7 +260,7 @@ trait Macroable
 </code></pre><p>共 6 个方法，还有一个类静态变量，用来存储用户添加的自定义方法。</p>
 <h2 id="hasmacro">hasMacro</h2>
 <p>判断某个自定义方法是否存在</p>
-<pre><code>/**
+<pre tabindex="0"><code>/**
  * Checks if macro is registered.
  *
  * @param  string  $name
@@ -273,7 +273,7 @@ public static function hasMacro($name)
 </code></pre><h2 id="macro">macro</h2>
 <p>添加一个自定义方法。其中 <code>$macro</code> 为对象或闭包。
 如果传入的是对象，则该对象需实现 <code>__invoke</code> 魔术方法。</p>
-<pre><code>/**
+<pre tabindex="0"><code>/**
  * Register a custom macro.
  *
  * @param  string $name
@@ -286,7 +286,7 @@ public static function macro($name, $macro)
     static::$macros[$name] = $macro;
 }
 </code></pre><h2 id="minix">minix</h2>
-<pre><code>/**
+<pre tabindex="0"><code>/**
  * Mix another object into the class.
  *
  * @param  object  $mixin
@@ -311,7 +311,7 @@ public static function mixin($mixin)
 所以可能有人有这样的想法，把 <code>$method-&gt;invoke($mixin)</code> 改成 <code>$method-&gt;getClosure($mixin)</code>，这样一来，被 <code>mixin</code> 的类中的方法就不用返回闭包，而是正常地写就行了。
 实际上是不行的。因为通过 <code>ReflectionMethod::getClosure()</code> 获取的闭包，均不能进行重新绑定。</p>
 <h2 id="__callstatic">__callStatic</h2>
-<pre><code>/**
+<pre tabindex="0"><code>/**
  * Dynamically handle calls to the class.
  *
  * @param  string  $method
@@ -338,7 +338,7 @@ public static function __callStatic($method, $parameters)
 如果被调用的方法是个闭包，则绑定 <code>static</code> 的类作用域，并调用该闭包。
 否则，被调用的是对象（该对象需实现 <code>__invoke</code> 方法）。</p>
 <h2 id="__call">__call</h2>
-<pre><code>/**
+<pre tabindex="0"><code>/**
  * Dynamically handle calls to the class.
  *
  * @param  string  $method
@@ -435,7 +435,7 @@ public function __call($method, $parameters)
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        &copy; 2022 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
         
     </div>
     <br />
@@ -491,6 +491,10 @@ public function __call($method, $parameters)
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.jakseer.cn/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
+    </li>
+    
+    <li>
         <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
     </li>
     
@@ -524,10 +528,6 @@ public function __call($method, $parameters)
     
     <li>
         <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
     </li>
     
 </ul>

@@ -196,7 +196,7 @@
         <div class="post-content">
             <h1 id="缘由">缘由</h1>
 <p>在 Lavavel 框架中，有不少函数支持多种参数，例如：</p>
-<pre><code>collect([
+<pre tabindex="0"><code>collect([
     ['product' =&gt; 'Desk', 'price' =&gt; 200],
     ['product' =&gt; 'Chair', 'price' =&gt; 100],
 ])-&gt;contains('product', 'Bookcase');
@@ -212,7 +212,7 @@ collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) {
 func_get_arg(int $arg_num): 获取某个参数
 func_get_args(): 获取所有参数</p>
 <p>例如：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 function sum()
 {
     $items = func_get_args();
@@ -231,13 +231,13 @@ var_dump(sum(1,2,3));
 var_dump(sum(1,2));
 </code></pre><p>可以看到，<code>sum</code>函数支持多种不同的参数列表，实现了重载的功能
 注意，这三个函数，只能用在函数、方法内部而不能在全局作用域中使用，例如：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 $items = func_get_args();
 </code></pre><p>这样会报错！
 也许您是想获取 php 脚本的参数，那么请看下一节。</p>
 <h2 id="args语法">&hellip;$args（&hellip;语法）</h2>
 <p>PHP 5.6 以后，新增了 &hellip; 语法糖，来实现可变参数相关功能。用法请看示例</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 function sum(...$items)
 {
     $result = 0;
@@ -256,7 +256,7 @@ var_dump(sum(...$arr));  // 等价于 var_dump(sum(4,5,6));
 注意，&hellip;只能作为实参、形参在参数列表中使用，其它地方不能用。</p>
 <h2 id="形参与实参的数量">形参与实参的数量</h2>
 <p>本文之前的一个例子：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 function sum()
 {
     $items = func_get_args();
@@ -273,7 +273,7 @@ function sum()
 
 var_dump(sum1(1,2,3));
 </code></pre><p>我们把代码稍微改动一下，如下</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 function sum($a,$b)   // 改了形参
 {
     $items = func_get_args();
@@ -293,30 +293,30 @@ var_dump(sum(1));  // 改了实参
 用一句比较难懂的话来说就是：实参的数量 要大于或等于 无默认值的形参的数量</p>
 <h1 id="cli-模式下命令行参数的获取">cli 模式下命令行参数的获取</h1>
 <p>写好了 PHP 脚本，但是在运行的时候想传入参数.例如想执行一个脚本，例如用脚本清空某个数据表:</p>
-<pre><code>php clear_table.php user
+<pre tabindex="0"><code>php clear_table.php user
 </code></pre><p>那么这个参数<code>user</code>该怎么拿到？
 思维活跃的人可能就想着用<code>func_get_args</code>来获取命令行参数，但这样是不行的，因为它只能在函数、方法内部使用。
 有如下两种方法：</p>
 <h2 id="使用-argv-数组">使用 argv 数组</h2>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 var_dump($argv);
 </code></pre><p>命令行中执行</p>
-<pre><code>php clear_table.php user
+<pre tabindex="0"><code>php clear_table.php user
 </code></pre><p>就会输出</p>
-<pre><code>Array
+<pre tabindex="0"><code>Array
 (
     [0] =&gt; clear_table.php
     [1] =&gt; user
 )
 </code></pre><h2 id="使用-getopt-方法">使用 getopt 方法</h2>
 <p>该方法的优点是能够解析命令行参数：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
     $param = getopt('a:b:c:d::e');
     print_r($param);
 </code></pre><p>命令行中执行</p>
-<pre><code>php clear_table.php -table_name user -dbname=mydb
+<pre tabindex="0"><code>php clear_table.php -table_name user -dbname=mydb
 </code></pre><p>脚本执行结果为：</p>
-<pre><code>Array
+<pre tabindex="0"><code>Array
 (
     [table_name] =&gt; user
     [dbname]     =&gt; mydb
@@ -386,7 +386,7 @@ var_dump($argv);
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        &copy; 2022 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
         
     </div>
     <br />
@@ -442,6 +442,10 @@ var_dump($argv);
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.jakseer.cn/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
+    </li>
+    
+    <li>
         <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
     </li>
     
@@ -475,10 +479,6 @@ var_dump($argv);
     
     <li>
         <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
     </li>
     
 </ul>

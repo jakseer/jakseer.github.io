@@ -6,11 +6,7 @@
     <description>Recent content in 闭包 on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 23 Feb 2020 15:32:17 +0800</lastBuildDate>
-    
-	<atom:link href="https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 23 Feb 2020 15:32:17 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PHP Closure 类</title>
       <link>https://blog.jakseer.cn/post/php-closure-class/</link>

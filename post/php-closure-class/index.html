@@ -195,7 +195,7 @@
 <p>但在 <code>php</code> 中，闭包与匿名函数被视为相同的概念。</p>
 <p><code>Closure</code> 是代表闭包（匿名函数）的预定义类，该类定义了闭包的一些操作，例如<code>bind</code>、<code>bindTo</code>等方法。</p>
 <p>类定义：</p>
-<pre><code>Closure {
+<pre tabindex="0"><code>Closure {
     private __construct ( void )
     public static bind ( Closure $closure , object $newthis [, mixed $newscope = &quot;static&quot; ] ) : Closure
     public bindTo ( object $newthis [, mixed $newscope = &quot;static&quot; ] ) : Closure
@@ -209,7 +209,7 @@
 <h2 id="newthis">newthis</h2>
 <p>新的 <code>this</code> 对象。若想将闭包绑定到某个对象上，需指定此参数。否则传 <code>null</code>。
 经常可以看到一些框架的路由定义如下：</p>
-<pre><code>$app-&gt;get('/test', function () {
+<pre tabindex="0"><code>$app-&gt;get('/test', function () {
     echo $this-&gt;request-&gt;getMethod();
 });
 </code></pre><p>在闭包中可以使用 <code>this</code> 关键字？
@@ -217,7 +217,7 @@
 <h2 id="newscope">newscope</h2>
 <p>新的作用域。当访问非 <code>public</code> 的方法、属性时，需指定作用域。
 绑定新作用域的作用如下例：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 
 class Container
 {
@@ -235,7 +235,7 @@ $clo2();
 这是因为 <code>$clo1</code> 的作用域与 <code>container</code> 中的 <code>name</code> 作用域不同，且 <code>name</code> 又是一个非 <code>public</code> 变量。因此 <code>$clo</code> 闭包中访问 <code>Container::$name</code> 就像直接从类外访问 <code>name</code>，肯定会报错的。
 而 <code>$clo2</code> 通过 <code>bind</code> 绑定了 <code>container</code> 类作用域，<code>$clo2</code> 中访问 <code>name</code> 就像在 <code>container</code> 类中访问 <code>name</code>。</p>
 <p>因此，若想访问某个对象的非静态非公有属性、方法，则需绑定 <code>newthis</code>、<code>newscope</code>，代码示例如下：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 
 class Test
 {
@@ -254,12 +254,12 @@ Closure::bind($clo,new Test())();               // 报错：Fatal error: Uncaugh
 </code></pre><h2 id="bindtobind-方法的区别">bindTo、bind 方法的区别</h2>
 <p><code>bind</code> 相当于 <code>bindTo</code> 的静态方法版，实现的功能上是一样的。</p>
 <h1 id="call-方法">call 方法</h1>
-<pre><code>$clo-&gt;call($obj, ...$params);
+<pre tabindex="0"><code>$clo-&gt;call($obj, ...$params);
 </code></pre><p>等价于</p>
-<pre><code>$clo-&gt;bindTo($obj, $obj);
+<pre tabindex="0"><code>$clo-&gt;bindTo($obj, $obj);
 $clo(...$params);
 </code></pre><p>验证示例（改编自 PHP 官网）：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 class Value {
     protected $value;
 
@@ -283,7 +283,7 @@ $closure-&gt;call($four, 4);
 </code></pre><h1 id="fromcallable-方法">fromCallable 方法</h1>
 <p>把 <code>callable</code> 类型的东西变成闭包，如果传入的参数不是 <code>callable</code> 的，则报错。
 例如：</p>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 class Foo
 {
     protected $num = 1;
@@ -368,7 +368,7 @@ Closure::fromCallable(['Foo', 'a']);  // 报错
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        &copy; 2022 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
         
     </div>
     <br />
@@ -424,6 +424,10 @@ Closure::fromCallable(['Foo', 'a']);  // 报错
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.jakseer.cn/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
+    </li>
+    
+    <li>
         <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
     </li>
     
@@ -457,10 +461,6 @@ Closure::fromCallable(['Foo', 'a']);  // 报错
     
     <li>
         <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
     </li>
     
 </ul>

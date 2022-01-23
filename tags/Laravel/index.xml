@@ -6,11 +6,7 @@
     <description>Recent content in Laravel on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate>
-    
-	<atom:link href="https://blog.jakseer.cn/tags/Laravel/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/tags/Laravel/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Laravel 管道模式的实现</title>
       <link>https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/</link>

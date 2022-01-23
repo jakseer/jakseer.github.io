@@ -194,7 +194,7 @@
 <h1 id="自制管道">自制管道</h1>
 <p>在开始讲解 <code>Laravel</code> 的 <code>Pipeline</code> 之前，建议先动手实现一个管道组件，这样有利于理解 <code>Laravel</code> 的 <code>Pipeline</code> 源码。
 我们自己实现的管道的 <code>Interface</code> 可定义如下：</p>
-<pre><code>interface Pipeline
+<pre tabindex="0"><code>interface Pipeline
 {
     public function send($passable);
     // 定义管道中流动的数据，即被执行方法的参数
@@ -202,7 +202,7 @@
     // 定义要通过哪些方法
 }
 </code></pre><h2 id="foreach-版管道">foreach 版管道</h2>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 class Pipeline
 {
     protected $passable;
@@ -225,7 +225,7 @@ class Pipeline
     }
 }
 </code></pre><h2 id="array_reduce-版管道">array_reduce 版管道</h2>
-<pre><code>&lt;?php
+<pre tabindex="0"><code>&lt;?php
 class Pipeline
 {
     protected $passable;
@@ -247,7 +247,7 @@ class Pipeline
 }
 </code></pre><p>array_reduce 的首次 reduce 会出现 null 元素，因此要进行 null 的判断。</p>
 <h2 id="测试代码">测试代码</h2>
-<pre><code>$a = function ($passable) {
+<pre tabindex="0"><code>$a = function ($passable) {
     print('a');
     return $passable + 1;
 };
@@ -263,13 +263,13 @@ $c = function ($passable) {
 $result = (new Pipeline())-&gt;send(10)-&gt;through([$a, $b, $c]);
 print($result);
 </code></pre><p>以上两种管道实现都通俗易懂，因此不细说。他们的运行结果均为：</p>
-<pre><code>abc17
+<pre tabindex="0"><code>abc17
 </code></pre><h2 id="自制管道总结">自制管道总结</h2>
 <p>从逻辑上来说，上面两种实现都是基于正序遍历的。即正序遍历 <code>$pipelines</code>，把 要处理的数据依次喂给每个 <code>$pipeline</code>。</p>
 <h1 id="laravel-管道源码解析">Laravel 管道源码解析</h1>
 <p>下面将根据 <code>Laravel 5.7</code> 的源码来讲解。
 <code>Laravel</code> 的管道位于 <code>Illuminate\Pipeline\Pipeline</code> 命名空间中，该文件代码简化结构如下：</p>
-<pre><code>interface Pipeline
+<pre tabindex="0"><code>interface Pipeline
 {
     public function send($passable);
     public function through($pipes);
@@ -280,7 +280,7 @@ print($result);
 </code></pre><p>这五个方法，能基本构成一个完整的管道，因此将从这几个方法来分析源码。至于用法，可参考相关文档。
 <code>send</code> 方法传入要处理的对象；<code>through</code> 方法设置执行函数队列；<code>then</code> 方法设置最终方法并依次执行队列中的函数。
 <code>send</code>、<code>through</code> 方法都较为简单，因此不细说。</p>
-<pre><code>public function then(Closure $destination)
+<pre tabindex="0"><code>public function then(Closure $destination)
 {
     $pipeline = array_reduce(
         array_reverse($this-&gt;pipes), $this-&gt;carry(), $this-&gt;prepareDestination($destination)
@@ -289,14 +289,14 @@ print($result);
     return $pipeline($this-&gt;passable);
 }
 </code></pre><p><code>then</code> 方法的核心是 <code>array_reduce</code> 函数，它在 <code>Laravel</code> 中对执行函数队列进行了翻转，使得先添加到队列的函数后执行，变成了栈的结构。<code>prepareDestination</code> 方法返回的闭包，充当 <code>array_reduce</code> 的 <code>initial</code> 参数，最先执行。</p>
-<pre><code>protected function prepareDestination(Closure $destination)
+<pre tabindex="0"><code>protected function prepareDestination(Closure $destination)
 {
     return function ($passable) use ($destination) {
         return $destination($passable);
     };
 }
 </code></pre><p><code>prepareDestination</code> 方法返回的是包含有最终执行方法的闭包（<code>$destination</code>），其参数为要处理的对象（<code>$passable</code>）。</p>
-<pre><code>protected function carry()
+<pre tabindex="0"><code>protected function carry()
 {
     return function ($stack, $pipe) {
         return function ($passable) use ($stack, $pipe) {
@@ -311,13 +311,13 @@ print($result);
 可以看到，<code>array_reduce</code> 的每次 <code>reduce</code> 后，会将新、旧 <code>reduce</code> 元素封存在闭包中，并返回它。而执行该闭包返回的是 <code>$pipe($passable, $stack)</code>。
 这样形成了栈的逻辑，而之前的 <code>array_reduce</code> 中，使用了 <code>array_reverse</code> ，因此两次取反得正，<code>then</code> 方法的 <code>array_reduce</code> 事实上是按照添加到队列的函数的先后顺序来执行的。</p>
 <p>举个例子：</p>
-<pre><code>(new Pipeline($this-&gt;app))-&gt;send($passable)-&gt;through([
+<pre tabindex="0"><code>(new Pipeline($this-&gt;app))-&gt;send($passable)-&gt;through([
     $f1,
     $f2,
     $f3,
 ])-&gt;then($distination);
 </code></pre><p>对应地，在 <code>then</code> 方法中，最终得到的 <code>$pipeline</code> 是</p>
-<pre><code>function($passable) {
+<pre tabindex="0"><code>function($passable) {
     return $f1($passable, function($passable) {
         return $f2($passable, function($passable) {
             return $f3($passable, $destination());
@@ -398,7 +398,7 @@ print($result);
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        &copy; 2022 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
         
     </div>
     <br />
@@ -454,6 +454,10 @@ print($result);
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.jakseer.cn/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
+    </li>
+    
+    <li>
         <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
     </li>
     
@@ -487,10 +491,6 @@ print($result);
     
     <li>
         <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
     </li>
     
 </ul>

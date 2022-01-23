@@ -82,6 +82,22 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://blog.jakseer.cn/post/go-sync-mutex/">Go sync.Mutex 解析</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2022年1月15日
+        </date>
+        
+        <div class="post-content">
+            简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体代码逻辑。 两方面的取舍 sync.Mutex 的实现主要涉及两方面的取舍 抢锁策略 排它锁是独占资源，因此会存在两个 goroutine 同时抢同一个锁的情况，不同的抢锁策略会导致不同的……
+            <p class="readmore"><a href="https://blog.jakseer.cn/post/go-sync-mutex/">阅读全文</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://blog.jakseer.cn/post/go-context/">Go Context 应用与源码分析</a>
             </h1>
         </header>
@@ -90,7 +106,7 @@
         </date>
         
         <div class="post-content">
-            概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx 2 取消，……
+            概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构，如下图 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx……
             <p class="readmore"><a href="https://blog.jakseer.cn/post/go-context/">阅读全文</a></p>
         </div>
     </article>
@@ -122,7 +138,7 @@
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
+        &copy; 2022 <a href="https://blog.jakseer.cn">Jakseer&#39;s Blog By jakseer</a>
         
     </div>
     <br />
@@ -168,6 +184,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.jakseer.cn/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
+    </li>
+    
+    <li>
         <a href="https://blog.jakseer.cn/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
     </li>
     
@@ -201,10 +221,6 @@
     
     <li>
         <a href="https://blog.jakseer.cn/post/php-closure-class/" title="PHP Closure 类">PHP Closure 类</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.cn/post/talking-php-params/" title="浅谈 PHP 的参数">浅谈 PHP 的参数</a>
     </li>
     
 </ul>

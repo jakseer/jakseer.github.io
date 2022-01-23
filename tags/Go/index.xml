@@ -6,10 +6,15 @@
     <description>Recent content in Go on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 19 Dec 2021 20:26:50 +0800</lastBuildDate>
-    
-	<atom:link href="https://blog.jakseer.cn/tags/Go/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 15 Jan 2022 14:58:40 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/tags/Go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go sync.Mutex 解析</title>
+      <link>https://blog.jakseer.cn/post/go-sync-mutex/</link>
+      <pubDate>Sat, 15 Jan 2022 14:58:40 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.cn/post/go-sync-mutex/</guid>
+      <description>简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体代码逻辑。 两方面的取舍 sync.Mutex 的实现主要涉及两方面的取舍 抢锁策略 排它锁是独占资源，因此会存在两个 goroutine 同时抢同一个锁的情况，不同的抢锁策略会导致不同的</description>
+    </item>
     
     <item>
       <title>Go Context 应用与源码分析</title>
@@ -17,7 +22,7 @@
       <pubDate>Sun, 19 Dec 2021 20:26:50 +0800</pubDate>
       
       <guid>https://blog.jakseer.cn/post/go-context/</guid>
-      <description>概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx 2 取消，</description>
+      <description>概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构，如下图 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx</description>
     </item>
     
     <item>
