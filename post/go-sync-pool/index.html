@@ -9,20 +9,20 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>Docker 网络模式 | Jakseer&#39;s Blog</title>
-    <meta property="og:title" content="Docker 网络模式 - Jakseer&#39;s Blog">
+    <title>Go sync.Pool 解析 | Jakseer&#39;s Blog</title>
+    <meta property="og:title" content="Go sync.Pool 解析 - Jakseer&#39;s Blog">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2020-03-29T20:46:18&#43;08:00'>
+    <meta property="article:published_time" content='2022-02-12T16:17:08&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2020-03-29T20:46:18&#43;08:00'>
+    <meta property="article:modified_time" content='2022-02-12T16:17:08&#43;08:00'>
         
     <meta name="Keywords" content="golang,php">
-    <meta name="description" content="Docker 网络模式">
+    <meta name="description" content="Go sync.Pool 解析">
+        <meta name="author" content="Jakseer">
         
-    <meta name="author" content="jakseer">
-    <meta property="og:url" content="https://blog.jakseer.cn/post/docker-network-mode/">
+    <meta property="og:url" content="https://blog.jakseer.cn/post/go-sync-pool/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -139,10 +139,17 @@
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#通过宿主机">通过宿主机</a></li>
-    <li><a href="#link-命令">link 命令</a></li>
-    <li><a href="#指定-ip-地址">指定 IP 地址</a></li>
-    <li><a href="#使用容器名">使用容器名</a></li>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#特点">特点</a></li>
+    <li><a href="#一些优化">一些优化</a>
+      <ul>
+        <li><a href="#lock-free">lock-free</a></li>
+        <li><a href="#ring-buffer">ring buffer</a></li>
+        <li><a href="#false-sharing">false sharing</a></li>
+        <li><a href="#gc-清理">gc 清理</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
   </ul>
 </nav>
     </div>
@@ -176,10 +183,10 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">Docker 网络模式</h1>
+            <h1 class="post-title">Go sync.Pool 解析</h1>
         </header>
         <date class="post-meta meta-date">
-            2020年3月29日
+            2022年2月12日
         </date>
         
         
@@ -189,34 +196,96 @@
         </div>
         
         
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
         <div class="post-content">
-            <p>最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。</p>
-<p>Docker 网络模式共有 5 种：<code>none</code>、<code>host</code>、<code>bridge</code>、<code>overlay</code>、<code>macvlan</code>，其中 <code>overlay</code>、<code>macvlan</code> 目前暂时用得少，因此不做记录。</p>
-<h1 id="none">none</h1>
-<p>即默认不联网的模式，此模式可用于一些对安全性、保密性要求较高的服务，如密钥生成服务。</p>
-<h1 id="host">host</h1>
-<p>与当前主机共享网络空间，即在此模式下的服务与宿主机上的应用在同一个网段下。
-使用此模式时，端口映射参数无效，即 <code>-p</code>,<code>--publish</code>,<code>-P</code>,<code>--publish-all</code> 等参数均无效。
-使用此模式，由于容器端口全部都暴露在宿主机上，因此容易造成端口冲突。
-注意：此网络模型目前仅支持 Linux 系统。</p>
-<h1 id="bridge">bridge</h1>
-<p>通过设置 bridge，可创建不同的网段，让各容器处在不同的网段中，从而达到网络隔离的效果。
-新创建的容器，若不指定 bridge，则默认使用 docker0 这个 bridge。</p>
-<p>对于 bridge 中的容器，由于容器 ip 默认由 docker 指定，因此各容器的 ip 地址不定。故实现容器间通信，有如下三种方法：</p>
-<h2 id="通过宿主机">通过宿主机</h2>
-<p>使用 expose 命令，将端口暴露到宿主机中，然后请求暴露在宿主机上的端口。</p>
-<h2 id="link-命令">link 命令</h2>
-<p>通过 link 命令，可以让容器之间通过容器名单向通信。
-该命令 docker 官方不建议使用</p>
-<h2 id="指定-ip-地址">指定 IP 地址</h2>
-<p>给每个容器指定 ip 地址，访问时使用 ip 地址来访问。
-可实现容器之间的通信，但可读性较差。</p>
-<h2 id="使用容器名">使用容器名</h2>
-<p>使用容器名来访问容器，docker 会解析容器名，转换为对应的 ip。这样较为灵活、可读性强。</p>
-<h1 id="参考资料">参考资料</h1>
-<p><a href="https://www.cnblogs.com/shenh/p/9714547.html">https://www.cnblogs.com/shenh/p/9714547.html</a></p>
-<p><a href="https://docs.docker.com/network/host/">https://docs.docker.com/network/host/</a></p>
-<p><a href="https://blog.csdn.net/foreverhuylee/article/details/44966109">https://blog.csdn.net/foreverhuylee/article/details/44966109</a></p>
+            <h2 id="简介">简介</h2>
+<p><code>sync.Pool</code> 是 Go 内置的临时对象池函数库，用于缓存临时对象</p>
+<h2 id="特点">特点</h2>
+<ul>
+<li>
+<p>缓存临时对象</p>
+<p>由于 <code>sync.Pool</code> 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（如DB连接等）</p>
+</li>
+<li>
+<p>自动扩容、缩容</p>
+</li>
+<li>
+<p>冗余对象定期释放</p>
+<p>在GC前，<code>sync.Pool</code> 会取消关联池中所有元素，以便其能被gc 回收</p>
+</li>
+<li>
+<p>多线程安全</p>
+</li>
+</ul>
+<h2 id="一些优化">一些优化</h2>
+<p>具体源码解析可参考其他博文，本文只谈一下 <code>sync.Pool</code> 的几个优化点。</p>
+<h3 id="lock-free">lock-free</h3>
+<p><code>sync.Pool</code> 使用双向链表存储 shared 对象，该双向链表对于不同的 goroutine 的 push、pop 操作位置不同：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>push</th>
+<th>pop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>当前 goroutine</td>
+<td>头部</td>
+<td>头部</td>
+</tr>
+<tr>
+<td>其他 goroutine</td>
+<td></td>
+<td>尾部</td>
+</tr>
+</tbody>
+</table>
+<p>可尽量避免不同 goroutine 对同一队列的锁冲突</p>
+<p>同时，针对多个 goroutine，它们各自有各自的 pool，以尽量减少锁冲突</p>
+<h3 id="ring-buffer">ring buffer</h3>
+<p>每个双向链表节点（<code>poolChainElt</code>）对应一个环形队列（<code>poolDequeue</code>），环形队列是 <code>ring buffer</code> 的数据结构，是用定长数组实现的环形队列</p>
+<p>使用 <code>ring buffer</code> 作为队列，相对于链表来说，对缓存更加友好（因为是连续地址），CPU 可直接在缓存而不是跑到 RAM 中去寻找元素；同时，由于不会删除元素，因此不会给 gc 增加额外的负担。</p>
+<h3 id="false-sharing">false sharing</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000;font-weight:bold">type</span> poolLocal <span style="color:#000;font-weight:bold">struct</span> {
+	poolLocalInternal
+
+	<span style="color:#998;font-style:italic">// Prevents false sharing on widespread platforms with
+</span><span style="color:#998;font-style:italic"></span>	<span style="color:#998;font-style:italic">// 128 mod (cache line size) = 0 .
+</span><span style="color:#998;font-style:italic"></span>	pad [<span style="color:#099">128</span> <span style="color:#000;font-weight:bold">-</span> unsafe.<span style="color:#900;font-weight:bold">Sizeof</span>(poolLocalInternal{})<span style="color:#000;font-weight:bold">%</span><span style="color:#099">128</span>]<span style="color:#458;font-weight:bold">byte</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>CPU 有一二三级缓存，其中一二级缓存是各个核自己独用的，且 CPU 的缓存行是定长的（通常为 64 的倍数）</p>
+<p>若有两个核运行的不同 goroutine 访问相邻的 <code>poolLocal</code>，若无 pad 缓冲行对齐填充字段，则 <code>poolLocal 1</code> 可能同时被两个 goroutine 对应的 CPU 核缓存到，那么 <code>goroutine 1</code> 修改 <code>poolLocal 1</code> 会导致 <code>goroutine 2</code> 的 CPU 缓存行失效。因此会造成 CPU 缓存的失效，减慢运行速度。</p>
+<p>所以使用 <code>pad</code> 字段，将 <code>poolLocal</code> 结构按照 128 字节长度对齐，避免同一个 <code>poolLocal</code> 被不同 CPU 核缓存。</p>
+<h3 id="gc-清理">gc 清理</h3>
+<p>为了防止大量冗余的临时对象长期存在，浪费内存资源。``sync.Pool<code>使用</code>    runtime_registerPoolCleanup` 函数注册了 gc 钩子，即在 gc 前会触发此钩子函数，以便 gc 清理能池中的临时对象</p>
+<h4 id="victim">victim</h4>
+<p>若 gc 后清空了池中的临时对象，这时用户程序又大量获取临时对象，则会大量创建临时对象，影响程序性能（有点类似于缓存雪崩）</p>
+<p>因此 gc 清理临时对象分成两步走。先吧临时对象放到 <code>victim</code> 池中，下一次 gc 再清理，这样使得程序性能更加平滑。</p>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="https://www.cnblogs.com/cyfonly/p/5800758.html">https://www.cnblogs.com/cyfonly/p/5800758.html</a></p>
+<p><a href="https://blog.csdn.net/yongjian_lian/article/details/42058893">https://blog.csdn.net/yongjian_lian/article/details/42058893</a></p>
+<p><a href="https://colobu.com/2019/10/08/how-is-sync-Pool-improved-in-Go-1-13/">https://colobu.com/2019/10/08/how-is-sync-Pool-improved-in-Go-1-13/</a></p>
+<p><a href="https://www.cyhone.com/articles/think-in-sync-pool/">https://www.cyhone.com/articles/think-in-sync-pool/</a></p>
 
         </div>
 
@@ -224,7 +293,7 @@
 <div class="post-archive">
     <ul class="post-copyright">
         <li><strong>原文作者：</strong><a rel="author" href="https://blog.jakseer.cn">jakseer</a></li>
-        <li style="word-break:break-all"><strong>原文链接：</strong><a href="https://blog.jakseer.cn/post/docker-network-mode/">https://blog.jakseer.cn/post/docker-network-mode/</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="https://blog.jakseer.cn/post/go-sync-pool/">https://blog.jakseer.cn/post/go-sync-pool/</a></li>
         <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
     </ul>
 </div>
@@ -238,15 +307,11 @@
     <h2>See Also</h2>
     <ul class="listing">
         
-        <li><a href="/post/macroable-trait-in-laravel/">Laravel 中的 Macroable Trait</a></li>
+        <li><a href="/post/go-sync-mutex/">Go sync.Mutex 解析</a></li>
         
-        <li><a href="/post/php-closure-class/">PHP Closure 类</a></li>
+        <li><a href="/post/go-context/">Go Context 应用与源码分析</a></li>
         
-        <li><a href="/post/talking-php-params/">浅谈 PHP 的参数</a></li>
-        
-        <li><a href="/post/php-keywords-static-self-parent/">PHP 关键字对比：static、self、parent</a></li>
-        
-        <li><a href="/post/using-xdebug-to-debug-php-code/">使用 Xdebug 进行 PHP 代码调试</a></li>
+        <li><a href="/post/go-reflect/">Go 反射</a></li>
         
     </ul>
 </div>
@@ -256,7 +321,7 @@
             
             <ul class="clearfix">
                 
-                <li><a href='/tags/Docker'>Docker</a></li>
+                <li><a href='/tags/Go'>Go</a></li>
                 
             </ul>
             

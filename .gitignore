@@ -1,3 +1,7 @@
 # files
 *.drawio
 
+# folders
+.DS_Store
+
+

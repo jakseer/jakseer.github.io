@@ -6,7 +6,16 @@
     <description>Recent content on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 15 Jan 2022 14:58:40 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go sync.Pool 解析</title>
+      <link>https://blog.jakseer.cn/post/go-sync-pool/</link>
+      <pubDate>Sat, 12 Feb 2022 16:17:08 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.cn/post/go-sync-pool/</guid>
+      <description>简介 sync.Pool 是 Go 内置的临时对象池函数库，用于缓存临时对象 特点 缓存临时对象 由于 sync.Pool 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（如DB连接等） 自动扩容、缩容 冗余对象定期释放 在GC前，sync.Pool 会取消关联池中所有元素，以便其能被gc 回收 多线程安全 一些优化 具体源码</description>
+    </item>
+    
     <item>
       <title>Go sync.Mutex 解析</title>
       <link>https://blog.jakseer.cn/post/go-sync-mutex/</link>
