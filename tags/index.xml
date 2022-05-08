@@ -2,116 +2,116 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Jakseer&#39;s Blog</title>
-    <link>https://blog.jakseer.cn/tags/</link>
+    <link>https://blog.jakseer.com/tags/</link>
     <description>Recent content in Tags on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go</title>
-      <link>https://blog.jakseer.cn/tags/Go/</link>
+      <link>https://blog.jakseer.com/tags/Go/</link>
       <pubDate>Sat, 12 Feb 2022 16:17:08 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/Go/</guid>
+      <guid>https://blog.jakseer.com/tags/Go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://blog.jakseer.cn/tags/Linux/</link>
+      <link>https://blog.jakseer.com/tags/Linux/</link>
       <pubDate>Sat, 25 Sep 2021 13:25:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/Linux/</guid>
+      <guid>https://blog.jakseer.com/tags/Linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>操作系统</title>
-      <link>https://blog.jakseer.cn/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+      <link>https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Sat, 25 Sep 2021 13:25:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+      <guid>https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
       <description></description>
     </item>
     
     <item>
       <title>MySQL</title>
-      <link>https://blog.jakseer.cn/tags/MySQL/</link>
+      <link>https://blog.jakseer.com/tags/MySQL/</link>
       <pubDate>Sun, 04 Jul 2021 15:15:23 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/MySQL/</guid>
+      <guid>https://blog.jakseer.com/tags/MySQL/</guid>
       <description></description>
     </item>
     
     <item>
       <title>InnoDB</title>
-      <link>https://blog.jakseer.cn/tags/InnoDB/</link>
+      <link>https://blog.jakseer.com/tags/InnoDB/</link>
       <pubDate>Sat, 15 Aug 2020 16:27:47 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/InnoDB/</guid>
+      <guid>https://blog.jakseer.com/tags/InnoDB/</guid>
       <description></description>
     </item>
     
     <item>
       <title>数据库</title>
-      <link>https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+      <link>https://blog.jakseer.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
       <pubDate>Sat, 15 Aug 2020 16:27:47 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+      <guid>https://blog.jakseer.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Laravel</title>
-      <link>https://blog.jakseer.cn/tags/Laravel/</link>
+      <link>https://blog.jakseer.com/tags/Laravel/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/Laravel/</guid>
+      <guid>https://blog.jakseer.com/tags/Laravel/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PHP</title>
-      <link>https://blog.jakseer.cn/tags/PHP/</link>
+      <link>https://blog.jakseer.com/tags/PHP/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/PHP/</guid>
+      <guid>https://blog.jakseer.com/tags/PHP/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker</title>
-      <link>https://blog.jakseer.cn/tags/Docker/</link>
+      <link>https://blog.jakseer.com/tags/Docker/</link>
       <pubDate>Sun, 29 Mar 2020 20:46:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/Docker/</guid>
+      <guid>https://blog.jakseer.com/tags/Docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>闭包</title>
-      <link>https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/</link>
+      <link>https://blog.jakseer.com/tags/%E9%97%AD%E5%8C%85/</link>
       <pubDate>Sun, 23 Feb 2020 15:32:17 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/%E9%97%AD%E5%8C%85/</guid>
+      <guid>https://blog.jakseer.com/tags/%E9%97%AD%E5%8C%85/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PHPStorm</title>
-      <link>https://blog.jakseer.cn/tags/PHPStorm/</link>
+      <link>https://blog.jakseer.com/tags/PHPStorm/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/PHPStorm/</guid>
+      <guid>https://blog.jakseer.com/tags/PHPStorm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Xdebug</title>
-      <link>https://blog.jakseer.cn/tags/Xdebug/</link>
+      <link>https://blog.jakseer.com/tags/Xdebug/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/tags/Xdebug/</guid>
+      <guid>https://blog.jakseer.com/tags/Xdebug/</guid>
       <description></description>
     </item>
     

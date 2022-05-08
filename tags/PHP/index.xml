@@ -2,62 +2,62 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PHP on Jakseer&#39;s Blog</title>
-    <link>https://blog.jakseer.cn/tags/PHP/</link>
+    <link>https://blog.jakseer.com/tags/PHP/</link>
     <description>Recent content in PHP on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/tags/PHP/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/PHP/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Laravel 管道模式的实现</title>
-      <link>https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/</link>
+      <link>https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/</guid>
+      <guid>https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/</guid>
       <description>在 Laravel 中，管道（Pipeline）组件是实现路由中间件而使用的重要工具之一。通过管道组件，可以通过执行一系列方法，从而对数据进行处理。 自制管道 在开始讲解 Laravel 的 Pipeline 之前，建议先动手实现一个管道组件，这样有利于理解 Laravel 的 Pipeline 源码。 我们自己实现的管道的 Interface 可定义如下： interface Pipeline { public function send($passable); // 定义管道中流动的</description>
     </item>
     
     <item>
       <title>Laravel 中的 Macroable Trait</title>
-      <link>https://blog.jakseer.cn/post/macroable-trait-in-laravel/</link>
+      <link>https://blog.jakseer.com/post/macroable-trait-in-laravel/</link>
       <pubDate>Sun, 23 Feb 2020 18:26:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/macroable-trait-in-laravel/</guid>
+      <guid>https://blog.jakseer.com/post/macroable-trait-in-laravel/</guid>
       <description>在 Laravel 中，Collection 类本身实现了不少方法，比如 sum、groupBy 等，若想给这个类加上一些自定义的方法，有如下方案： 方法一：通过修改 Collection 类的源码，在其中加入自定义方法的代码。但是这样就要修改框架源码，并且升级框架源码后，要把自定义方法重新在框架源码中加上，比较麻烦。 方法二</description>
     </item>
     
     <item>
       <title>PHP Closure 类</title>
-      <link>https://blog.jakseer.cn/post/php-closure-class/</link>
+      <link>https://blog.jakseer.com/post/php-closure-class/</link>
       <pubDate>Sun, 23 Feb 2020 15:32:17 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/php-closure-class/</guid>
+      <guid>https://blog.jakseer.com/post/php-closure-class/</guid>
       <description>概述 闭包是指在创建时封装周围状态的函数，即使闭包所在的环境的不存在了，闭包中封装的状态依然存在。 匿名函数其实就是没有名称的函数，匿名函数可以赋值给变量，还能像其他任何PHP函数对象那样传递。不过匿名函数仍然是函数，因此可以调用，还可以传入参数，适合作为函数或方法的回调。 但在 php 中，</description>
     </item>
     
     <item>
       <title>浅谈 PHP 的参数</title>
-      <link>https://blog.jakseer.cn/post/talking-php-params/</link>
+      <link>https://blog.jakseer.com/post/talking-php-params/</link>
       <pubDate>Thu, 13 Feb 2020 20:48:40 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/talking-php-params/</guid>
+      <guid>https://blog.jakseer.com/post/talking-php-params/</guid>
       <description>缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： collect([ [&#39;product&#39; =&amp;gt; &#39;Desk&#39;, &#39;price&#39; =&amp;gt; 200], [&#39;product&#39; =&amp;gt; &#39;Chair&#39;, &#39;price&#39; =&amp;gt; 100], ])-&amp;gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&amp;gt;contains(function ($value, $key) { return $value &amp;gt; 5; }); 看起来就好像进行了方法重载，但是 PHP 语法不支持方法重载。那这到底是怎么实现的？ 可变参数相关函数 PHP 语法虽然不支持方法重载，但是可以使用可变参数来实现重载的功能 func_num_arg</description>
     </item>
     
     <item>
       <title>PHP 关键字对比：static、self、parent</title>
-      <link>https://blog.jakseer.cn/post/php-keywords-static-self-parent/</link>
+      <link>https://blog.jakseer.com/post/php-keywords-static-self-parent/</link>
       <pubDate>Sat, 16 Nov 2019 17:51:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/php-keywords-static-self-parent/</guid>
+      <guid>https://blog.jakseer.com/post/php-keywords-static-self-parent/</guid>
       <description>我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明这三种关键字有啥区别。 首先说明两个概念，转发调用与非转发调用 转发调用：进行静态调用时，代码中不显式指明调用的对象，而是在运行时来判断调用哪个</description>
     </item>
     
     <item>
       <title>使用 Xdebug 进行 PHP 代码调试</title>
-      <link>https://blog.jakseer.cn/post/using-xdebug-to-debug-php-code/</link>
+      <link>https://blog.jakseer.com/post/using-xdebug-to-debug-php-code/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/using-xdebug-to-debug-php-code/</guid>
+      <guid>https://blog.jakseer.com/post/using-xdebug-to-debug-php-code/</guid>
       <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug，注意他们两者的发布时间，最好是 Xdebug 版本的发布时间早于 PHPStorm 对应版本的时间，不然可能会有一些奇怪的问题。 比如，我的 PHPStorm 是 2019.2 版本的，那么我选择 Xdebug 就最好</description>
     </item>
     

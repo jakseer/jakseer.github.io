@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Laravel on Jakseer&#39;s Blog</title>
-    <link>https://blog.jakseer.cn/tags/Laravel/</link>
+    <link>https://blog.jakseer.com/tags/Laravel/</link>
     <description>Recent content in Laravel on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.cn/tags/Laravel/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/Laravel/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Laravel 管道模式的实现</title>
-      <link>https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/</link>
+      <link>https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/the-implement-of-pipe-pattern-in-laravel/</guid>
+      <guid>https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/</guid>
       <description>在 Laravel 中，管道（Pipeline）组件是实现路由中间件而使用的重要工具之一。通过管道组件，可以通过执行一系列方法，从而对数据进行处理。 自制管道 在开始讲解 Laravel 的 Pipeline 之前，建议先动手实现一个管道组件，这样有利于理解 Laravel 的 Pipeline 源码。 我们自己实现的管道的 Interface 可定义如下： interface Pipeline { public function send($passable); // 定义管道中流动的</description>
     </item>
     
     <item>
       <title>Laravel 中的 Macroable Trait</title>
-      <link>https://blog.jakseer.cn/post/macroable-trait-in-laravel/</link>
+      <link>https://blog.jakseer.com/post/macroable-trait-in-laravel/</link>
       <pubDate>Sun, 23 Feb 2020 18:26:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.cn/post/macroable-trait-in-laravel/</guid>
+      <guid>https://blog.jakseer.com/post/macroable-trait-in-laravel/</guid>
       <description>在 Laravel 中，Collection 类本身实现了不少方法，比如 sum、groupBy 等，若想给这个类加上一些自定义的方法，有如下方案： 方法一：通过修改 Collection 类的源码，在其中加入自定义方法的代码。但是这样就要修改框架源码，并且升级框架源码后，要把自定义方法重新在框架源码中加上，比较麻烦。 方法二</description>
     </item>
     
