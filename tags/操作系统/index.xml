@@ -6,14 +6,15 @@
     <description>Recent content in 操作系统 on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
+    <copyright>jakseer</copyright>
     <lastBuildDate>Sat, 25 Sep 2021 13:25:50 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</title>
-      <link>https://blog.jakseer.com/post/introducation-of-linux-io-models-one/</link>
+      <link>https://blog.jakseer.com/post/2021/09/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
       <pubDate>Sat, 25 Sep 2021 13:25:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/introducation-of-linux-io-models-one/</guid>
-      <description>[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成的。 而相对于 CPU 执行指令的速度，磁盘等介质读写数据的速度慢得多（见下表）。因此当前程序执行到 IO 指令后，并不能马上拿到 IO 读写结果。 CPU SDD 硬盘 HDD 硬盘</description>
+      <guid>https://blog.jakseer.com/post/2021/09/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <description>[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成</description>
     </item>
     
   </channel>

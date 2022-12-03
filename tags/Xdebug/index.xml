@@ -2,18 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Xdebug on Jakseer&#39;s Blog</title>
-    <link>https://blog.jakseer.com/tags/Xdebug/</link>
+    <link>https://blog.jakseer.com/tags/xdebug/</link>
     <description>Recent content in Xdebug on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 19 Oct 2019 12:11:16 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/Xdebug/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>jakseer</copyright>
+    <lastBuildDate>Sat, 19 Oct 2019 12:11:16 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/xdebug/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 Xdebug 进行 PHP 代码调试</title>
-      <link>https://blog.jakseer.com/post/using-xdebug-to-debug-php-code/</link>
+      <link>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/using-xdebug-to-debug-php-code/</guid>
-      <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug，注意他们两者的发布时间，最好是 Xdebug 版本的发布时间早于 PHPStorm 对应版本的时间，不然可能会有一些奇怪的问题。 比如，我的 PHPStorm 是 2019.2 版本的，那么我选择 Xdebug 就最好</description>
+      <guid>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</guid>
+      <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug</description>
     </item>
     
   </channel>

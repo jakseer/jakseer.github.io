@@ -2,45 +2,46 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on Jakseer&#39;s Blog</title>
-    <link>https://blog.jakseer.com/tags/Go/</link>
+    <link>https://blog.jakseer.com/tags/go/</link>
     <description>Recent content in Go on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/Go/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>jakseer</copyright>
+    <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go sync.Pool 解析</title>
-      <link>https://blog.jakseer.com/post/go-sync-pool/</link>
+      <link>https://blog.jakseer.com/post/2022/02/go-sync.pool-%E8%A7%A3%E6%9E%90/go-sync.pool-%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 12 Feb 2022 16:17:08 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-sync-pool/</guid>
-      <description>简介 sync.Pool 是 Go 内置的临时对象池函数库，用于缓存临时对象 特点 缓存临时对象 由于 sync.Pool 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（如DB连接等） 自动扩容、缩容 冗余对象定期释放 在GC前，sync.Pool 会取消关联池中所有元素，以便其能被gc 回收 多线程安全 一些优化 具体源码</description>
+      <guid>https://blog.jakseer.com/post/2022/02/go-sync.pool-%E8%A7%A3%E6%9E%90/go-sync.pool-%E8%A7%A3%E6%9E%90/</guid>
+      <description>简介 sync.Pool 是 Go 内置的临时对象池函数库，用于缓存临时对象 特点 缓存临时对象 由于 sync.Pool 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（</description>
     </item>
     
     <item>
       <title>Go sync.Mutex 解析</title>
-      <link>https://blog.jakseer.com/post/go-sync-mutex/</link>
+      <link>https://blog.jakseer.com/post/2022/01/go-sync.mutex-%E8%A7%A3%E6%9E%90/go-sync.mutex-%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 15 Jan 2022 14:58:40 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-sync-mutex/</guid>
-      <description>简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体代码逻辑。 两方面的取舍 sync.Mutex 的实现主要涉及两方面的取舍 抢锁策略 排它锁是独占资源，因此会存在两个 goroutine 同时抢同一个锁的情况，不同的抢锁策略会导致不同的</description>
+      <guid>https://blog.jakseer.com/post/2022/01/go-sync.mutex-%E8%A7%A3%E6%9E%90/go-sync.mutex-%E8%A7%A3%E6%9E%90/</guid>
+      <description>简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体</description>
     </item>
     
     <item>
       <title>Go Context 应用与源码分析</title>
-      <link>https://blog.jakseer.com/post/go-context/</link>
+      <link>https://blog.jakseer.com/post/2021/12/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Sun, 19 Dec 2021 20:26:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-context/</guid>
-      <description>概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构，如下图 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx</description>
+      <guid>https://blog.jakseer.com/post/2021/12/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <description>概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中</description>
     </item>
     
     <item>
       <title>Go 反射</title>
-      <link>https://blog.jakseer.com/post/go-reflect/</link>
+      <link>https://blog.jakseer.com/post/2021/09/go-%E5%8F%8D%E5%B0%84/go-%E5%8F%8D%E5%B0%84/</link>
       <pubDate>Sun, 05 Sep 2021 15:26:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-reflect/</guid>
-      <description>什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。 reflect 包的使用 Value 与 Type 对于对象，是由 类型 和 值 两部分组成的。 相应地 reflect 包也分为两大部分 value 与 type ，并提供了</description>
+      <guid>https://blog.jakseer.com/post/2021/09/go-%E5%8F%8D%E5%B0%84/go-%E5%8F%8D%E5%B0%84/</guid>
+      <description>什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变</description>
     </item>
     
   </channel>

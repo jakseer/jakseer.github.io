@@ -1,299 +1,231 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Go · Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>Go | Jakseer&#39;s Blog</title>
-    <meta property="og:title" content="Go - Jakseer&#39;s Blog">
-    <meta property="og:type" content="article">
-        
-        
-    <meta name="Keywords" content="golang,php">
-    <meta name="description" content="Go">
-        
-    <meta name="author" content="jakseer">
-    <meta property="og:url" content="https://blog.jakseer.com/tags/Go/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://blog.jakseer.com/tags/Go/index.xml" title="Jakseer's Blog" />
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-    
-    
-    
-        <link rel="stylesheet" href='/css/douban.css'>
-    
-        <link rel="stylesheet" href='/css/other.css'>
-    
+<meta name="author" content="jakseer" /><meta name="description" content="Hugo theme even example site." /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/tags/go/" />
+  <link href="https://blog.jakseer.com/tags/go/index.xml" rel="alternate" type="application/rss+xml" title="Jakseer&#39;s Blog" />
+  <link href="https://blog.jakseer.com/tags/go/index.xml" rel="feed" type="application/rss+xml" title="Jakseer&#39;s Blog" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Go" />
+<meta property="og:description" content="Hugo theme even example site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.jakseer.com/tags/go/" />
+
+<meta itemprop="name" content="Go">
+<meta itemprop="description" content="Hugo theme even example site."><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go"/>
+<meta name="twitter:description" content="Hugo theme even example site."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://blog.jakseer.com">
-                        Jakseer&#39;s Blog
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://blog.jakseer.com">首页</a>
-                    
-                    <a  href="https://blog.jakseer.com/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
 
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    
-    <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Go</span>
-        的文章
-    </h3>
-    
-
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.jakseer.com/post/go-sync-pool/">Go sync.Pool 解析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2022年2月12日
-        </date>
-        
-        <div class="post-content">
-            简介 sync.Pool 是 Go 内置的临时对象池函数库，用于缓存临时对象 特点 缓存临时对象 由于 sync.Pool 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（如DB连接等） 自动扩容、缩容 冗余对象定期释放 在GC前，sync.Pool 会取消关联池中所有元素，以便其能被gc 回收 多线程安全 一些优化 具体源码……
-            <p class="readmore"><a href="https://blog.jakseer.com/post/go-sync-pool/">阅读全文</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.jakseer.com/post/go-sync-mutex/">Go sync.Mutex 解析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2022年1月15日
-        </date>
-        
-        <div class="post-content">
-            简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体代码逻辑。 两方面的取舍 sync.Mutex 的实现主要涉及两方面的取舍 抢锁策略 排它锁是独占资源，因此会存在两个 goroutine 同时抢同一个锁的情况，不同的抢锁策略会导致不同的……
-            <p class="readmore"><a href="https://blog.jakseer.com/post/go-sync-mutex/">阅读全文</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.jakseer.com/post/go-context/">Go Context 应用与源码分析</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年12月19日
-        </date>
-        
-        <div class="post-content">
-            概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构，如下图 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx……
-            <p class="readmore"><a href="https://blog.jakseer.com/post/go-context/">阅读全文</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.jakseer.com/post/go-reflect/">Go 反射</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年9月5日
-        </date>
-        
-        <div class="post-content">
-            什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。 reflect 包的使用 Value 与 Type 对于对象，是由 类型 和 值 两部分组成的。 相应地 reflect 包也分为两大部分 value 与 type ，并提供了……
-            <p class="readmore"><a href="https://blog.jakseer.com/post/go-reflect/">阅读全文</a></p>
-        </div>
-    </article>
-    
-
-    
+  
 
 
+</nav>
 
-
-
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
 </div>
 
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://blog.jakseer.com">Jakseer&#39;s Blog By jakseer</a>
-        
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <section id="archive" class="archive">
+  <div class="archive-title tag">
+        <h2 class="archive-name">Go</h2>
+      </div>
+
+  <div class="archive-post">
+      <span class="archive-post-time">
+        2022-02-12
+      </span>
+      <span class="archive-post-title">
+        <a href="/post/2022/02/go-sync.pool-%E8%A7%A3%E6%9E%90/go-sync.pool-%E8%A7%A3%E6%9E%90/" class="archive-post-link">
+          Go sync.Pool 解析
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2022-01-15
+      </span>
+      <span class="archive-post-title">
+        <a href="/post/2022/01/go-sync.mutex-%E8%A7%A3%E6%9E%90/go-sync.mutex-%E8%A7%A3%E6%9E%90/" class="archive-post-link">
+          Go sync.Mutex 解析
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2021-12-19
+      </span>
+      <span class="archive-post-title">
+        <a href="/post/2021/12/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="archive-post-link">
+          Go Context 应用与源码分析
+        </a>
+      </span>
+    </div><div class="archive-post">
+      <span class="archive-post-time">
+        2021-09-05
+      </span>
+      <span class="archive-post-title">
+        <a href="/post/2021/09/go-%E5%8F%8D%E5%B0%84/go-%E5%8F%8D%E5%B0%84/" class="archive-post-link">
+          Go 反射
+        </a>
+      </span>
     </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+</section>
+
+<nav class="pagination">
+  
+  
+</nav>
         </div>
         
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
 
+      </div>
+    </main>
 
-
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-    <script src='/js/douban.js'></script>
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='https://blog.jakseer.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://blog.jakseer.com">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-sync-pool/" title="Go sync.Pool 解析">Go sync.Pool 解析</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/introducation-of-linux-io-models-one/" title="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用">Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-reflect/" title="Go 反射">Go 反射</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/the-summary-of-lock-in-mysql/" title="总结 MySQL 中的锁">总结 MySQL 中的锁</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/innodb-phantom-reads-summary/" title="InnoDB 幻读简述">InnoDB 幻读简述</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/" title="Laravel 管道模式的实现">Laravel 管道模式的实现</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/docker-network-mode/" title="Docker 网络模式">Docker 网络模式</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/macroable-trait-in-laravel/" title="Laravel 中的 Macroable Trait">Laravel 中的 Macroable Trait</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://blog.jakseer.com/tags/Docker/">Docker</a>
-    
-    <a href="https://blog.jakseer.com/tags/Go/">Go</a>
-    
-    <a href="https://blog.jakseer.com/tags/InnoDB/">InnoDB</a>
-    
-    <a href="https://blog.jakseer.com/tags/Laravel/">Laravel</a>
-    
-    <a href="https://blog.jakseer.com/tags/Linux/">Linux</a>
-    
-    <a href="https://blog.jakseer.com/tags/MySQL/">MySQL</a>
-    
-    <a href="https://blog.jakseer.com/tags/PHP/">PHP</a>
-    
-    <a href="https://blog.jakseer.com/tags/PHPStorm/">PHPStorm</a>
-    
-    <a href="https://blog.jakseer.com/tags/Xdebug/">Xdebug</a>
-    
-    <a href="https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
-    
-    <a href="https://blog.jakseer.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-    
-    <a href="https://blog.jakseer.com/tags/%E9%97%AD%E5%8C%85/">闭包</a>
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-    </section>
 
-    
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://blog.jakseer.com/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
 </div>
-            </div>
-        </div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

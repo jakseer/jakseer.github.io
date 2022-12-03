@@ -1,210 +1,195 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>浅谈 PHP 的参数 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
-    <title>浅谈 PHP 的参数 | Jakseer&#39;s Blog</title>
-    <meta property="og:title" content="浅谈 PHP 的参数 - Jakseer&#39;s Blog">
-    <meta property="og:type" content="article">
-        
-    <meta property="article:published_time" content='2020-02-13T20:48:40&#43;08:00'>
-        
-        
-    <meta property="article:modified_time" content='2020-02-13T20:48:40&#43;08:00'>
-        
-    <meta name="Keywords" content="golang,php">
-    <meta name="description" content="浅谈 PHP 的参数">
-        
-    <meta name="author" content="jakseer">
-    <meta property="og:url" content="https://blog.jakseer.com/post/talking-php-params/">
-    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
-    <link rel="stylesheet" href='/css/normalize.css'>
-    <link rel="stylesheet" href='/css/style.css'>
-    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    
-    
-    
-    
-    
-    
-        <link rel="stylesheet" href='/css/douban.css'>
-    
-        <link rel="stylesheet" href='/css/other.css'>
-    
+<meta name="author" content="jakseer" /><meta name="description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Desk&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 200], [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Chair&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 100], ])-&amp;gt;contains(&amp;#39;product&amp;#39;, &amp;#39;Bookcase&amp;#39;); collect([1, 2, 3, 4, 5])-&amp;gt;contains(function ($value, $key) { return $value &amp;gt; 5; }); 看起来就好像进行了方法" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.92.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/talking-php-params/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="浅谈 PHP 的参数" />
+<meta property="og:description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200], [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100], ])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) { return $value &gt; 5; }); 看起来就好像进行了方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/talking-php-params/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-02-13T20:48:40+08:00" />
+<meta property="article:modified_time" content="2020-02-13T20:48:40+08:00" />
+
+<meta itemprop="name" content="浅谈 PHP 的参数">
+<meta itemprop="description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200], [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100], ])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) { return $value &gt; 5; }); 看起来就好像进行了方法"><meta itemprop="datePublished" content="2020-02-13T20:48:40+08:00" />
+<meta itemprop="dateModified" content="2020-02-13T20:48:40+08:00" />
+<meta itemprop="wordCount" content="1301">
+<meta itemprop="keywords" content="PHP," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="浅谈 PHP 的参数"/>
+<meta name="twitter:description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200], [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100], ])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) { return $value &gt; 5; }); 看起来就好像进行了方法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
 </head>
-
-
 <body>
-    <header id="header" class="clearfix">
-    <div class="container">
-        <div class="col-group">
-            <div class="site-name ">
-                
-                    <a id="logo" href="https://blog.jakseer.com">
-                        Jakseer&#39;s Blog
-                    </a>
-                
-                
-            </div>
-            <div>
-                <nav id="nav-menu" class="clearfix">
-                    <a class="current" href="https://blog.jakseer.com">首页</a>
-                    
-                    <a  href="https://blog.jakseer.com/archives/" title="归档">归档</a>
-                    
-                </nav>
-            </div>
-        </div>
-    </div>
-</header>
-
-    <div id="body">
-        <div class="container">
-            <div class="col-group">
-
-                <div class="col-8" id="main">
-                    
-<div class="res-cons">
-    <style type="text/css">
-    .post-toc {
-        position: fixed;
-        width: 200px;
-        margin-left: -210px;
-        padding: 5px 10px;
-        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
-        font-size: 12px;
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-radius: 5px;
-        background-color: rgba(255, 255, 255, 0.98);
-        background-clip: padding-box;
-        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
-        word-wrap: break-word;
-        white-space: nowrap;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        z-index: 999;
-        cursor: pointer;
-        max-height: 70%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .post-toc .post-toc-title {
-        width: 100%;
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: 400;
-        text-transform: uppercase;
-        text-align: center;
-    }
-
-    .post-toc .post-toc-content {
-        font-size: 15px;
-    }
-
-    .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
-    }
-
-    .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
-        margin: 0.5em;
-        line-height: 1.8em;
-    }
-
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
-        display: none;
-    }
-
-    @media print,
-    screen and (max-width:1057px) {
-        .post-toc {
-            display: none;
-        }
-    }
-</style>
-<div class="post-toc" style="position: absolute; top: 188px;">
-    <h2 class="post-toc-title">文章目录</h2>
-    <div class="post-toc-content">
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#func_num_argsfunc_get_argfunc_get_args">func_num_args()、func_get_arg()、func_get_args()</a></li>
-    <li><a href="#args语法">&hellip;$args（&hellip;语法）</a></li>
-    <li><a href="#形参与实参的数量">形参与实参的数量</a></li>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
   </ul>
 
-  <ul>
-    <li><a href="#使用-argv-数组">使用 argv 数组</a></li>
-    <li><a href="#使用-getopt-方法">使用 getopt 方法</a></li>
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
   </ul>
 </nav>
-    </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var postToc = $(".post-toc");
-        if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if(leftPos<220){
-                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
-            }
 
-            var t = postToc.offset().top - 20,
-                a = {
-                    start: {
-                        position: "absolute",
-                        top: t
-                    },
-                    process: {
-                        position: "fixed",
-                        top: 20
-                    },
-                };
-            $(window).scroll(function () {
-                var e = $(window).scrollTop();
-                e < t ? postToc.css(a.start) : postToc.css(a.process)
-            })
-        }
-    })
-</script>
-    <article class="post">
-        <header>
-            <h1 class="post-title">浅谈 PHP 的参数</h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年2月13日
-        </date>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">浅谈 PHP 的参数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-02-13 </span>
         
-        
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
-                    阅读</span></span>
-        </div>
-        
-        
-        <div class="post-content">
-            <h1 id="缘由">缘由</h1>
+          <span class="more-meta"> 1301 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#缘由">缘由</a></li>
+    <li><a href="#可变参数相关函数">可变参数相关函数</a>
+      <ul>
+        <li><a href="#func_num_argsfunc_get_argfunc_get_args">func_num_args()、func_get_arg()、func_get_args()</a></li>
+        <li><a href="#args语法">&hellip;$args（&hellip;语法）</a></li>
+        <li><a href="#形参与实参的数量">形参与实参的数量</a></li>
+      </ul>
+    </li>
+    <li><a href="#cli-模式下命令行参数的获取">cli 模式下命令行参数的获取</a>
+      <ul>
+        <li><a href="#使用-argv-数组">使用 argv 数组</a></li>
+        <li><a href="#使用-getopt-方法">使用 getopt 方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="缘由">缘由</h1>
 <p>在 Lavavel 框架中，有不少函数支持多种参数，例如：</p>
-<pre tabindex="0"><code>collect([
-    ['product' =&gt; 'Desk', 'price' =&gt; 200],
-    ['product' =&gt; 'Chair', 'price' =&gt; 100],
-])-&gt;contains('product', 'Bookcase');
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">collect([
+    [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200],
+    [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100],
+])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;);
 
 collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) {
     return $value &gt; 5;
 });
-</code></pre><p>看起来就好像进行了方法重载，但是 PHP 语法不支持方法重载。那这到底是怎么实现的？</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>看起来就好像进行了方法重载，但是 PHP 语法不支持方法重载。那这到底是怎么实现的？</p>
 <h1 id="可变参数相关函数">可变参数相关函数</h1>
 <p>PHP 语法虽然不支持方法重载，但是可以使用<code>可变参数</code>来实现<code>重载</code>的功能</p>
 <h2 id="func_num_argsfunc_get_argfunc_get_args">func_num_args()、func_get_arg()、func_get_args()</h2>
@@ -212,12 +197,33 @@ collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) {
 func_get_arg(int $arg_num): 获取某个参数
 func_get_args(): 获取所有参数</p>
 <p>例如：</p>
-<pre tabindex="0"><code>&lt;?php
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
 function sum()
 {
     $items = func_get_args();
-    echo '共有'.func_num_args().&quot;个参数\n&quot;;
-    echo '第一个参数是'.func_get_arg(0).&quot;\n&quot;;
+    echo &#39;共有&#39;.func_num_args().&#34;个参数\n&#34;;
+    echo &#39;第一个参数是&#39;.func_get_arg(0).&#34;\n&#34;;
 
     $result = 0;
     foreach ($items as $value) {
@@ -229,15 +235,44 @@ function sum()
 
 var_dump(sum(1,2,3));
 var_dump(sum(1,2));
-</code></pre><p>可以看到，<code>sum</code>函数支持多种不同的参数列表，实现了重载的功能
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，<code>sum</code>函数支持多种不同的参数列表，实现了重载的功能
 注意，这三个函数，只能用在函数、方法内部而不能在全局作用域中使用，例如：</p>
-<pre tabindex="0"><code>&lt;?php
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
 $items = func_get_args();
-</code></pre><p>这样会报错！
+</code></pre></td></tr></table>
+</div>
+</div><p>这样会报错！
 也许您是想获取 php 脚本的参数，那么请看下一节。</p>
 <h2 id="args语法">&hellip;$args（&hellip;语法）</h2>
 <p>PHP 5.6 以后，新增了 &hellip; 语法糖，来实现可变参数相关功能。用法请看示例</p>
-<pre tabindex="0"><code>&lt;?php
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
 function sum(...$items)
 {
     $result = 0;
@@ -252,16 +287,38 @@ $arr = [4,5,6];
 
 var_dump(sum(1,2,3));
 var_dump(sum(...$arr));  // 等价于 var_dump(sum(4,5,6));
-</code></pre><p>个人感觉，&hellip;语法比<code>func_num_args()</code>等函数好用多了，清晰明了。
+</code></pre></td></tr></table>
+</div>
+</div><p>个人感觉，&hellip;语法比<code>func_num_args()</code>等函数好用多了，清晰明了。
 注意，&hellip;只能作为实参、形参在参数列表中使用，其它地方不能用。</p>
 <h2 id="形参与实参的数量">形参与实参的数量</h2>
 <p>本文之前的一个例子：</p>
-<pre tabindex="0"><code>&lt;?php
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
 function sum()
 {
     $items = func_get_args();
-    echo '共有'.func_num_args().&quot;个参数\n&quot;;
-    echo '第一个参数是'.func_get_arg(0).&quot;\n&quot;;
+    echo &#39;共有&#39;.func_num_args().&#34;个参数\n&#34;;
+    echo &#39;第一个参数是&#39;.func_get_arg(0).&#34;\n&#34;;
 
     $result = 0;
     foreach ($items as $value) {
@@ -272,13 +329,35 @@ function sum()
 }
 
 var_dump(sum1(1,2,3));
-</code></pre><p>我们把代码稍微改动一下，如下</p>
-<pre tabindex="0"><code>&lt;?php
+</code></pre></td></tr></table>
+</div>
+</div><p>我们把代码稍微改动一下，如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
 function sum($a,$b)   // 改了形参
 {
     $items = func_get_args();
-    echo '共有'.func_num_args().&quot;个参数\n&quot;;
-    echo '第一个参数是'.func_get_arg(0).&quot;\n&quot;;
+    echo &#39;共有&#39;.func_num_args().&#34;个参数\n&#34;;
+    echo &#39;第一个参数是&#39;.func_get_arg(0).&#34;\n&#34;;
 
     $result = 0;
     foreach ($items as $value) {
@@ -289,253 +368,198 @@ function sum($a,$b)   // 改了形参
 }
 
 var_dump(sum(1));  // 改了实参
-</code></pre><p>这样会报错，因为我们传入的参数<code>1</code>比接收的参数<code>$a,$b</code>个数要少，导致<code>$b</code>这个参数拿不到值，且<code>$b</code>又没默认值。
+</code></pre></td></tr></table>
+</div>
+</div><p>这样会报错，因为我们传入的参数<code>1</code>比接收的参数<code>$a,$b</code>个数要少，导致<code>$b</code>这个参数拿不到值，且<code>$b</code>又没默认值。
 用一句比较难懂的话来说就是：实参的数量 要大于或等于 无默认值的形参的数量</p>
 <h1 id="cli-模式下命令行参数的获取">cli 模式下命令行参数的获取</h1>
 <p>写好了 PHP 脚本，但是在运行的时候想传入参数.例如想执行一个脚本，例如用脚本清空某个数据表:</p>
-<pre tabindex="0"><code>php clear_table.php user
-</code></pre><p>那么这个参数<code>user</code>该怎么拿到？
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">php clear_table.php user
+</code></pre></td></tr></table>
+</div>
+</div><p>那么这个参数<code>user</code>该怎么拿到？
 思维活跃的人可能就想着用<code>func_get_args</code>来获取命令行参数，但这样是不行的，因为它只能在函数、方法内部使用。
 有如下两种方法：</p>
 <h2 id="使用-argv-数组">使用 argv 数组</h2>
-<pre tabindex="0"><code>&lt;?php
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
 var_dump($argv);
-</code></pre><p>命令行中执行</p>
-<pre tabindex="0"><code>php clear_table.php user
-</code></pre><p>就会输出</p>
-<pre tabindex="0"><code>Array
+</code></pre></td></tr></table>
+</div>
+</div><p>命令行中执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">php clear_table.php user
+</code></pre></td></tr></table>
+</div>
+</div><p>就会输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Array
 (
     [0] =&gt; clear_table.php
     [1] =&gt; user
 )
-</code></pre><h2 id="使用-getopt-方法">使用 getopt 方法</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-getopt-方法">使用 getopt 方法</h2>
 <p>该方法的优点是能够解析命令行参数：</p>
-<pre tabindex="0"><code>&lt;?php
-    $param = getopt('a:b:c:d::e');
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">&lt;?php
+    $param = getopt(&#39;a🅱️c:d::e&#39;);
     print_r($param);
-</code></pre><p>命令行中执行</p>
-<pre tabindex="0"><code>php clear_table.php -table_name user -dbname=mydb
-</code></pre><p>脚本执行结果为：</p>
-<pre tabindex="0"><code>Array
+</code></pre></td></tr></table>
+</div>
+</div><p>命令行中执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">php clear_table.php -table_name user -dbname=mydb
+</code></pre></td></tr></table>
+</div>
+</div><p>脚本执行结果为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Array
 (
     [table_name] =&gt; user
     [dbname]     =&gt; mydb
 )
-</code></pre><h1 id="参考资料">参考资料</h1>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="参考资料">参考资料</h1>
 <p><a href="https://blog.csdn.net/fdipzone/article/details/51945892">https://blog.csdn.net/fdipzone/article/details/51945892</a></p>
 <p><a href="https://www.cnblogs.com/xdao/p/php_var_args.html">https://www.cnblogs.com/xdao/p/php_var_args.html</a></p>
 
-        </div>
-
-        
-<div class="post-archive">
-    <ul class="post-copyright">
-        <li><strong>原文作者：</strong><a rel="author" href="https://blog.jakseer.com">jakseer</a></li>
-        <li style="word-break:break-all"><strong>原文链接：</strong><a href="https://blog.jakseer.com/post/talking-php-params/">https://blog.jakseer.com/post/talking-php-params/</a></li>
-        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
-    </ul>
-</div>
-<br/>
-
-
-
-        
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/php-keywords-static-self-parent/">PHP 关键字对比：static、self、parent</a></li>
-        
-        <li><a href="/post/using-xdebug-to-debug-php-code/">使用 Xdebug 进行 PHP 代码调试</a></li>
-        
-        <li><a href="/about/">关于我</a></li>
-        
-        <li><a href="/archives/">归档</a></li>
-        
-    </ul>
-</div>
-
-
-        <div class="post-meta meta-tags">
-            
-            <ul class="clearfix">
-                
-                <li><a href='/tags/PHP'>PHP</a></li>
-                
-            </ul>
-            
-        </div>
-    </article>
-    
-    
-
-    
-    
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "zileiwang/zileiwang.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-      </script>
     </div>
-    
-</div>
 
-                    <footer id="footer">
-    <div>
-        &copy; 2022 <a href="https://blog.jakseer.com">Jakseer&#39;s Blog By jakseer</a>
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-02-13
         
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/php/">PHP</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/php-closure-class/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">PHP Closure 类</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/php-keywords-static-self-parent/">
+            <span class="next-text nav-default">PHP 关键字对比：static、self、parent</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
 
+  
 
-    
-    <script type="text/javascript">
-        window.MathJax = {
-            tex2jax: {
-                inlineMath: [['$', '$']],
-                processEscapes: true
-                }
-            };
-    </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  
 
-<a id="rocket" href="#top"></a>
-<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+      </div>
+    </main>
 
-
-
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
-
-
-
-    <script src='/js/douban.js'></script>
-
-                </div>
-
-                <div id="secondary">
-    <section class="widget">
-        <form id="search" action='https://blog.jakseer.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
-      
-      <input type="text" name="q" maxlength="20" placeholder="Search">
-      <input type="hidden" name="sitesearch" value="https://blog.jakseer.com">
-      <button type="submit" class="submit icon-search"></button>
-</form>
-    </section>
-    
-    <section class="widget">
-        <h3 class="widget-title">最近文章</h3>
-<ul class="widget-list">
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-sync-pool/" title="Go sync.Pool 解析">Go sync.Pool 解析</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-sync-mutex/" title="Go sync.Mutex 解析">Go sync.Mutex 解析</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-context/" title="Go Context 应用与源码分析">Go Context 应用与源码分析</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/introducation-of-linux-io-models-one/" title="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用">Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/go-reflect/" title="Go 反射">Go 反射</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/the-summary-of-lock-in-mysql/" title="总结 MySQL 中的锁">总结 MySQL 中的锁</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/innodb-phantom-reads-summary/" title="InnoDB 幻读简述">InnoDB 幻读简述</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/" title="Laravel 管道模式的实现">Laravel 管道模式的实现</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/docker-network-mode/" title="Docker 网络模式">Docker 网络模式</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.jakseer.com/post/macroable-trait-in-laravel/" title="Laravel 中的 Macroable Trait">Laravel 中的 Macroable Trait</a>
-    </li>
-    
-</ul>
-    </section>
-
-    
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
-<ul class="widget-list">
-    
-</ul>
-    </section>
-
-    <section class="widget">
-        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
-<div class="tagcloud">
-    
-    <a href="https://blog.jakseer.com/tags/Docker/">Docker</a>
-    
-    <a href="https://blog.jakseer.com/tags/Go/">Go</a>
-    
-    <a href="https://blog.jakseer.com/tags/InnoDB/">InnoDB</a>
-    
-    <a href="https://blog.jakseer.com/tags/Laravel/">Laravel</a>
-    
-    <a href="https://blog.jakseer.com/tags/Linux/">Linux</a>
-    
-    <a href="https://blog.jakseer.com/tags/MySQL/">MySQL</a>
-    
-    <a href="https://blog.jakseer.com/tags/PHP/">PHP</a>
-    
-    <a href="https://blog.jakseer.com/tags/PHPStorm/">PHPStorm</a>
-    
-    <a href="https://blog.jakseer.com/tags/Xdebug/">Xdebug</a>
-    
-    <a href="https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
-    
-    <a href="https://blog.jakseer.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
-    
-    <a href="https://blog.jakseer.com/tags/%E9%97%AD%E5%8C%85/">闭包</a>
-    
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
-    </section>
 
-    
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
 
-    <section class="widget">
-        <h3 class="widget-title">其它</h3>
-        <ul class="widget-list">
-            <li><a href="https://blog.jakseer.com/index.xml">文章 RSS</a></li>
-        </ul>
-    </section>
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
 </div>
-            </div>
-        </div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+
+
+
+
+
+
+
+
 </body>
-
 </html>

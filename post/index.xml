@@ -6,131 +6,132 @@
     <description>Recent content in Posts on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
+    <copyright>jakseer</copyright>
     <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go sync.Pool 解析</title>
-      <link>https://blog.jakseer.com/post/go-sync-pool/</link>
+      <link>https://blog.jakseer.com/post/2022/02/go-sync.pool-%E8%A7%A3%E6%9E%90/go-sync.pool-%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 12 Feb 2022 16:17:08 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-sync-pool/</guid>
-      <description>简介 sync.Pool 是 Go 内置的临时对象池函数库，用于缓存临时对象 特点 缓存临时对象 由于 sync.Pool 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（如DB连接等） 自动扩容、缩容 冗余对象定期释放 在GC前，sync.Pool 会取消关联池中所有元素，以便其能被gc 回收 多线程安全 一些优化 具体源码</description>
+      <guid>https://blog.jakseer.com/post/2022/02/go-sync.pool-%E8%A7%A3%E6%9E%90/go-sync.pool-%E8%A7%A3%E6%9E%90/</guid>
+      <description>简介 sync.Pool 是 Go 内置的临时对象池函数库，用于缓存临时对象 特点 缓存临时对象 由于 sync.Pool 会定时清理池中的对象，因此缓存的对象最好为临时对象而不是持久性对象（</description>
     </item>
     
     <item>
       <title>Go sync.Mutex 解析</title>
-      <link>https://blog.jakseer.com/post/go-sync-mutex/</link>
+      <link>https://blog.jakseer.com/post/2022/01/go-sync.mutex-%E8%A7%A3%E6%9E%90/go-sync.mutex-%E8%A7%A3%E6%9E%90/</link>
       <pubDate>Sat, 15 Jan 2022 14:58:40 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-sync-mutex/</guid>
-      <description>简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体代码逻辑。 两方面的取舍 sync.Mutex 的实现主要涉及两方面的取舍 抢锁策略 排它锁是独占资源，因此会存在两个 goroutine 同时抢同一个锁的情况，不同的抢锁策略会导致不同的</description>
+      <guid>https://blog.jakseer.com/post/2022/01/go-sync.mutex-%E8%A7%A3%E6%9E%90/go-sync.mutex-%E8%A7%A3%E6%9E%90/</guid>
+      <description>简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体</description>
     </item>
     
     <item>
       <title>Go Context 应用与源码分析</title>
-      <link>https://blog.jakseer.com/post/go-context/</link>
+      <link>https://blog.jakseer.com/post/2021/12/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</link>
       <pubDate>Sun, 19 Dec 2021 20:26:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-context/</guid>
-      <description>概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中定义了两个 ctx background、TODO，他们作为所有 ctx 的根。所有的 ctx 组成树状的结构，如下图 树中父节点 ctx 取消则会使其所有子节点取消，例如 cancelCtx</description>
+      <guid>https://blog.jakseer.com/post/2021/12/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/go-context-%E5%BA%94%E7%94%A8%E4%B8%8E%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</guid>
+      <description>概述 Go 1.7 标准库引入 Context，用于传递上下文信息，如取消信号、超时信号、k-v 键值对等 源码解析 分析基于 go 1.17.5 版本的代码 整体概览 首先，代码中</description>
     </item>
     
     <item>
       <title>Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</title>
-      <link>https://blog.jakseer.com/post/introducation-of-linux-io-models-one/</link>
+      <link>https://blog.jakseer.com/post/2021/09/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</link>
       <pubDate>Sat, 25 Sep 2021 13:25:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/introducation-of-linux-io-models-one/</guid>
-      <description>[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成的。 而相对于 CPU 执行指令的速度，磁盘等介质读写数据的速度慢得多（见下表）。因此当前程序执行到 IO 指令后，并不能马上拿到 IO 读写结果。 CPU SDD 硬盘 HDD 硬盘</description>
+      <guid>https://blog.jakseer.com/post/2021/09/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/linux-io-%E6%A8%A1%E5%9E%8B-%E9%98%BB%E5%A1%9E%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8/</guid>
+      <description>[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成</description>
     </item>
     
     <item>
       <title>Go 反射</title>
-      <link>https://blog.jakseer.com/post/go-reflect/</link>
+      <link>https://blog.jakseer.com/post/2021/09/go-%E5%8F%8D%E5%B0%84/go-%E5%8F%8D%E5%B0%84/</link>
       <pubDate>Sun, 05 Sep 2021 15:26:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/go-reflect/</guid>
-      <description>什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。 reflect 包的使用 Value 与 Type 对于对象，是由 类型 和 值 两部分组成的。 相应地 reflect 包也分为两大部分 value 与 type ，并提供了</description>
+      <guid>https://blog.jakseer.com/post/2021/09/go-%E5%8F%8D%E5%B0%84/go-%E5%8F%8D%E5%B0%84/</guid>
+      <description>什么是反射 反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。 使用反射，不需要在编译时就确定变</description>
     </item>
     
     <item>
       <title>总结 MySQL 中的锁</title>
-      <link>https://blog.jakseer.com/post/the-summary-of-lock-in-mysql/</link>
+      <link>https://blog.jakseer.com/post/2021/07/%E6%80%BB%E7%BB%93-mysql-%E4%B8%AD%E7%9A%84%E9%94%81/%E6%80%BB%E7%BB%93-mysql-%E4%B8%AD%E7%9A%84%E9%94%81/</link>
       <pubDate>Sun, 04 Jul 2021 15:15:23 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/the-summary-of-lock-in-mysql/</guid>
-      <description>众所周知，mysql 中有很多种锁的概念，如行锁、乐观锁、排它锁等等，本文对此进行归纳。 锁的类型 加锁类型的不同，表现在对竞争资源的处理有不同的处理思想。 假设有这样的场景，A、B 两个用户要同时将机票价格从 2 元改成 6、3 元。 乐观锁 取数据时，假定别人不会修改该数据，因此只会对数据做简单的</description>
+      <guid>https://blog.jakseer.com/post/2021/07/%E6%80%BB%E7%BB%93-mysql-%E4%B8%AD%E7%9A%84%E9%94%81/%E6%80%BB%E7%BB%93-mysql-%E4%B8%AD%E7%9A%84%E9%94%81/</guid>
+      <description>众所周知，mysql 中有很多种锁的概念，如行锁、乐观锁、排它锁等等，本文对此进行归纳。 锁的类型 加锁类型的不同，表现在对竞争资源的处理有不同的</description>
     </item>
     
     <item>
       <title>InnoDB 幻读简述</title>
-      <link>https://blog.jakseer.com/post/innodb-phantom-reads-summary/</link>
+      <link>https://blog.jakseer.com/post/2020/08/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/</link>
       <pubDate>Sat, 15 Aug 2020 16:27:47 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/innodb-phantom-reads-summary/</guid>
-      <description>什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了事务的隔离性。 举个例子，下图是两个事务，第 3、5 步执行了相同的 sql 查询语句，但是后一次查询比前一次查询，多出了 age = 10 的这一条数据。 MySQL 的 InnoDB 存储引</description>
+      <guid>https://blog.jakseer.com/post/2020/08/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/</guid>
+      <description>什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了</description>
     </item>
     
     <item>
       <title>Laravel 管道模式的实现</title>
-      <link>https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/</link>
+      <link>https://blog.jakseer.com/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/the-implement-of-pipe-pattern-in-laravel/</guid>
-      <description>在 Laravel 中，管道（Pipeline）组件是实现路由中间件而使用的重要工具之一。通过管道组件，可以通过执行一系列方法，从而对数据进行处理。 自制管道 在开始讲解 Laravel 的 Pipeline 之前，建议先动手实现一个管道组件，这样有利于理解 Laravel 的 Pipeline 源码。 我们自己实现的管道的 Interface 可定义如下： interface Pipeline { public function send($passable); // 定义管道中流动的</description>
+      <guid>https://blog.jakseer.com/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+      <description>在 Laravel 中，管道（Pipeline）组件是实现路由中间件而使用的重要工具之一。通过管道组件，可以通过执行一系列方法，从而对数据进行处理。 自制管道</description>
     </item>
     
     <item>
       <title>Docker 网络模式</title>
-      <link>https://blog.jakseer.com/post/docker-network-mode/</link>
+      <link>https://blog.jakseer.com/post/2020/03/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sun, 29 Mar 2020 20:46:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/docker-network-mode/</guid>
-      <description>最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。 Docker 网络模式共有 5 种：none、host、bridge、overlay、macvlan，其中 overlay、macvlan 目前暂时用得少，因此不做记录。 none 即默认不联网的模式，此模式可用于一些对安全性、保密性要求较</description>
+      <guid>https://blog.jakseer.com/post/2020/03/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/</guid>
+      <description>最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。 Docker 网络模式共有 5 种：none、host、bridge、overlay、</description>
     </item>
     
     <item>
       <title>Laravel 中的 Macroable Trait</title>
-      <link>https://blog.jakseer.com/post/macroable-trait-in-laravel/</link>
+      <link>https://blog.jakseer.com/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/</link>
       <pubDate>Sun, 23 Feb 2020 18:26:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/macroable-trait-in-laravel/</guid>
-      <description>在 Laravel 中，Collection 类本身实现了不少方法，比如 sum、groupBy 等，若想给这个类加上一些自定义的方法，有如下方案： 方法一：通过修改 Collection 类的源码，在其中加入自定义方法的代码。但是这样就要修改框架源码，并且升级框架源码后，要把自定义方法重新在框架源码中加上，比较麻烦。 方法二</description>
+      <guid>https://blog.jakseer.com/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/</guid>
+      <description>在 Laravel 中，Collection 类本身实现了不少方法，比如 sum、groupBy 等，若想给这个类加上一些自定义的方法，有如下方案： 方法一：通过修</description>
     </item>
     
     <item>
       <title>PHP Closure 类</title>
-      <link>https://blog.jakseer.com/post/php-closure-class/</link>
+      <link>https://blog.jakseer.com/post/2020/02/php-closure-%E7%B1%BB/php-closure-%E7%B1%BB/</link>
       <pubDate>Sun, 23 Feb 2020 15:32:17 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/php-closure-class/</guid>
-      <description>概述 闭包是指在创建时封装周围状态的函数，即使闭包所在的环境的不存在了，闭包中封装的状态依然存在。 匿名函数其实就是没有名称的函数，匿名函数可以赋值给变量，还能像其他任何PHP函数对象那样传递。不过匿名函数仍然是函数，因此可以调用，还可以传入参数，适合作为函数或方法的回调。 但在 php 中，</description>
+      <guid>https://blog.jakseer.com/post/2020/02/php-closure-%E7%B1%BB/php-closure-%E7%B1%BB/</guid>
+      <description>概述 闭包是指在创建时封装周围状态的函数，即使闭包所在的环境的不存在了，闭包中封装的状态依然存在。 匿名函数其实就是没有名称的函数，匿名函数可以</description>
     </item>
     
     <item>
       <title>浅谈 PHP 的参数</title>
-      <link>https://blog.jakseer.com/post/talking-php-params/</link>
+      <link>https://blog.jakseer.com/post/2020/02/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/</link>
       <pubDate>Thu, 13 Feb 2020 20:48:40 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/talking-php-params/</guid>
-      <description>缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： collect([ [&#39;product&#39; =&amp;gt; &#39;Desk&#39;, &#39;price&#39; =&amp;gt; 200], [&#39;product&#39; =&amp;gt; &#39;Chair&#39;, &#39;price&#39; =&amp;gt; 100], ])-&amp;gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&amp;gt;contains(function ($value, $key) { return $value &amp;gt; 5; }); 看起来就好像进行了方法重载，但是 PHP 语法不支持方法重载。那这到底是怎么实现的？ 可变参数相关函数 PHP 语法虽然不支持方法重载，但是可以使用可变参数来实现重载的功能 func_num_arg</description>
+      <guid>https://blog.jakseer.com/post/2020/02/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/</guid>
+      <description>缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Desk&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 200], [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Chair&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 100], ])-&amp;gt;contains(&amp;#39;product&amp;#39;, &amp;#39;Bookcase&amp;#39;); collect([1, 2, 3, 4, 5])-&amp;gt;contains(function ($value, $key) { return $value &amp;gt; 5; }); 看起来就好像进行了方法</description>
     </item>
     
     <item>
       <title>PHP 关键字对比：static、self、parent</title>
-      <link>https://blog.jakseer.com/post/php-keywords-static-self-parent/</link>
+      <link>https://blog.jakseer.com/post/2019/11/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/</link>
       <pubDate>Sat, 16 Nov 2019 17:51:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/php-keywords-static-self-parent/</guid>
-      <description>我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明这三种关键字有啥区别。 首先说明两个概念，转发调用与非转发调用 转发调用：进行静态调用时，代码中不显式指明调用的对象，而是在运行时来判断调用哪个</description>
+      <guid>https://blog.jakseer.com/post/2019/11/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/</guid>
+      <description>我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明</description>
     </item>
     
     <item>
       <title>使用 Xdebug 进行 PHP 代码调试</title>
-      <link>https://blog.jakseer.com/post/using-xdebug-to-debug-php-code/</link>
+      <link>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/using-xdebug-to-debug-php-code/</guid>
-      <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug，注意他们两者的发布时间，最好是 Xdebug 版本的发布时间早于 PHPStorm 对应版本的时间，不然可能会有一些奇怪的问题。 比如，我的 PHPStorm 是 2019.2 版本的，那么我选择 Xdebug 就最好</description>
+      <guid>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</guid>
+      <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug</description>
     </item>
     
   </channel>

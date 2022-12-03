@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Docker 网络模式 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="jakseer" /><meta name="description" content="最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。 Docker 网络模式共有 5 种：none、host、bridge、overlay、" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/2020/03/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Docker 网络模式" />
+<meta property="og:description" content="最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。 Docker 网络模式共有 5 种：none、host、bridge、overlay、" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/2020/03/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/docker-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-03-29T20:46:18+08:00" />
+<meta property="article:modified_time" content="2020-03-29T20:46:18+08:00" />
+
+<meta itemprop="name" content="Docker 网络模式">
+<meta itemprop="description" content="最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。 Docker 网络模式共有 5 种：none、host、bridge、overlay、"><meta itemprop="datePublished" content="2020-03-29T20:46:18+08:00" />
+<meta itemprop="dateModified" content="2020-03-29T20:46:18+08:00" />
+<meta itemprop="wordCount" content="572">
+<meta itemprop="keywords" content="Docker," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker 网络模式"/>
+<meta name="twitter:description" content="最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。 Docker 网络模式共有 5 种：none、host、bridge、overlay、"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Docker 网络模式</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-29 </span>
+        
+          <span class="more-meta"> 572 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#none">none</a></li>
+    <li><a href="#host">host</a></li>
+    <li><a href="#bridge">bridge</a>
+      <ul>
+        <li><a href="#通过宿主机">通过宿主机</a></li>
+        <li><a href="#link-命令">link 命令</a></li>
+        <li><a href="#指定-ip-地址">指定 IP 地址</a></li>
+        <li><a href="#使用容器名">使用容器名</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近使用 docker 部署自己的项目，涉及到一些网络知识，因此记录下来，防止遗忘。</p>
+<p>Docker 网络模式共有 5 种：<code>none</code>、<code>host</code>、<code>bridge</code>、<code>overlay</code>、<code>macvlan</code>，其中 <code>overlay</code>、<code>macvlan</code> 目前暂时用得少，因此不做记录。</p>
+<h1 id="none">none</h1>
+<p>即默认不联网的模式，此模式可用于一些对安全性、保密性要求较高的服务，如密钥生成服务。</p>
+<h1 id="host">host</h1>
+<p>与当前主机共享网络空间，即在此模式下的服务与宿主机上的应用在同一个网段下。
+使用此模式时，端口映射参数无效，即 <code>-p</code>,<code>--publish</code>,<code>-P</code>,<code>--publish-all</code> 等参数均无效。
+使用此模式，由于容器端口全部都暴露在宿主机上，因此容易造成端口冲突。
+注意：此网络模型目前仅支持 Linux 系统。</p>
+<h1 id="bridge">bridge</h1>
+<p>通过设置 bridge，可创建不同的网段，让各容器处在不同的网段中，从而达到网络隔离的效果。
+新创建的容器，若不指定 bridge，则默认使用 docker0 这个 bridge。</p>
+<p>对于 bridge 中的容器，由于容器 ip 默认由 docker 指定，因此各容器的 ip 地址不定。故实现容器间通信，有如下三种方法：</p>
+<h2 id="通过宿主机">通过宿主机</h2>
+<p>使用 expose 命令，将端口暴露到宿主机中，然后请求暴露在宿主机上的端口。</p>
+<h2 id="link-命令">link 命令</h2>
+<p>通过 link 命令，可以让容器之间通过容器名单向通信。
+该命令 docker 官方不建议使用</p>
+<h2 id="指定-ip-地址">指定 IP 地址</h2>
+<p>给每个容器指定 ip 地址，访问时使用 ip 地址来访问。
+可实现容器之间的通信，但可读性较差。</p>
+<h2 id="使用容器名">使用容器名</h2>
+<p>使用容器名来访问容器，docker 会解析容器名，转换为对应的 ip。这样较为灵活、可读性强。</p>
+<h1 id="参考资料">参考资料</h1>
+<p><a href="https://www.cnblogs.com/shenh/p/9714547.html">https://www.cnblogs.com/shenh/p/9714547.html</a></p>
+<p><a href="https://docs.docker.com/network/host/">https://docs.docker.com/network/host/</a></p>
+<p><a href="https://blog.csdn.net/foreverhuylee/article/details/44966109">https://blog.csdn.net/foreverhuylee/article/details/44966109</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-03-29
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/docker/">Docker</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Laravel 管道模式的实现</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/">
+            <span class="next-text nav-default">Laravel 中的 Macroable Trait</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

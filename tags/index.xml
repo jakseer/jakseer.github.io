@@ -6,22 +6,23 @@
     <description>Recent content in Tags on Jakseer&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
+    <copyright>jakseer</copyright>
     <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go</title>
-      <link>https://blog.jakseer.com/tags/Go/</link>
+      <link>https://blog.jakseer.com/tags/go/</link>
       <pubDate>Sat, 12 Feb 2022 16:17:08 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/Go/</guid>
+      <guid>https://blog.jakseer.com/tags/go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://blog.jakseer.com/tags/Linux/</link>
+      <link>https://blog.jakseer.com/tags/linux/</link>
       <pubDate>Sat, 25 Sep 2021 13:25:50 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/Linux/</guid>
+      <guid>https://blog.jakseer.com/tags/linux/</guid>
       <description></description>
     </item>
     
@@ -36,19 +37,19 @@
     
     <item>
       <title>MySQL</title>
-      <link>https://blog.jakseer.com/tags/MySQL/</link>
+      <link>https://blog.jakseer.com/tags/mysql/</link>
       <pubDate>Sun, 04 Jul 2021 15:15:23 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/MySQL/</guid>
+      <guid>https://blog.jakseer.com/tags/mysql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>InnoDB</title>
-      <link>https://blog.jakseer.com/tags/InnoDB/</link>
+      <link>https://blog.jakseer.com/tags/innodb/</link>
       <pubDate>Sat, 15 Aug 2020 16:27:47 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/InnoDB/</guid>
+      <guid>https://blog.jakseer.com/tags/innodb/</guid>
       <description></description>
     </item>
     
@@ -63,28 +64,28 @@
     
     <item>
       <title>Laravel</title>
-      <link>https://blog.jakseer.com/tags/Laravel/</link>
+      <link>https://blog.jakseer.com/tags/laravel/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/Laravel/</guid>
+      <guid>https://blog.jakseer.com/tags/laravel/</guid>
       <description></description>
     </item>
     
     <item>
       <title>PHP</title>
-      <link>https://blog.jakseer.com/tags/PHP/</link>
+      <link>https://blog.jakseer.com/tags/php/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/PHP/</guid>
+      <guid>https://blog.jakseer.com/tags/php/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker</title>
-      <link>https://blog.jakseer.com/tags/Docker/</link>
+      <link>https://blog.jakseer.com/tags/docker/</link>
       <pubDate>Sun, 29 Mar 2020 20:46:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/Docker/</guid>
+      <guid>https://blog.jakseer.com/tags/docker/</guid>
       <description></description>
     </item>
     
@@ -99,19 +100,19 @@
     
     <item>
       <title>PHPStorm</title>
-      <link>https://blog.jakseer.com/tags/PHPStorm/</link>
+      <link>https://blog.jakseer.com/tags/phpstorm/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/PHPStorm/</guid>
+      <guid>https://blog.jakseer.com/tags/phpstorm/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Xdebug</title>
-      <link>https://blog.jakseer.com/tags/Xdebug/</link>
+      <link>https://blog.jakseer.com/tags/xdebug/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/tags/Xdebug/</guid>
+      <guid>https://blog.jakseer.com/tags/xdebug/</guid>
       <description></description>
     </item>
     
