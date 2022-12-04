@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>浅谈 PHP 的参数 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="jakseer" /><meta name="description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Desk&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 200], [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Chair&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 100], ])-&amp;gt;contains(&amp;#39;product&amp;#39;, &amp;#39;Bookcase&amp;#39;); collect([1, 2, 3, 4, 5])-&amp;gt;contains(function ($value, $key) { return $value &amp;gt; 5; }); 看起来就好像进行了方法" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/o332coho/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="浅谈 PHP 的参数" />
+<meta property="og:description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200], [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100], ])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) { return $value &gt; 5; }); 看起来就好像进行了方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/o332coho/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-02-13T20:48:40+08:00" />
+<meta property="article:modified_time" content="2020-02-13T20:48:40+08:00" />
+
+<meta itemprop="name" content="浅谈 PHP 的参数">
+<meta itemprop="description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200], [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100], ])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) { return $value &gt; 5; }); 看起来就好像进行了方法"><meta itemprop="datePublished" content="2020-02-13T20:48:40+08:00" />
+<meta itemprop="dateModified" content="2020-02-13T20:48:40+08:00" />
+<meta itemprop="wordCount" content="1301">
+<meta itemprop="keywords" content="PHP," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="浅谈 PHP 的参数"/>
+<meta name="twitter:description" content="缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200], [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100], ])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;); collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) { return $value &gt; 5; }); 看起来就好像进行了方法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">浅谈 PHP 的参数</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-02-13 </span>
+        
+          <span class="more-meta"> 1301 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#缘由">缘由</a></li>
+    <li><a href="#可变参数相关函数">可变参数相关函数</a>
+      <ul>
+        <li><a href="#func_num_argsfunc_get_argfunc_get_args">func_num_args()、func_get_arg()、func_get_args()</a></li>
+        <li><a href="#args语法">&hellip;$args（&hellip;语法）</a></li>
+        <li><a href="#形参与实参的数量">形参与实参的数量</a></li>
+      </ul>
+    </li>
+    <li><a href="#cli-模式下命令行参数的获取">cli 模式下命令行参数的获取</a>
+      <ul>
+        <li><a href="#使用-argv-数组">使用 argv 数组</a></li>
+        <li><a href="#使用-getopt-方法">使用 getopt 方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="缘由">缘由</h1>
+<p>在 Lavavel 框架中，有不少函数支持多种参数，例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">collect([
+</span></span><span class="line"><span class="cl">    [&#39;product&#39; =&gt; &#39;Desk&#39;, &#39;price&#39; =&gt; 200],
+</span></span><span class="line"><span class="cl">    [&#39;product&#39; =&gt; &#39;Chair&#39;, &#39;price&#39; =&gt; 100],
+</span></span><span class="line"><span class="cl">])-&gt;contains(&#39;product&#39;, &#39;Bookcase&#39;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">collect([1, 2, 3, 4, 5])-&gt;contains(function ($value, $key) {
+</span></span><span class="line"><span class="cl">    return $value &gt; 5;
+</span></span><span class="line"><span class="cl">});
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看起来就好像进行了方法重载，但是 PHP 语法不支持方法重载。那这到底是怎么实现的？</p>
+<h1 id="可变参数相关函数">可变参数相关函数</h1>
+<p>PHP 语法虽然不支持方法重载，但是可以使用<code>可变参数</code>来实现<code>重载</code>的功能</p>
+<h2 id="func_num_argsfunc_get_argfunc_get_args">func_num_args()、func_get_arg()、func_get_args()</h2>
+<p>func_num_args(): 获取参数数量
+func_get_arg(int $arg_num): 获取某个参数
+func_get_args(): 获取所有参数</p>
+<p>例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function sum()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    $items = func_get_args();
+</span></span><span class="line"><span class="cl">    echo &#39;共有&#39;.func_num_args().&#34;个参数\n&#34;;
+</span></span><span class="line"><span class="cl">    echo &#39;第一个参数是&#39;.func_get_arg(0).&#34;\n&#34;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    $result = 0;
+</span></span><span class="line"><span class="cl">    foreach ($items as $value) {
+</span></span><span class="line"><span class="cl">        $result = $result + $value;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return $result;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var_dump(sum(1,2,3));
+</span></span><span class="line"><span class="cl">var_dump(sum(1,2));
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以看到，<code>sum</code>函数支持多种不同的参数列表，实现了重载的功能
+注意，这三个函数，只能用在函数、方法内部而不能在全局作用域中使用，例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">$items = func_get_args();
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样会报错！
+也许您是想获取 php 脚本的参数，那么请看下一节。</p>
+<h2 id="args语法">&hellip;$args（&hellip;语法）</h2>
+<p>PHP 5.6 以后，新增了 &hellip; 语法糖，来实现可变参数相关功能。用法请看示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function sum(...$items)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    $result = 0;
+</span></span><span class="line"><span class="cl">    foreach ($items as $value) {
+</span></span><span class="line"><span class="cl">        $result = $result + $value;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return $result;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$arr = [4,5,6];
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var_dump(sum(1,2,3));
+</span></span><span class="line"><span class="cl">var_dump(sum(...$arr));  // 等价于 var_dump(sum(4,5,6));
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>个人感觉，&hellip;语法比<code>func_num_args()</code>等函数好用多了，清晰明了。
+注意，&hellip;只能作为实参、形参在参数列表中使用，其它地方不能用。</p>
+<h2 id="形参与实参的数量">形参与实参的数量</h2>
+<p>本文之前的一个例子：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function sum()
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    $items = func_get_args();
+</span></span><span class="line"><span class="cl">    echo &#39;共有&#39;.func_num_args().&#34;个参数\n&#34;;
+</span></span><span class="line"><span class="cl">    echo &#39;第一个参数是&#39;.func_get_arg(0).&#34;\n&#34;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    $result = 0;
+</span></span><span class="line"><span class="cl">    foreach ($items as $value) {
+</span></span><span class="line"><span class="cl">        $result = $result + $value;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return $result;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var_dump(sum1(1,2,3));
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们把代码稍微改动一下，如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">function sum($a,$b)   // 改了形参
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    $items = func_get_args();
+</span></span><span class="line"><span class="cl">    echo &#39;共有&#39;.func_num_args().&#34;个参数\n&#34;;
+</span></span><span class="line"><span class="cl">    echo &#39;第一个参数是&#39;.func_get_arg(0).&#34;\n&#34;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    $result = 0;
+</span></span><span class="line"><span class="cl">    foreach ($items as $value) {
+</span></span><span class="line"><span class="cl">        $result = $result + $value;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    return $result;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var_dump(sum(1));  // 改了实参
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样会报错，因为我们传入的参数<code>1</code>比接收的参数<code>$a,$b</code>个数要少，导致<code>$b</code>这个参数拿不到值，且<code>$b</code>又没默认值。
+用一句比较难懂的话来说就是：实参的数量 要大于或等于 无默认值的形参的数量</p>
+<h1 id="cli-模式下命令行参数的获取">cli 模式下命令行参数的获取</h1>
+<p>写好了 PHP 脚本，但是在运行的时候想传入参数.例如想执行一个脚本，例如用脚本清空某个数据表:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">php clear_table.php user
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>那么这个参数<code>user</code>该怎么拿到？
+思维活跃的人可能就想着用<code>func_get_args</code>来获取命令行参数，但这样是不行的，因为它只能在函数、方法内部使用。
+有如下两种方法：</p>
+<h2 id="使用-argv-数组">使用 argv 数组</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">var_dump($argv);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>命令行中执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">php clear_table.php user
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>就会输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Array
+</span></span><span class="line"><span class="cl">(
+</span></span><span class="line"><span class="cl">    [0] =&gt; clear_table.php
+</span></span><span class="line"><span class="cl">    [1] =&gt; user
+</span></span><span class="line"><span class="cl">)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="使用-getopt-方法">使用 getopt 方法</h2>
+<p>该方法的优点是能够解析命令行参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">    $param = getopt(&#39;a🅱️c:d::e&#39;);
+</span></span><span class="line"><span class="cl">    print_r($param);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>命令行中执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">php clear_table.php -table_name user -dbname=mydb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>脚本执行结果为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Array
+</span></span><span class="line"><span class="cl">(
+</span></span><span class="line"><span class="cl">    [table_name] =&gt; user
+</span></span><span class="line"><span class="cl">    [dbname]     =&gt; mydb
+</span></span><span class="line"><span class="cl">)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="参考资料">参考资料</h1>
+<p><a href="https://blog.csdn.net/fdipzone/article/details/51945892">https://blog.csdn.net/fdipzone/article/details/51945892</a></p>
+<p><a href="https://www.cnblogs.com/xdao/p/php_var_args.html">https://www.cnblogs.com/xdao/p/php_var_args.html</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-02-13
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/php/">PHP</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/jxs0bcbw/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">PHP Closure 类</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/cm76456k/">
+            <span class="next-text nav-default">PHP 关键字对比：static、self、parent</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

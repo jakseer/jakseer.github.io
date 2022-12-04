@@ -10,10 +10,10 @@
     <lastBuildDate>Sat, 15 Aug 2020 16:27:47 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>InnoDB 幻读简述</title>
-      <link>https://blog.jakseer.com/post/2020/08/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/</link>
+      <link>https://blog.jakseer.com/post/1m1mj27i/</link>
       <pubDate>Sat, 15 Aug 2020 16:27:47 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/08/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/innodb-%E5%B9%BB%E8%AF%BB%E7%AE%80%E8%BF%B0/</guid>
+      <guid>https://blog.jakseer.com/post/1m1mj27i/</guid>
       <description>什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了</description>
     </item>
     

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>InnoDB 幻读简述 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="jakseer" /><meta name="description" content="什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/1m1mj27i/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="InnoDB 幻读简述" />
+<meta property="og:description" content="什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/1m1mj27i/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2020-08-15T16:27:47+08:00" />
+<meta property="article:modified_time" content="2020-08-15T16:27:47+08:00" />
+
+<meta itemprop="name" content="InnoDB 幻读简述">
+<meta itemprop="description" content="什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了"><meta itemprop="datePublished" content="2020-08-15T16:27:47+08:00" />
+<meta itemprop="dateModified" content="2020-08-15T16:27:47+08:00" />
+<meta itemprop="wordCount" content="1140">
+<meta itemprop="keywords" content="MySQL,InnoDB,数据库," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="InnoDB 幻读简述"/>
+<meta name="twitter:description" content="什么是幻读 幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">InnoDB 幻读简述</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-08-15 </span>
+        
+          <span class="more-meta"> 1140 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#什么是幻读">什么是幻读</a></li>
+        <li><a href="#相关基本概念">相关基本概念</a>
+          <ul>
+            <li><a href="#快照读">快照读</a></li>
+            <li><a href="#当前读">当前读</a></li>
+            <li><a href="#mvcc">MVCC</a></li>
+            <li><a href="#行锁">行锁</a></li>
+          </ul>
+        </li>
+        <li><a href="#如何解决幻读问题">如何解决幻读问题</a></li>
+        <li><a href="#参考资料">参考资料</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="什么是幻读">什么是幻读</h2>
+<p>幻读，即某个事务在执行两次相同的 select 操作中，另一个事务插入了一条数据，导致两次 select 读取出的数据不同，会多出另一个事务插入的数据，违反了事务的隔离性。</p>
+<p>举个例子，下图是两个事务，第 3、5 步执行了相同的 sql 查询语句，但是后一次查询比前一次查询，多出了 <code>age = 10</code> 的这一条数据。</p>
+<p><img src="/images/image-20200815172545713.png" alt="image-20200815172545713"></p>
+<p>MySQL 的 InnoDB 存储引擎在 RR 隔离级别就避免了幻读。</p>
+<h2 id="相关基本概念">相关基本概念</h2>
+<h3 id="快照读">快照读</h3>
+<p>通过 MVCC 的方式来读取数据库中的数据。如果读取的行正在进行修改操作，则会读取该行的快照数据。</p>
+<p>在 RR 隔离级别下，会读取当前事务对应的行数据版本；而在 RC 隔离级别下，则会读取最新的行快照数据。</p>
+<p>例如，普通的 select 就是快照读。</p>
+<p><code>select * from t where ?;</code></p>
+<h3 id="当前读">当前读</h3>
+<p>在某些情况下，我们需要对行数据加锁，以保证数据的一致性。读取的行加锁后，其他事务修改该行，会被阻塞。</p>
+<p>对应的 SQL 语句如下：</p>
+<p><code>select ··· for update;</code></p>
+<p><code>select ··· lock in share mode;</code></p>
+<h3 id="mvcc">MVCC</h3>
+<p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。</p>
+<p>对于每个事务，都有一个版本号。每开始一个新的业务，事务版本号会递增。</p>
+<p>MVCC 在每行数据后面，新增了隐藏的两列，创建版本号、删除版本号。</p>
+<p>对于 select、insert、delete、update 四种操作，MVCC 操作逻辑如下：</p>
+<h4 id="select">SELECT</h4>
+<p>InnoDB会根据以下条件检查每一行记录：</p>
+<ol>
+<li>
+<p>InnoDB只查找版本早于当前事务版本的数据行，这样可以确保事务读取的行要么是在开始事务之前已经存在的，要么是事务自身插入或者修改过的，在事务开始之后才插入的行，事务不会看到。</p>
+</li>
+<li>
+<p>行的删除版本号要么未定义，要么大于当前事务版本号，这样可以确保事务读取到的行在事务开始之前未被删除，在事务开始之前就已经过期的数据行，该事务也不会看到。只有符合上述两个条件的才会被查询出来</p>
+</li>
+</ol>
+<h4 id="insert">INSERT</h4>
+<p>将当前系统版本号作为数据行快照的创建版本号。</p>
+<h4 id="delete">DELETE</h4>
+<p>将当前系统版本号作为数据行快照的删除版本号。</p>
+<h4 id="update">UPDATE</h4>
+<p>将当前系统版本号作为更新前的数据行快照的删除版本号，并将当前系统版本号作为更新后的数据行快照的创建版本号。可以理解为先执行 DELETE 后执行 INSERT。</p>
+<h3 id="行锁">行锁</h3>
+<p>行锁有三种：</p>
+<ul>
+<li>Record Lock：单个行记录上的锁。</li>
+<li>Gap Lock：间隙锁，锁定一个范围，但不包括记录本身。GAP锁的目的，是为了防止同一事务的两次当前读，出现幻读的情况。</li>
+<li>Next-Key Lock：1+2，锁定一个范围，并且锁定记录本身。对于行的查询，都是采用该方法，主要目的是解决幻读的问题。</li>
+</ul>
+<h2 id="如何解决幻读问题">如何解决幻读问题</h2>
+<p>对于<code>快照读</code>，即 <code>select * from t where ?</code> 类型的 SQL 语句，读取数据时会比较行数据的版本，根据 MVCC 机制返回数据。</p>
+<p>对于<code>当前读</code>，读取时会相应地加行锁，以保证读取的行数据是最新的，并且其他事物不能修改相应的行数据。</p>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="https://developer.ibm.com/zh/articles/os-mysql-transaction-isolation-levels-and-locks/">MySQL 事务隔离级别和锁</a></p>
+<p><a href="https://juejin.im/post/6850037271233331208">MySQL 三万字精华总结</a></p>
+<p>《高性能 MySQL》</p>
+<p>《MySQL 技术内幕-InnoDB 存储引擎》</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2020-08-15
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">MySQL</a>
+          <a href="/tags/innodb/">InnoDB</a>
+          <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/ohfpn3v6/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">总结 MySQL 中的锁</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/3exfjlgu/">
+            <span class="next-text nav-default">Laravel 管道模式的实现</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

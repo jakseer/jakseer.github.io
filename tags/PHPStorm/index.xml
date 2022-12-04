@@ -10,10 +10,10 @@
     <lastBuildDate>Sat, 19 Oct 2019 12:11:16 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/phpstorm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 Xdebug 进行 PHP 代码调试</title>
-      <link>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</link>
+      <link>https://blog.jakseer.com/post/eh1zyrlf/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</guid>
+      <guid>https://blog.jakseer.com/post/eh1zyrlf/</guid>
       <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug</description>
     </item>
     

@@ -10,55 +10,55 @@
     <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Laravel 管道模式的实现</title>
-      <link>https://blog.jakseer.com/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+      <link>https://blog.jakseer.com/post/3exfjlgu/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+      <guid>https://blog.jakseer.com/post/3exfjlgu/</guid>
       <description>在 Laravel 中，管道（Pipeline）组件是实现路由中间件而使用的重要工具之一。通过管道组件，可以通过执行一系列方法，从而对数据进行处理。 自制管道</description>
     </item>
     
     <item>
       <title>Laravel 中的 Macroable Trait</title>
-      <link>https://blog.jakseer.com/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/</link>
+      <link>https://blog.jakseer.com/post/gvi33urr/</link>
       <pubDate>Sun, 23 Feb 2020 18:26:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/</guid>
+      <guid>https://blog.jakseer.com/post/gvi33urr/</guid>
       <description>在 Laravel 中，Collection 类本身实现了不少方法，比如 sum、groupBy 等，若想给这个类加上一些自定义的方法，有如下方案： 方法一：通过修</description>
     </item>
     
     <item>
       <title>PHP Closure 类</title>
-      <link>https://blog.jakseer.com/post/2020/02/php-closure-%E7%B1%BB/php-closure-%E7%B1%BB/</link>
+      <link>https://blog.jakseer.com/post/jxs0bcbw/</link>
       <pubDate>Sun, 23 Feb 2020 15:32:17 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/02/php-closure-%E7%B1%BB/php-closure-%E7%B1%BB/</guid>
+      <guid>https://blog.jakseer.com/post/jxs0bcbw/</guid>
       <description>概述 闭包是指在创建时封装周围状态的函数，即使闭包所在的环境的不存在了，闭包中封装的状态依然存在。 匿名函数其实就是没有名称的函数，匿名函数可以</description>
     </item>
     
     <item>
       <title>浅谈 PHP 的参数</title>
-      <link>https://blog.jakseer.com/post/2020/02/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/</link>
+      <link>https://blog.jakseer.com/post/o332coho/</link>
       <pubDate>Thu, 13 Feb 2020 20:48:40 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/02/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/%E6%B5%85%E8%B0%88-php-%E7%9A%84%E5%8F%82%E6%95%B0/</guid>
+      <guid>https://blog.jakseer.com/post/o332coho/</guid>
       <description>缘由 在 Lavavel 框架中，有不少函数支持多种参数，例如： 1 2 3 4 5 6 7 8 collect([ [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Desk&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 200], [&amp;#39;product&amp;#39; =&amp;gt; &amp;#39;Chair&amp;#39;, &amp;#39;price&amp;#39; =&amp;gt; 100], ])-&amp;gt;contains(&amp;#39;product&amp;#39;, &amp;#39;Bookcase&amp;#39;); collect([1, 2, 3, 4, 5])-&amp;gt;contains(function ($value, $key) { return $value &amp;gt; 5; }); 看起来就好像进行了方法</description>
     </item>
     
     <item>
       <title>PHP 关键字对比：static、self、parent</title>
-      <link>https://blog.jakseer.com/post/2019/11/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/</link>
+      <link>https://blog.jakseer.com/post/cm76456k/</link>
       <pubDate>Sat, 16 Nov 2019 17:51:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2019/11/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/php-%E5%85%B3%E9%94%AE%E5%AD%97%E5%AF%B9%E6%AF%94staticselfparent/</guid>
+      <guid>https://blog.jakseer.com/post/cm76456k/</guid>
       <description>我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明</description>
     </item>
     
     <item>
       <title>使用 Xdebug 进行 PHP 代码调试</title>
-      <link>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</link>
+      <link>https://blog.jakseer.com/post/eh1zyrlf/</link>
       <pubDate>Sat, 19 Oct 2019 12:11:16 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2019/10/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/%E4%BD%BF%E7%94%A8-xdebug-%E8%BF%9B%E8%A1%8C-php-%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/</guid>
+      <guid>https://blog.jakseer.com/post/eh1zyrlf/</guid>
       <description>Xdebug 与 PHPStorm 应该是学 PHP 的同学们都熟知的两款工具，用 PHPStorm 可以方便地与 Xdebug 拓展进行通信，进行 PHP 代码的调试、优化。 Xdebug 下载安装 版本选择 首先下载 PHPStorm 与 Xdebug</description>
     </item>
     

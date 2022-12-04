@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Jakseer" /><meta name="description" content="[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/ph4f335s/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用" />
+<meta property="og:description" content="[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/ph4f335s/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-25T13:25:50+08:00" />
+<meta property="article:modified_time" content="2021-09-25T13:25:50+08:00" />
+
+<meta itemprop="name" content="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用">
+<meta itemprop="description" content="[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成"><meta itemprop="datePublished" content="2021-09-25T13:25:50+08:00" />
+<meta itemprop="dateModified" content="2021-09-25T13:25:50+08:00" />
+<meta itemprop="wordCount" content="1965">
+<meta itemprop="keywords" content="Linux,操作系统," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用"/>
+<meta name="twitter:description" content="[toc] Linux 的设计哲学中有一条准则 万物皆文件 ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-09-25 </span>
+        
+          <span class="more-meta"> 1965 words </span>
+          <span class="more-meta"> 4 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#io-模型">IO 模型</a>
+          <ul>
+            <li><a href="#同步阻塞-bio">同步阻塞 BIO</a></li>
+            <li><a href="#同步非阻塞-nio">同步非阻塞 NIO</a></li>
+            <li><a href="#异步非阻塞-aio">异步非阻塞 AIO</a></li>
+            <li><a href="#io-多路复用-io-multiplexing">IO 多路复用 IO multiplexing</a></li>
+          </ul>
+        </li>
+        <li><a href="#参考文献">参考文献</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>[toc]</p>
+<p>Linux 的设计哲学中有一条准则 <code>万物皆文件</code> ，体现为：读取系统信息是读文件；获取用户输入是读文件；通过 socket 发送数据是写文件。不少操作是通过读写文件完成的。</p>
+<p>而相对于 CPU 执行指令的速度，磁盘等介质读写数据的速度慢得多（见下表）。因此当前程序执行到 IO 指令后，并不能马上拿到 IO 读写结果。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>CPU</th>
+<th>SDD 硬盘</th>
+<th>HDD 硬盘</th>
+<th>网络</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>时间单位</td>
+<td>ns</td>
+<td>us</td>
+<td>ms</td>
+<td>ms</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>注：1 ms = $10^3$ us = $10^6$ ns</p>
+</blockquote>
+<p>如何处理 CPU 指令处理时间 与 各种介质读写时间之间的巨大鸿沟，是让 CPU 等一等还是让 CPU 先处理其它事情？就是本文接下来的内容。</p>
+<h2 id="io-模型">IO 模型</h2>
+<h3 id="同步阻塞-bio">同步阻塞 BIO</h3>
+<blockquote>
+<p>当前程序执行到 IO 指令时暂停，等待 IO 返回结果才继续向后执行。</p>
+</blockquote>
+<p>用一个通俗点的场景来说：</p>
+<blockquote>
+<p>去商场吃饭，想吃的餐厅还在排队，就坐在门外的椅子上专门等排位。</p>
+</blockquote>
+<p>我想吃饭（开始读写文件），但是由于饭店做饭的速度（IO 读写速度）赶不上人们吃饭的速度（执行指令速度），于是我啥也不干，专心等排位（当前程序啥也不干，就等 IO 返回结果）</p>
+<p>用一段 c 语言代码来演示效果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt; </span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define STRING_LEN 100
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="n">STRING_LEN</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memset</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">STRING_LEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 卡在这，等待用户输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">STRING_LEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;input str:%s, len:%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>程序执行后，就卡住了。此刻执行到 <code>read</code> 产生了 <code>同步阻塞</code> 情况，等待用户输入数据。只有用户输入完数据后，才会继续执行后续的 <code>printf</code> 等指令。</p>
+<p><img src="/images/introducation-of-linux-io-models-one/image-20211007154854064.png" alt="image-20211007154854064"></p>
+<p>通过 <code>strace</code> 命令也可以看出，程序阻塞在 <code>read</code> 系统调用上</p>
+<p><img src="/images/introducation-of-linux-io-models-one/image-20210925135717745.png" alt="image-20210925135717745"></p>
+<h3 id="同步非阻塞-nio">同步非阻塞 NIO</h3>
+<blockquote>
+<p>执行 IO 指令时，向系统提交读写请求，但并不等待 IO 执行结果，而是继续向后执行程序指令，后续再检查 IO 执行结果。</p>
+</blockquote>
+<p>用一个通俗点的场景来说：</p>
+<blockquote>
+<p>去商场吃饭，想吃的餐厅还在排队，于是就先叫号，然后去逛其它店，但会时常回来查看是否到号</p>
+</blockquote>
+<p>我想吃饭（开始读写文件），但是由于饭店做饭的速度（IO 读写速度）赶不上人们吃饭的速度（执行指令速度）。于是我先排个号（提交 IO 申请），然后去逛其它店，过一会再回来看有没有排到我。</p>
+<p>用伪代码来表示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">while (1) {
+</span></span><span class="line"><span class="cl">	ret = read();
+</span></span><span class="line"><span class="cl">	if ret == need_again {
+</span></span><span class="line"><span class="cl">		// 等一会再重试
+</span></span><span class="line"><span class="cl">		sleep(3)
+</span></span><span class="line"><span class="cl">	} else if ret == success {
+</span></span><span class="line"><span class="cl">		// 成功读取数据
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第一次调用 <code>read</code> 函数，会提交 IO 请求。后续程序会主动再次使用 <code>read</code> 查询读数据的进度，直到成功读取数据。 <img src="/images/introducation-of-linux-io-models-one/image-20211007155026196.png" alt="image-20211007155026196"></p>
+<p>对比同步阻塞，同步非阻塞虽然不会导致程序卡住（阻塞），但是需要程序主动轮询去查询 IO 状态。</p>
+<p>C语言实例代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define STRING_LEN 100
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="n">STRING_LEN</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">memset</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">STRING_LEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 设置为非阻塞模式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">fcntl</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">O_NONBLOCK</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;fcntl failure&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">length</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">STRING_LEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 需要继续重试
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">==</span> <span class="n">EAGAIN</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">printf</span><span class="p">(</span><span class="s">&#34;read again</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">// 读取到输入的字符串
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">printf</span><span class="p">(</span><span class="s">&#34;input str:%s, len:%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;3 secends pass</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="异步非阻塞-aio">异步非阻塞 AIO</h3>
+<blockquote>
+<p>执行读写指令，提交 IO 请求时，并不等待执行结果，继续向后执行命令。当 IO 数据准备就绪时，系统会通知用户程序 IO 请求的执行结果。</p>
+</blockquote>
+<p>用一个通俗点的场景来说：</p>
+<blockquote>
+<p>去商场吃饭，想吃的餐厅还在排队，于是就先手机叫号，然后去逛其它店。当号排到时，手机会收到通知。</p>
+</blockquote>
+<p>伪代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">ready(data) {
+</span></span><span class="line"><span class="cl">	print(&#34;data is ready, content:%s&#34;, data)
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">main () {
+</span></span><span class="line"><span class="cl">	read(ready)
+</span></span><span class="line"><span class="cl">	// do something else
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>相比于同步阻塞、同步非阻塞模型，异步 IO 模型是系统主动通知用户程序，而不需要用户程序主动去获取 IO 结果。</p>
+<p><img src="/images/introducation-of-linux-io-models-one/image-20211007155104826.png" alt="image-20211007155104826"></p>
+<h3 id="io-多路复用-io-multiplexing">IO 多路复用 IO multiplexing</h3>
+<blockquote>
+<p>同时发起多个阻塞的读写请求，当有一个请求完成，就结束阻塞态，让用户程序继续处理</p>
+</blockquote>
+<p>假设有这样的场景：</p>
+<blockquote>
+<p>某程序为网站的服务端，当用户请求时，读取用户数据并进行后续处理。而在同一时间内，可能会有多个用户请求。</p>
+</blockquote>
+<p>如果还是使用 BIO，程序每次则只能读取并处理一个用户的请求。当并发量较高时，则可能会出现用户请求排队，等待服务端处理的情况。</p>
+<p>这时就该使用 IO 多路复用了。使用 IO 多路复用，同时读取多个用户请求的数据，当有用户请求数据读取完毕时，就进行后续逻辑处理。避免了用户请求排队，等待服务器处理的情况。</p>
+<p>还是用通俗的场景来举例子：</p>
+<blockquote>
+<p>去商场吃饭，但是想每个餐厅都尝一下。因此每个餐厅都取号，哪个排到号了就吃哪个餐厅。</p>
+</blockquote>
+<p>对于 BIO 模型，它是当前程序暂停，等待 IO 操作完成。而多路复用也是当前程序暂停，不过是等待多个 IO 操作的完成。因此相对而言，多路复用通常更省时些。</p>
+<p>在 Linux 下，IO 多路复用有三种主要的系统调用，而本文主要说明这三种多路复用的大体原理与区别，具体用法及实现原理可看参考资料。</p>
+<h4 id="select">select</h4>
+<p>将要监听的 fd 以<strong>数组</strong>形式提交给系统内核，系统内核会轮询数组中 fd 对应的文件。若文件就绪或者超时时间到，则返回。</p>
+<h4 id="poll">poll</h4>
+<p>将要监听的 fd 以<strong>链表</strong>形式提交给系统内核，系统内核会轮询链表中 fd 对应的文件。若文件就绪或者超时时间到，则返回。</p>
+<h4 id="epoll">epoll</h4>
+<p>将要监听的 fd 提交到系统内核，并将回调函数挂载到设备IO 上。当有设备 ready 时，回调函数修改对应 fd 的状态。当 fd 状态变更或超时时，epoll 返回到用户态。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>select</th>
+<th>poll</th>
+<th>epoll</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fd 最大数量</td>
+<td>通常为 1024</td>
+<td>无上限</td>
+<td>无上限</td>
+</tr>
+<tr>
+<td>fd 拷贝情况</td>
+<td>每次拷贝</td>
+<td>每次拷贝</td>
+<td>只拷贝一次</td>
+</tr>
+<tr>
+<td>工作模式</td>
+<td>LT</td>
+<td>LT</td>
+<td>LT 与 ET</td>
+</tr>
+<tr>
+<td>时间复杂度</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="参考文献">参考文献</h2>
+<p><a href="https://cizixs.com/2017/01/03/how-slow-is-disk-and-network/">让 CPU 告诉你硬盘和网络到底有多慢</a></p>
+<p><a href="https://www.cnblogs.com/aspirant/p/9166944.html">select、poll、epoll之间的区别</a></p>
+<p>《UNIX 环境高级编程》</p>
+<p>《Linux 系统编程》</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2021-09-25
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/linux/">Linux</a>
+          <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/xafmkkv4/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Go Context 应用与源码分析</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/2g58me6h/">
+            <span class="next-text nav-default">Go 反射</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

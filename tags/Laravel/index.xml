@@ -10,19 +10,19 @@
     <lastBuildDate>Mon, 06 Apr 2020 11:09:18 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/laravel/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Laravel 管道模式的实现</title>
-      <link>https://blog.jakseer.com/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</link>
+      <link>https://blog.jakseer.com/post/3exfjlgu/</link>
       <pubDate>Mon, 06 Apr 2020 11:09:18 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/04/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/laravel-%E7%AE%A1%E9%81%93%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%AE%9E%E7%8E%B0/</guid>
+      <guid>https://blog.jakseer.com/post/3exfjlgu/</guid>
       <description>在 Laravel 中，管道（Pipeline）组件是实现路由中间件而使用的重要工具之一。通过管道组件，可以通过执行一系列方法，从而对数据进行处理。 自制管道</description>
     </item>
     
     <item>
       <title>Laravel 中的 Macroable Trait</title>
-      <link>https://blog.jakseer.com/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/</link>
+      <link>https://blog.jakseer.com/post/gvi33urr/</link>
       <pubDate>Sun, 23 Feb 2020 18:26:34 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/02/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/laravel-%E4%B8%AD%E7%9A%84-macroable-trait/</guid>
+      <guid>https://blog.jakseer.com/post/gvi33urr/</guid>
       <description>在 Laravel 中，Collection 类本身实现了不少方法，比如 sum、groupBy 等，若想给这个类加上一些自定义的方法，有如下方案： 方法一：通过修</description>
     </item>
     

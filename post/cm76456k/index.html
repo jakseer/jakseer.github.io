@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>PHP 关键字对比：static、self、parent - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="jakseer" /><meta name="description" content="我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/cm76456k/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="PHP 关键字对比：static、self、parent" />
+<meta property="og:description" content="我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/cm76456k/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2019-11-16T17:51:34+08:00" />
+<meta property="article:modified_time" content="2019-11-16T17:51:34+08:00" />
+
+<meta itemprop="name" content="PHP 关键字对比：static、self、parent">
+<meta itemprop="description" content="我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明"><meta itemprop="datePublished" content="2019-11-16T17:51:34+08:00" />
+<meta itemprop="dateModified" content="2019-11-16T17:51:34+08:00" />
+<meta itemprop="wordCount" content="1525">
+<meta itemprop="keywords" content="PHP," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PHP 关键字对比：static、self、parent"/>
+<meta name="twitter:description" content="我们在各种项目中，尤其是框架源码中，经常可以看到self::、static::、parent::等来调用静态变量、静态方法，本文就简单地说明"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">PHP 关键字对比：static、self、parent</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-11-16 </span>
+        
+          <span class="more-meta"> 1525 words </span>
+          <span class="more-meta"> 4 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>我们在各种项目中，尤其是框架源码中，经常可以看到<code>self::</code>、<code>static::</code>、<code>parent::</code>等来调用静态变量、静态方法，本文就简单地说明这三种关键字有啥区别。
+首先说明两个概念，<code>转发调用</code>与<code>非转发调用</code></p>
+<ul>
+<li>转发调用：进行静态调用时，代码中不显式指明调用的对象，而是在运行时来判断调用哪个对象。比如使用关键字<code>self</code>、<code>static</code>、<code>parent</code>、<code>forward_static_call</code>。</li>
+<li>非转发调用：在进行方法、对象调用时，代码中显式指明调用的对象名称，如<code>A::getName()</code>或<code>a-&gt;getName()</code>。</li>
+</ul>
+<p>这三个关键字会进行转发调用，但他们转发的对象不同：</p>
+<ul>
+<li><code>self::</code>转发给该语句定义所在的类</li>
+<li><code>parent::</code>转发给该语句定义所在类的父类</li>
+<li><code>static::</code>转发给调用该语句调用者所在类</li>
+</ul>
+<p>听起来很晕，好在 PHP 也为我们提供了相应的函数、魔术变量来帮助获取相关信息，便于我们理解：</p>
+<ul>
+<li>魔术变量<code>__CLASS__</code>可用来获取定义当前方法所在的类。</li>
+<li>函数<code>get_called_class()</code>可用来获取调用者所在类。</li>
+</ul>
+<p>先看如下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">define(&#39;TEMPLATE&#39;, &#34;%-12s %-5s %-12s %-12s\n&#34;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Base 
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    protected static $value = &#39;Base&#39;;
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Car extends Base
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    protected static $value = &#39;Car&#39;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static function printSelf()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        printf(TEMPLATE, __FUNCTION__, self::$value, get_called_class(), __CLASS__);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static function printParent()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        printf(TEMPLATE, __FUNCTION__, parent::$value, get_called_class(), __CLASS__);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static function printStatic()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        printf(TEMPLATE, __FUNCTION__, static::$value, get_called_class(), __CLASS__);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Benz extends Car
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    protected static $value = &#39;Benz&#39;;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static function printSelf()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        printf(TEMPLATE, __FUNCTION__, self::$value, get_called_class(), __CLASS__);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    public static function printParent()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        printf(TEMPLATE, __FUNCTION__, parent::$value, get_called_class(), __CLASS__);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">printf(TEMPLATE, &#39;function&#39;,&#39;value&#39;, &#39;called_class&#39;, &#39;defined_class&#39;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Car::printSelf();
+</span></span><span class="line"><span class="cl">Car::printParent();
+</span></span><span class="line"><span class="cl">Car::printStatic();
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Benz::printSelf();
+</span></span><span class="line"><span class="cl">Benz::printParent();
+</span></span><span class="line"><span class="cl">Benz::printStatic();
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>运行结果是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function     value called_class defined_class
+</span></span><span class="line"><span class="cl">printSelf    Car   Car          Car         
+</span></span><span class="line"><span class="cl">printParent  Base  Car          Car         
+</span></span><span class="line"><span class="cl">printStatic  Car   Car          Car         
+</span></span><span class="line"><span class="cl">printSelf    Benz  Benz         Benz        
+</span></span><span class="line"><span class="cl">printParent  Car   Benz         Benz        
+</span></span><span class="line"><span class="cl">printStatic  Benz  Benz         Car 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出结果每一列分别为为函数名、获取到的 value 值、调用者所在类、被调用函数定义所在类.</p>
+<p>除去标题，输出结果一共六行，编号为结果 1 ~ 结果 6。
+由结果 1 与结果 4 ，<code>Benz</code>与<code>Car</code>类中均有<code>printSelf()</code>方法，并都使用了<code>self</code>关键字，因此他们各自会指向各自的定义函数所在类：<code>Benz</code>与<code>Car</code>。
+由结果 2 与结果 5，<code>Benz</code>与<code>Car</code>类中均有<code>printParent()</code>方法，并都使用了<code>parent</code>关键字，因此他们各自会指向各自的定义函数所在类的父类：<code>Car</code>与<code>Base</code>。
+由结果 3 与结果 6，<code>Benz</code>类没有<code>printStatic()</code>方法，虽然调用的是<code>Car</code>类的方法，但调用方是<code>Benz</code>类，故<code>static::$value</code>输出为<code>Benz</code>类的<code>$value</code>；而<code>Car</code>类调用<code>printStatic()</code>方法，输出为<code>Car</code>类的<code>$value</code></p>
+<p>总结一下，<code>self::</code>与<code>parent::</code>指向的是其定义所在函数的类（如 defined_class 列所示）的本身、的父类；而<code>static::</code>指向的是其调用方的类（如 called_class 列所示）本身。</p>
+<p>再提供几个例子，以供练习，加深理解。</p>
+<p>代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class A {
+</span></span><span class="line"><span class="cl">    public static function who() {
+</span></span><span class="line"><span class="cl">        echo __CLASS__;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">    public static function test() {
+</span></span><span class="line"><span class="cl">        static::who(); // 后期静态绑定从这里开始
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class B extends A {
+</span></span><span class="line"><span class="cl">    public static function who() {
+</span></span><span class="line"><span class="cl">        echo __CLASS__;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">B::test();
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出为：<code>B</code>。</p>
+<p>说了这么多，那这三个关键字有什么用呢？
+<code>self</code>一般用来获取静态属性或调用静态方法。
+<code>parent</code>用来调用父类的方法或属性。
+<code>static</code>则用来调用调用者的方法或属性。比如，可以在<code>Base</code>类中通过<code>static</code>关键字调用子类中的方法，从而实现不用修改父类，只需修改子类，就能实现不同的功能，拓展性强。这种方法经常在框架中用到，Base 类写在框架中，而子类可由用户去实现，定制化强：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Base
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    public static function work()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        static::drive();
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Car extends Base
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    protected static function drive()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        print(&#34;begin to drive car\n&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Bicycle extends Base
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">    protected static function drive()
+</span></span><span class="line"><span class="cl">    {
+</span></span><span class="line"><span class="cl">        print(&#34;begin to take bicycle\n&#34;);
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Bicycle::work();
+</span></span><span class="line"><span class="cl">Car::work();
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="参考文献">参考文献</h1>
+<p><a href="https://www.cnblogs.com/qiye5757/p/9437971.html">PHP常见概念混淆（七）之self、static、parent的区别</a></p>
+<p><a href="https://www.php.net/manual/zh/language.oop5.late-static-bindings.php">PHP Manual：后期静态绑定</a></p>
+<p><a href="https://www.cnblogs.com/yolo-bean/p/7739265.html">PHP中静态(static)调用非静态方法详解</a></p>
+<p><a href="https://www.cnblogs.com/52php/p/5658321.html">PHP中静态(static)调用非静态方法详解</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2019-11-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/php/">PHP</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/o332coho/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">浅谈 PHP 的参数</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/eh1zyrlf/">
+            <span class="next-text nav-default">使用 Xdebug 进行 PHP 代码调试</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

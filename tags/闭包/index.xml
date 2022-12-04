@@ -10,10 +10,10 @@
     <lastBuildDate>Sun, 23 Feb 2020 15:32:17 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/%E9%97%AD%E5%8C%85/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PHP Closure 类</title>
-      <link>https://blog.jakseer.com/post/2020/02/php-closure-%E7%B1%BB/php-closure-%E7%B1%BB/</link>
+      <link>https://blog.jakseer.com/post/jxs0bcbw/</link>
       <pubDate>Sun, 23 Feb 2020 15:32:17 +0800</pubDate>
       
-      <guid>https://blog.jakseer.com/post/2020/02/php-closure-%E7%B1%BB/php-closure-%E7%B1%BB/</guid>
+      <guid>https://blog.jakseer.com/post/jxs0bcbw/</guid>
       <description>概述 闭包是指在创建时封装周围状态的函数，即使闭包所在的环境的不存在了，闭包中封装的状态依然存在。 匿名函数其实就是没有名称的函数，匿名函数可以</description>
     </item>
     
