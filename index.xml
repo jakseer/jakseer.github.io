@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>jakseer</copyright>
-    <lastBuildDate>Sat, 12 Feb 2022 16:17:08 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Dec 2022 21:46:49 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Graphviz 简介</title>
+      <link>https://blog.jakseer.com/post/f8cc12bc/</link>
+      <pubDate>Sun, 04 Dec 2022 21:46:49 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.com/post/f8cc12bc/</guid>
+      <description>Background 最近年终述职，需要画不少图。每张图需要用鼠标调整各元素位置、调整不同元素间的线··· 总之大量的鼠标操作使得画图耗费了不少时间。 经过调研发现</description>
+    </item>
+    
     <item>
       <title>Go sync.Pool 解析</title>
       <link>https://blog.jakseer.com/post/8sicjqkm/</link>

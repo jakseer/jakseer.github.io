@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Graphviz 简介 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Jakseer" /><meta name="description" content="Background 最近年终述职，需要画不少图。每张图需要用鼠标调整各元素位置、调整不同元素间的线··· 总之大量的鼠标操作使得画图耗费了不少时间。 经过调研发现" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/f8cc12bc/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Graphviz 简介" />
+<meta property="og:description" content="Background 最近年终述职，需要画不少图。每张图需要用鼠标调整各元素位置、调整不同元素间的线··· 总之大量的鼠标操作使得画图耗费了不少时间。 经过调研发现" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/f8cc12bc/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-04T21:46:49+08:00" />
+<meta property="article:modified_time" content="2022-12-04T21:46:49+08:00" />
+
+<meta itemprop="name" content="Graphviz 简介">
+<meta itemprop="description" content="Background 最近年终述职，需要画不少图。每张图需要用鼠标调整各元素位置、调整不同元素间的线··· 总之大量的鼠标操作使得画图耗费了不少时间。 经过调研发现"><meta itemprop="datePublished" content="2022-12-04T21:46:49+08:00" />
+<meta itemprop="dateModified" content="2022-12-04T21:46:49+08:00" />
+<meta itemprop="wordCount" content="1401">
+<meta itemprop="keywords" content="graphviz," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Graphviz 简介"/>
+<meta name="twitter:description" content="Background 最近年终述职，需要画不少图。每张图需要用鼠标调整各元素位置、调整不同元素间的线··· 总之大量的鼠标操作使得画图耗费了不少时间。 经过调研发现"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Graphviz 简介</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-12-04 </span>
+        
+          <span class="more-meta"> 1401 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#introducation">Introducation</a></li>
+    <li><a href="#the-dot-grammer">The Dot Grammer</a>
+      <ul>
+        <li><a href="#graph">Graph</a></li>
+        <li><a href="#node">Node</a></li>
+        <li><a href="#edge">Edge</a></li>
+        <li><a href="#record-based-nodes">Record-based Nodes</a></li>
+      </ul>
+    </li>
+    <li><a href="#example">Example</a>
+      <ul>
+        <li><a href="#linklist">Linklist</a></li>
+        <li><a href="#b-tree">B-Tree</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="background">Background</h1>
+<p>最近年终述职，需要画不少图。每张图需要用鼠标调整各元素位置、调整不同元素间的线··· 总之大量的鼠标操作使得画图耗费了不少时间。</p>
+<p>经过调研发现了 <code>graphviz</code> 这个工具，能以类似于程序代码的一段文本来生成图片。生成图片的元素样式、线条样式、整体布局等属性，均可调整。</p>
+<p>即我们只需要定义好元素、线条、布局样式等参数，画图的过程交给电脑，就能生成图片。举个例子：</p>
+<p><img src="/images/graphviz-introduction/2022-12-04-22-29-56.png" alt="image-1"></p>
+<p>这样一张图（有方框、多颜色的元素以及特殊形状的开始结束节点），我自己画起来至少 3 分钟，并且后续改动也费时。比如要加个节点 a4，a4 和 a3、a1、b2 都要连起来，不仅要新增节点和连线，可能还要调整原有节点的位置，以保证整体看起来好看。</p>
+<p>但是用几行代码，不到 1 分钟，就能生成这张图：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph G {
+</span></span><span class="line"><span class="cl">  subgraph cluster_0 {
+</span></span><span class="line"><span class="cl">    style=filled;
+</span></span><span class="line"><span class="cl">    color=lightgrey;
+</span></span><span class="line"><span class="cl">    node [style=filled,color=white];
+</span></span><span class="line"><span class="cl">    a0 -&gt; a1 -&gt; a2 -&gt; a3;
+</span></span><span class="line"><span class="cl">    label = &#34;process #1&#34;;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  subgraph cluster_1 {
+</span></span><span class="line"><span class="cl">    node [style=filled];
+</span></span><span class="line"><span class="cl">    b0 -&gt; b1 -&gt; b2 -&gt; b3;
+</span></span><span class="line"><span class="cl">    label = &#34;process #2&#34;;
+</span></span><span class="line"><span class="cl">    color=blue
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  start -&gt; a0;
+</span></span><span class="line"><span class="cl">  start -&gt; b0;
+</span></span><span class="line"><span class="cl">  a1 -&gt; b3;
+</span></span><span class="line"><span class="cl">  b2 -&gt; a3;
+</span></span><span class="line"><span class="cl">  a3 -&gt; a0;
+</span></span><span class="line"><span class="cl">  a3 -&gt; end;
+</span></span><span class="line"><span class="cl">  b3 -&gt; end;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  start [shape=Mdiamond];
+</span></span><span class="line"><span class="cl">  end [shape=Msquare];
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>总之，画这种标准化矢量图形，用 <code>graphviz</code> 是挺省时省力的。</p>
+<h1 id="introducation">Introducation</h1>
+<p><code>graphviz</code> 是一组工具包，它们均使用 <code>dot</code> 语言来描述图形。该工具包包含有如下工具：</p>
+<p><img src="/images/graphviz-introduction/2022-12-04-22-46-52.png" alt="image-2"></p>
+<p>这些工具都使用 <code>dot</code> 语言，只是渲染出的图形样式各不相同。</p>
+<p>本文接下来介绍 <code>dot</code> 语言的用法。</p>
+<h1 id="the-dot-grammer">The Dot Grammer</h1>
+<p><code>dot</code> 语言中，主要有如下几个概念</p>
+<h2 id="graph">Graph</h2>
+<p>图，表示一块区域。主要分为 3 类：</p>
+<ul>
+<li>digraph，定义有向图</li>
+<li>graph，定义无向图</li>
+<li>subgraph 子图，表示一块图片区域</li>
+</ul>
+<p>其中，每个 dot 文件必须定义一个 <code>digraph</code> 或 <code>graph</code>。</p>
+<p>而 subgraph 无数量限制，其主要有三个作用：</p>
+<ul>
+<li>用于表示图的结构，指明一些 <code>node</code> 或者 <code>edge</code> 是组成在一起的</li>
+<li>能提供一个上下文，用于批量设置属性</li>
+<li>对于名称为 cluster 开头的 <code>subgraph</code>，部分引擎会将该 <code>subgroup</code> 用矩形框选并凸显出来。</li>
+</ul>
+<p>图的常用属性有</p>
+<table>
+<thead>
+<tr>
+<th>属性名</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>label</td>
+<td></td>
+<td>图片标签</td>
+</tr>
+<tr>
+<td>bgcolor</td>
+<td></td>
+<td>背景颜色</td>
+</tr>
+<tr>
+<td>fontcolor</td>
+<td>black</td>
+<td>字体颜色，定义上面<code>示例</code>的颜色</td>
+</tr>
+<tr>
+<td>fontsize</td>
+<td>14</td>
+<td>字体大小</td>
+</tr>
+<tr>
+<td>rankdir</td>
+<td>TB</td>
+<td>排序方向，LR(left to right) or TB(top to bottom)</td>
+</tr>
+</tbody>
+</table>
+<p>用法示例</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph G {
+</span></span><span class="line"><span class="cl">    label=&#34;graph&#34;
+</span></span><span class="line"><span class="cl">    bgcolor=blue
+</span></span><span class="line"><span class="cl">    fontsize=16
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>digraph</code> 可替换成 <code>graph</code>、<code>subgraph</code>。G 为图的名称，可为空。</p>
+<h2 id="node">Node</h2>
+<p><code>node</code> 表示一个节点，表示方法为 <code>节点ID [节点属性]</code> ，例如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph G {
+</span></span><span class="line"><span class="cl">    a[fontsize=5,shape=box]
+</span></span><span class="line"><span class="cl">    b[style=filled]
+</span></span><span class="line"><span class="cl">    c
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>输出的图形如下</p>
+<p><img src="/images/graphviz-introduction/2022-12-05-22-14-41.png" alt="image-3"></p>
+<p><code>node</code> 的常用属性就不赘述了，详见 <a href="https://graphviz.org/docs/nodes/">官方文档-Node</a></p>
+<h2 id="edge">Edge</h2>
+<p><code>edge</code> 即连接 <code>node</code> 之间的连线。</p>
+<p>具体属性看文档即可。因为比较简单，这里仅举个例子而不具体说明</p>
+<p><img src="/images/graphviz-introduction/2022-12-05-22-35-23.png" alt="image-5"></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph demo {
+</span></span><span class="line"><span class="cl">    rankdir=LR
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    &#34;box&#34;-&gt;&#34;crow&#34;[arrowhead=box]
+</span></span><span class="line"><span class="cl">    &#34;crow&#34;-&gt;&#34;curve&#34;[arrowhead=normal]
+</span></span><span class="line"><span class="cl">    &#34;a&#34;-&gt;&#34;b&#34;[label=&#34;line&#34;]
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="record-based-nodes">Record-based Nodes</h2>
+<p>这是一种特殊样式的节点。即单个 <code>node</code> 中包含多个部分，且 <code>edge</code> 能指向单个 <code>node</code> 中不同的部分，见图</p>
+<p><img src="/images/graphviz-introduction/2022-12-05-22-26-28.png" alt="image-4"></p>
+<p>可以看到，一个节点可分为多个部分，不同部分有不同的锚点，可连上不同的线。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph G {
+</span></span><span class="line"><span class="cl">    node [shape=record]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    struct1 [label=&#34;&lt;f0&gt; left|&lt;f1&gt; middle|&lt;f2&gt; right&#34;]
+</span></span><span class="line"><span class="cl">    struct2 [label=&#34;&lt;f0&gt; one|&lt;f1&gt; two&#34;]
+</span></span><span class="line"><span class="cl">    struct3 [label=&#34;hello|{ b |{c|&lt;here&gt; d}| f}| g | h&#34;]
+</span></span><span class="line"><span class="cl">    struct1:f1 -&gt; struct2:f0
+</span></span><span class="line"><span class="cl">    struct1:f2 -&gt; struct3:here
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中 <code>node</code> 的不同部分，用 <code>|</code> 分隔。例如 <code>&lt;f0&gt; left|&lt;f1&gt; middle|&lt;f2&gt; right</code> 表明有 left、middle、right 三个部分。</p>
+<p>而 <code>&lt; &gt;</code> 部分框住的，是锚点的名称，使用它能将 <code>edge</code> 连接到该部分上。</p>
+<p><code>struct1:f2 -&gt; struct3:here</code> 表示一条 <code>edge</code>，是从 <code>struct1</code> 节点的 <code>f2</code> 锚点到 <code>struct3</code> 节点的 <code>here</code> 锚点</p>
+<p>注意，这里一定要指定节点类型为 record，即声明 <code>node [shape=record]</code>，否则不能正确展示这种包含多个部分的节点。</p>
+<h1 id="example">Example</h1>
+<h2 id="linklist">Linklist</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph G {
+</span></span><span class="line"><span class="cl">    rankdir = LR
+</span></span><span class="line"><span class="cl">    node[shape = record]
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    a[label = &#34;{A|}&#34;]
+</span></span><span class="line"><span class="cl">    b[label = &#34;{B|}&#34;]
+</span></span><span class="line"><span class="cl">    c[label = &#34;{C|}&#34;]
+</span></span><span class="line"><span class="cl">    d[label = &#34;{D|NULL}&#34;]
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    a -&gt; b:w;
+</span></span><span class="line"><span class="cl">    b -&gt; c:w;
+</span></span><span class="line"><span class="cl">    c -&gt; d:w;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/images/graphviz-introduction/2022-12-06-12-39-49.png" alt="image-7"></p>
+<h2 id="b-tree">B-Tree</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">digraph {
+</span></span><span class="line"><span class="cl">    splines=false
+</span></span><span class="line"><span class="cl">    node [shape=record]
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    node0x10055a2e0 [label = &#34; &lt;node268&gt; 268&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a2e0:&lt;node268&gt;:sw -&gt; node0x10055a060
+</span></span><span class="line"><span class="cl">    node0x10055a060 [label = &#34; &lt;node53&gt; 53| &lt;node56&gt; 56| &lt;node196&gt; 196&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a060:&lt;node53&gt;:sw -&gt; node0x100559a80
+</span></span><span class="line"><span class="cl">    node0x100559a80 [label = &#34; &lt;node51&gt; 51| &lt;node52&gt; 52&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a060:&lt;node53&gt;:se -&gt; node0x10055a310
+</span></span><span class="line"><span class="cl">    node0x10055a310 [label = &#34; &lt;node54&gt; 54| &lt;node55&gt; 55&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a060:&lt;node56&gt;:se -&gt; node0x10055a240
+</span></span><span class="line"><span class="cl">    node0x10055a240 [label = &#34; &lt;node57&gt; 57| &lt;node152&gt; 152&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a060:&lt;node196&gt;:se -&gt; node0x100559b10
+</span></span><span class="line"><span class="cl">    node0x100559b10 [label = &#34; &lt;node249&gt; 249| &lt;node266&gt; 266&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a2e0:&lt;node268&gt;:se -&gt; node0x10055a290
+</span></span><span class="line"><span class="cl">    node0x10055a290 [label = &#34; &lt;node310&gt; 310| &lt;node468&gt; 468&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a290:&lt;node310&gt;:sw -&gt; node0x10055a0b0
+</span></span><span class="line"><span class="cl">    node0x10055a0b0 [label = &#34; &lt;node299&gt; 299| &lt;node300&gt; 300&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a290:&lt;node310&gt;:se -&gt; node0x10055a1b0
+</span></span><span class="line"><span class="cl">    node0x10055a1b0 [label = &#34; &lt;node315&gt; 315| &lt;node423&gt; 423&#34;]
+</span></span><span class="line"><span class="cl">    node0x10055a290:&lt;node468&gt;:se -&gt; node0x10055a160
+</span></span><span class="line"><span class="cl">    node0x10055a160 [label = &#34; &lt;node484&gt; 484| &lt;node528&gt; 528&#34;]
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/images/graphviz-introduction/2022-12-05-23-14-16.png" alt="image-6"></p>
+<h1 id="reference">Reference</h1>
+<p><a href="https://itopic.org/graphviz.html">https://itopic.org/graphviz.html</a></p>
+<p><a href="https://graphviz.org/doc/info/lang.html">https://graphviz.org/doc/info/lang.html</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/194274635">https://zhuanlan.zhihu.com/p/194274635</a></p>
+<p><a href="https://fivecakes.com/p/5ef55d9ca02ad90d27610e17">https://fivecakes.com/p/5ef55d9ca02ad90d27610e17</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-12-04
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/graphviz/">graphviz</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/8sicjqkm/">
+            <span class="next-text nav-default">Go sync.Pool 解析</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
