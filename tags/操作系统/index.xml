@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>jakseer</copyright>
-    <lastBuildDate>Sat, 25 Sep 2021 13:25:50 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Dec 2022 21:33:35 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算机中的时间</title>
+      <link>https://blog.jakseer.com/post/fbd4e1aa/</link>
+      <pubDate>Tue, 20 Dec 2022 21:33:35 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.com/post/fbd4e1aa/</guid>
+      <description>时间在计算机中是个十分重要的概念，几乎所有程序都会与时间打交道。而计算机不能找人问时间，也没法自己看表，它是如何管理时间的？ 单机中的时间 产生</description>
+    </item>
+    
     <item>
       <title>Linux IO 模型-阻塞、非阻塞、同步、异步、多路复用</title>
       <link>https://blog.jakseer.com/post/ph4f335s/</link>

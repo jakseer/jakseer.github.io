@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>计算机中的时间 - Jakseer&#39;s Blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Jakseer" /><meta name="description" content="时间在计算机中是个十分重要的概念，几乎所有程序都会与时间打交道。而计算机不能找人问时间，也没法自己看表，它是如何管理时间的？ 单机中的时间 产生" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.107.0 with theme even" />
+
+
+<link rel="canonical" href="https://blog.jakseer.com/post/fbd4e1aa/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="计算机中的时间" />
+<meta property="og:description" content="时间在计算机中是个十分重要的概念，几乎所有程序都会与时间打交道。而计算机不能找人问时间，也没法自己看表，它是如何管理时间的？ 单机中的时间 产生" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.jakseer.com/post/fbd4e1aa/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2022-12-20T21:33:35+08:00" />
+<meta property="article:modified_time" content="2022-12-20T21:33:35+08:00" />
+
+<meta itemprop="name" content="计算机中的时间">
+<meta itemprop="description" content="时间在计算机中是个十分重要的概念，几乎所有程序都会与时间打交道。而计算机不能找人问时间，也没法自己看表，它是如何管理时间的？ 单机中的时间 产生"><meta itemprop="datePublished" content="2022-12-20T21:33:35+08:00" />
+<meta itemprop="dateModified" content="2022-12-20T21:33:35+08:00" />
+<meta itemprop="wordCount" content="2706">
+<meta itemprop="keywords" content="time,分布式,操作系统," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="计算机中的时间"/>
+<meta name="twitter:description" content="时间在计算机中是个十分重要的概念，几乎所有程序都会与时间打交道。而计算机不能找人问时间，也没法自己看表，它是如何管理时间的？ 单机中的时间 产生"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Jakseer</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Jakseer</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">计算机中的时间</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2022-12-20 </span>
+        
+          <span class="more-meta"> 2706 words </span>
+          <span class="more-meta"> 6 mins read </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#单机中的时间">单机中的时间</a>
+      <ul>
+        <li><a href="#产生来源">产生来源</a></li>
+        <li><a href="#时间的类型">时间的类型</a>
+          <ul>
+            <li><a href="#墙上时间">墙上时间</a>
+              <ul>
+                <li><a href="#时钟回拨">时钟回拨</a></li>
+              </ul>
+            </li>
+            <li><a href="#进程时间">进程时间</a></li>
+            <li><a href="#单调时间">单调时间</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#分布式中的时间">分布式中的时间</a>
+      <ul>
+        <li><a href="#ntp-协议同步时间">NTP 协议同步时间</a></li>
+        <li><a href="#逻辑时钟">逻辑时钟</a>
+          <ul>
+            <li><a href="#偏序关系">偏序关系</a></li>
+            <li><a href="#逻辑时钟-1">逻辑时钟</a></li>
+            <li><a href="#全序关系">全序关系</a></li>
+            <li><a href="#向量时钟">向量时钟</a></li>
+          </ul>
+        </li>
+        <li><a href="#truetime">TrueTime</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>时间在计算机中是个十分重要的概念，几乎所有程序都会与时间打交道。而计算机不能找人问时间，也没法自己看表，它是如何管理时间的？</p>
+<h1 id="单机中的时间">单机中的时间</h1>
+<h2 id="产生来源">产生来源</h2>
+<p>CPU 有固定的时钟周期，而 Linux 可设置 CPU 的时钟中断，即每隔固定的 CPU 时钟周期，就会产生一次时钟中断。产生中断时，会执行中断表中对应的 Linux 内核程序，内核程序会更新系统时钟。每次时钟中断被成为一次 <code>tick</code> 。</p>
+<p>在 Linux 中，产生 <code>tick</code> 的频率可设置，可设定为 100、250、300、1000 HZ。<code>tick</code> 的频率越高，则执行时钟中断程序就越频繁，系统内核维护的时间精度就越高，但耗费在维护时间的资源就越多。</p>
+<h2 id="时间的类型">时间的类型</h2>
+<h3 id="墙上时间">墙上时间</h3>
+<p><code>wall clock time</code>，也被称为钟表时间，表示真实世界中走过的时间。
+比如压缩一个文件，从开始压缩到结束压缩，真实世界时钟经过的时间。</p>
+<h4 id="时钟回拨">时钟回拨</h4>
+<p>由于各种原因（时钟同步、用户调整系统时钟），需要向前回拨调整本机时间（把当前时间调整为之前的某时间），则会出现时间倒退的情况。比如，当前时间为 <code>2022-01-01 10:00:02</code> ，需要把当前时间调整为 <code>2022-01-01 10:00:00</code> ，则调整后就会出现时间倒退 1s 的情况。</p>
+<p>若某程序依赖 <code>wall clock time</code> 运行，则可能导致程序出错。</p>
+<p>对于一定时间范围内的时钟回拨，Linux 下可通过 <code>adjtime</code> 系统函数，通过让时间走的慢一些的方式，来微调时间，最终达到时钟回拨的效果。</p>
+<p>比如之前计算机的 1s 就是墙上时间的 1s，使用 <code>adjtime</code> 来调整时间，可以使得墙上时间过了 1.1s，而计算机中只过了1s，从而使得计算机中的时间慢慢向前微调，不会出现时钟回拨的情况（这是个比较夸张的例子，事实上微调幅度比这小得多）。</p>
+<h3 id="进程时间">进程时间</h3>
+<p>程序占用 CPU 的时间（不包含阻塞时间）。对于多核CPU，该时间为程序中各线程占用各个核的时间总和。该时间通常用于程序性能测试、数据统计等。</p>
+<p>Linux 下的 time 命令行工具能获取 <code>user-time</code>、<code>system-time</code>、<code>real-time</code> 这三类时间，从而得知进程时间和墙上时间。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ time ./test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">real 0m4.019s
+</span></span><span class="line"><span class="cl">user 0m0.004s
+</span></span><span class="line"><span class="cl">sys 0m0.000s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其中，进程时间等于 sys 和 user 这两个时间之和；墙上时间等于 real 时间。</p>
+<h3 id="单调时间">单调时间</h3>
+<p>Linux 下使用开机到现在经历的 <code>tick</code> 次数，经换算作为单调时间，该时间单调递增。用户设置系统时间、NTP 服务调整时间都不能改变单调时间。</p>
+<p>Linux 下可使用 <code>uptime</code> 命令查看系统已运行时间（单调时间）。</p>
+<h1 id="分布式中的时间">分布式中的时间</h1>
+<h2 id="ntp-协议同步时间">NTP 协议同步时间</h2>
+<p>分布式系统中，由于机器时钟的误差，会导致不同机器间时间偏差越来越大。因此校准机器上的时间是一项重要工作。</p>
+<p>可以通过与其他机器通信来校准时间，但通信也会耗费时间。因此 <code>NTP</code> 协议通过计算并剔除通信时间，来减小误差。多次使用 <code>NTP</code> 协议并剔除异常值，可进一步减小误差。</p>
+<p>NTP 协议流程如下：</p>
+<p>服务端为授时服务器，客户端为需要同步时间的机器。客户端在本地时间 t1 发起请求，服务端在其本地时间 t2 接收到消息，t3 时刻发出消息（t2、t3均写入到消息体中），客户端在本地时间 t4 收到响应。</p>
+<p><img src="/images/the-time-in-computer/ntp-procedure.png" alt="image-4"></p>
+<p>注意，t1、t2 是客户端的本地时间，而 t3、t4 是服务端的本地时间，比较不同机器上的时间是没有意义的，后面的计算会注意这一点。</p>
+<p>可得出往返请求在网络上的耗时为 $ (t4 - t1) - (t3 - t2) $ 。假设请求的往返时间相同，则 $ RTT = \frac{(t4 - t1) - (t3 - t2)}{2} $</p>
+<p>在 t4 时刻，客户端通过计算可得到，此刻的准确时间（以服务器端时间为准确时间）为
+$$ t3 + RTT = \frac{t4 + t3 + t2 - t1}{2} $$</p>
+<p>服务端与客户端时间差值为
+$$ 服务端时间 - 客户端时间 = t3 + RTT - t4 = \frac{(t3 - t4) + (t2 - t1)}{2} $$</p>
+<p>通常在公共互联网环境下，使用 <code>NTP</code> 协议能保持几十毫秒的误差。而在局域网内，误差可以达到1毫秒内。</p>
+<h2 id="逻辑时钟">逻辑时钟</h2>
+<p>由于在分布式系统中，同步时间会不可避免地受到网络影响而造成误差。因此，Lamport 提出了 <code>逻辑时钟</code> 的概念，其根据事件的因果关系而不是绝对时间来确定时间的先后顺序</p>
+<h3 id="偏序关系">偏序关系</h3>
+<p>首先定义一个偏序关系</p>
+<p>把事件 a 发生在 b 之前定义为 <code>a -&gt; b</code> 。则以下三种条件都满足 <code>a -&gt; b</code></p>
+<ol>
+<li>a和b是同一个进程内的事件，a发生在b之前，则 <code>a -&gt; b</code></li>
+<li>a和b在不同的进程中，a是发送进程内的发送事件，b是同一消息接收进程内的接收事件，则 <code>a -&gt; b</code></li>
+<li>如果 <code>a -&gt; b</code> 并且 <code>b -&gt; c</code>，则 <code>a -&gt; c</code></li>
+</ol>
+<h3 id="逻辑时钟-1">逻辑时钟</h3>
+<p>基于这个偏序关系，引入逻辑时钟算法：</p>
+<p>分布式系统中每个进程 Pi 保存一个本地逻辑时钟值 Ci，Ci (a) 表示进程 Pi 发生事件 a 时的逻辑时钟值，C i的更新算法如下</p>
+<ol>
+<li>进程 Pi 每发生一次事件，Ci 加1。</li>
+<li>进程 Pi 给进程 Pj 发送消息，需要带上自己的本地逻辑时钟 Ci。</li>
+<li>进程 Pj 接收消息，更新 Cj 为 max(Ci, Cj) + 1。</li>
+</ol>
+<p>从以上定义可以很容易地得出下面推论</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">对于任意两个事件 a 和 b ，如果 a -&gt; b，那么 C (a) &lt; C (b)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>假定初始事件 a 的时间为 0，则其他事件对应的发生时间如图（A、B 为进程，a～e 为事件）</p>
+<p><img src="/images/the-time-in-computer/2022-12-22-22-05-56.png" alt="image-1"></p>
+<p>逻辑时钟是基于偏序关系的，因此只能确定分布式系统中部分事件的先后关系。</p>
+<h3 id="全序关系">全序关系</h3>
+<p>通过指定进程的优先级，则可以将逻辑时钟拓展为全序关系。</p>
+<p>Pi进程的事件a和Pj进程的事件b如果满足下面两个关系中的任何一个，则称 a =&gt; b，即事件a在全序关系上发生于事件b之前：</p>
+<ol>
+<li>Ci (a) &lt; Cj (b)</li>
+<li>Ci (a) = Cj (b) 并且 i &lt; j。</li>
+</ol>
+<p>假设进程A的权重为1，进程B的权重为2，则得到的全序关系如下为 <code>a =&gt; f =&gt; b =&gt; e =&gt; c =&gt; d</code></p>
+<p><img src="/images/the-time-in-computer/2022-12-22-22-18-39.png" alt="image-2"></p>
+<p>虽然可能存在这样的情况：物理时间上事件 e 发生于 d 之后，但是由于两个事件并没有因果关系，他们的排序结果是 <code>e =&gt; d</code></p>
+<h3 id="向量时钟">向量时钟</h3>
+<p>逻辑时钟，能确定部分事件的先后顺序。而向量时钟是基于逻辑时钟发展而来，在每一个事件发生后，会向所有进程（节点）广播，各进程收到消息后更新本地的逻辑时钟。这样就确定了所有事件的时序关系。</p>
+<h2 id="truetime">TrueTime</h2>
+<p><code>TrueTime</code> 是 Google 提出的分布式时钟同步方案。该方案努力提高物理时钟的精度，减少误差，并通过程序手动抹平误差的方式来保证分布式各机器时间先后顺序不错乱。</p>
+<p>举个例子。某分布式事务要依次串行地在两台机器 A、B 上执行子任务，由于各机器时间不同，可能导致 A 机器上执行任务的时间晚于大于 B 机器。即机器 B 上的任务是在机器A之后执行，最后根据提交时间却发现 B 机器上的任务是先执行完的，这与实际情况不符。因此需要 <code>TrueTime</code> 来保证不同机器上的时间的顺序性。</p>
+<p>首先介绍 <code>TrueTime</code> 的整体架构</p>
+<p><img src="/images/the-time-in-computer/2022-12-22-22-34-58.png" alt="image-3"></p>
+<p><code>TrueTime</code> 授时服务集群(图中上半部分)，使用原子钟和GPS时钟作为时间源，不同集群间相互校验时间以减小误差。</p>
+<p>Client 为业务集群中的机器，它定期从授时集群中拉取时间（当然也会进行数据校验，舍弃异常数据）。Client 侧能保证的时钟误差为 1～7ms。</p>
+<p>软件层面，<code>TrueTime</code> 提供了三个API：</p>
+<ul>
+<li><code>TT.now()</code> 返回的是当前时间的范围。由于时钟硬件误差的存在，这个当前时间存在一个不确定的范围，也即一个范围 [earliest, latest]。可以保证当前绝对时间一定在这个范围内，这个间隔范围最大是7ms</li>
+<li><code>TT.after(t)</code> 判断传入的时间戳是否已经是过去的时间，也即 t &lt; TT.now().earliest。</li>
+<li><code>TT.before(t)</code> 判断传入的时间戳是否是未来的时间，也即 TT.now().latest &lt; t。</li>
+</ul>
+<p>使用这三个API，就能保证分布式事务中，事务提交顺序与事务实际提交时间一致。</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://github.com/freelancer-leon/notes/blob/master/kernel/time.md">https://github.com/freelancer-leon/notes/blob/master/kernel/time.md</a></p>
+<p><a href="https://blog.csdn.net/lqy971966/article/details/110234641">https://blog.csdn.net/lqy971966/article/details/110234641</a></p>
+<p><a href="https://blog.csdn.net/Roland_Sun/article/details/106235963">https://blog.csdn.net/Roland_Sun/article/details/106235963</a></p>
+<p><a href="https://yang.observer/2020/07/26/time-lamport-logical-time/">https://yang.observer/2020/07/26/time-lamport-logical-time/</a></p>
+<p><a href="https://ost.51cto.com/posts/15990">https://ost.51cto.com/posts/15990</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Jakseer</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+        2022-12-20
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/time/">time</a>
+          <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+          <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/f8cc12bc/">
+            <span class="next-text nav-default">Graphviz 简介</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="https://blog.jakseer.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2019 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.4ae89da218555efa0e7093a20b92017d2e1202b66fff9fc2edf4cb8d44b44c6e.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
