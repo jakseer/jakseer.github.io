@@ -27,6 +27,15 @@
     </item>
     
     <item>
+      <title>Go 之 Interface 关键字</title>
+      <link>https://blog.jakseer.com/post/5rppivf4/</link>
+      <pubDate>Sat, 25 Jun 2022 11:07:02 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.com/post/5rppivf4/</guid>
+      <description>Interface 是 Go 语言中及其重要的概念，可以从作为接口约定、作为类型值两个方面去理解它。 作为接口约定 接口，可以理解是一种约定俗成，便于各系统间的沟通、协</description>
+    </item>
+    
+    <item>
       <title>Go sync.Pool 解析</title>
       <link>https://blog.jakseer.com/post/8sicjqkm/</link>
       <pubDate>Sat, 12 Feb 2022 16:17:08 +0800</pubDate>

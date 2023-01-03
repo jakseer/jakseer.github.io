@@ -145,52 +145,54 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#什么是反射">什么是反射</a></li>
+    <li><a href="#reflect-包的使用">reflect 包的使用</a>
       <ul>
-        <li><a href="#什么是反射">什么是反射</a></li>
-        <li><a href="#reflect-包的使用">reflect 包的使用</a>
+        <li><a href="#value-与-type">Value 与 Type</a></li>
+        <li><a href="#读取">读取</a>
           <ul>
-            <li><a href="#value-与-type">Value 与 Type</a></li>
-            <li><a href="#读取">读取</a>
+            <li><a href="#arrayslice">Array、Slice</a></li>
+            <li><a href="#struct">Struct</a>
               <ul>
-                <li><a href="#arrayslice">Array、Slice</a></li>
-                <li><a href="#struct">Struct</a></li>
-              </ul>
-            </li>
-            <li><a href="#修改">修改</a>
-              <ul>
-                <li></li>
+                <li><a href="#field">field</a></li>
+                <li><a href="#method">method</a></li>
               </ul>
             </li>
           </ul>
         </li>
-        <li><a href="#go-反射原理">Go 反射原理</a></li>
-        <li><a href="#应用json-编码">应用：json 编码</a></li>
-        <li><a href="#反射的缺点">反射的缺点</a>
+        <li><a href="#修改">修改</a>
           <ul>
-            <li><a href="#使得程序可读性更差">使得程序可读性更差</a></li>
-            <li><a href="#大量使用反射导致程序性能低">大量使用反射导致程序性能低</a></li>
+            <li><a href="#canaddr">CanAddr</a></li>
+            <li><a href="#canset">CanSet</a></li>
           </ul>
         </li>
-        <li><a href="#参考资料">参考资料</a></li>
       </ul>
     </li>
+    <li><a href="#go-反射原理">Go 反射原理</a></li>
+    <li><a href="#应用json-编码">应用：json 编码</a></li>
+    <li><a href="#反射的缺点">反射的缺点</a>
+      <ul>
+        <li><a href="#使得程序可读性更差">使得程序可读性更差</a></li>
+        <li><a href="#大量使用反射导致程序性能低">大量使用反射导致程序性能低</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考资料">参考资料</a></li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h2 id="什么是反射">什么是反射</h2>
+      <h1 id="什么是反射">什么是反射</h1>
 <p>反射是指程序在运行期间，动态地更新、获取变量的值，包括获取字段类型、名称、调用类变量对应的方法等。</p>
 <p>使用反射，不需要在编译时就确定变量的类型，而可以在运行时去动态地获取，这更灵活。</p>
-<h2 id="reflect-包的使用">reflect 包的使用</h2>
-<h3 id="value-与-type">Value 与 Type</h3>
+<h1 id="reflect-包的使用">reflect 包的使用</h1>
+<h2 id="value-与-type">Value 与 Type</h2>
 <p>对于对象，是由 类型 和 值 两部分组成的。</p>
 <p>相应地 reflect 包也分为两大部分 <code>value</code> 与  <code>type</code> ，并提供了两种初始化函数 <code>TypeOf()</code>、<code>ValueOf()</code>，用于获取对应的 类型 和 值。</p>
 <p>而对于值，它一定是依附于类型而存在的，故值一定有对应的类型。因此可通过 <code>ValueOf().Type</code> 获取对应的类型，其效果等同于 <code>TypeOf()</code></p>
-<h3 id="读取">读取</h3>
+<h2 id="读取">读取</h2>
 <p>通过 <code>Value.Kind()</code> 来获取变量的类型，当然 <code>Type.Kind()</code> 也可以。</p>
-<h4 id="arrayslice">Array、Slice</h4>
+<h3 id="arrayslice">Array、Slice</h3>
 <p>使用 <code>reflect.Value.Len()</code> 获取数组长度，然后使用 <code>reflect.Value.Index()</code> 获取数组中的元素</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -207,8 +209,8 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>还可使用 <code>reflect.Value.Cap()</code> 获取其容量大小</p>
-<h4 id="struct">Struct</h4>
-<h5 id="field">field</h5>
+<h3 id="struct">Struct</h3>
+<h4 id="field">field</h4>
 <p>使用 <code>reflect.Value.NumField()</code> 获取结构体中成员个数。用 <code>reflect.Value.Field()</code> 获取结构体中的成员。用 <code>reflect.Value.Field().Tag</code> 获取结构体中的成员的 tag</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -224,7 +226,7 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h5 id="method">method</h5>
+</div><h4 id="method">method</h4>
 <p>对于结构体中的方法，可用 <code>NumMethod</code>、<code>Method</code> 方法来操作。</p>
 <p>而方法的参数、返回值，则用 <code>NumOut</code>、<code>Out</code> 来操作</p>
 <p>当然也可使用 <code>Call</code> 来调用该方法</p>
@@ -246,9 +248,9 @@
 </div>
 </div><p>虽然 <code>reflect.TypeOf().Method</code> 与 <code>reflect.ValueOf().Method</code> 均能表示对应的方法，但两者略有不同。</p>
 <p><code>Type.Method</code> 表示的是一个描述了返回值、参数、方法名称等信息的结构体，不绑定到任何对象上；而 <code>Value.Method</code> 在前者的基础上，还绑定了相应的额对象（receiver），可以调用 <code>Call</code> 方法。</p>
-<h3 id="修改">修改</h3>
+<h2 id="修改">修改</h2>
 <p>在修改对象前，我们得先判断是否能修改，涉及以下两个方法：</p>
-<h5 id="canaddr">CanAddr</h5>
+<h3 id="canaddr">CanAddr</h3>
 <p>是否可取地址。</p>
 <p>Go 中部分类型的变量是不可寻址的：</p>
 <ul>
@@ -258,17 +260,17 @@
 <li>中间值</li>
 <li>等等</li>
 </ul>
-<h5 id="canset">CanSet</h5>
+<h3 id="canset">CanSet</h3>
 <p>判断某对象是否可修改。</p>
 <p>只有当对象可取地址 且 可导出（为 struct 的 filed 时） 时，才能被修改</p>
 <p>确认对象可修改后，可使用<code>reflect.ValudOf(&amp;x).Elem().SetInt</code> 或者 <code>reflect.ValudOf(&amp;x).Elem().Set(reflect.ValueOf(66))</code> 来修改对象的值</p>
 <p>当然，除了 <code>SetInt</code> 还有 <code>SetString</code>、<code>SetBytes</code> 等方法，也可用 <code>SetCap</code> 来修改数组对象的容量</p>
-<h2 id="go-反射原理">Go 反射原理</h2>
+<h1 id="go-反射原理">Go 反射原理</h1>
 <p>为什么 <code>reflect</code> 能获取到变量的类型，就得先了解 Go 中变量的数据格式。</p>
 <p><img src="/images/image-20210920152124220.png" alt="image-20210920152124220"></p>
 <p>在 Go 中，变量的内部结构分为两大部分：类型 和 值。相应地，反射对象的内部结构分为 类型 与 值。</p>
 <p>Go 反射通过将 变量 强制类型转化 为反射对象，然后读取反射对象中的 <code>Value</code> 与 <code>Type</code> 的值，就拿到变量相关的信息。</p>
-<h2 id="应用json-编码">应用：json 编码</h2>
+<h1 id="应用json-编码">应用：json 编码</h1>
 <p>Go 中的 json 包，能将任意数据类型编码为 json 字符串。</p>
 <p>我们可通过实现 json 编码器，来练习 <code>reflect</code> 包的使用，具体实现如下：</p>
 <div class="highlight"><div class="chroma">
@@ -453,11 +455,11 @@
 <pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;age&#34;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="nt">&#34;Name&#34;</span><span class="p">:</span><span class="s2">&#34;www&#34;</span><span class="p">,</span><span class="nt">&#34;Hobby&#34;</span><span class="p">:[</span><span class="s2">&#34;a&#34;</span><span class="p">,</span><span class="s2">&#34;b&#34;</span><span class="p">]}</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><h2 id="反射的缺点">反射的缺点</h2>
+</div><h1 id="反射的缺点">反射的缺点</h1>
 <p>虽然反射使用方便，功能强大，但是滥用它也会造成一些问题</p>
-<h3 id="使得程序可读性更差">使得程序可读性更差</h3>
+<h2 id="使得程序可读性更差">使得程序可读性更差</h2>
 <p>由于反射是在程序运行时去获取变量类型并解析之，所以在开发阶段 IDE 无法知道其类型，无法给出有效的代码提示；在编译阶段无法获知其类型，编译时的类型错误检查机制也就失效了。</p>
-<h3 id="大量使用反射导致程序性能低">大量使用反射导致程序性能低</h3>
+<h2 id="大量使用反射导致程序性能低">大量使用反射导致程序性能低</h2>
 <p>编写两个函数，用反射、直接读取 两种方式读取变量的值</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -528,7 +530,7 @@
 <p>那么究竟慢在哪里？使用 profiler 来看看</p>
 <p><img src="/images/image-20210920111336463.png" alt="image-20210920144943352"></p>
 <p>从图中看到，使用反射获取变量的值，要经过很多步骤，比如拷贝值、拼装相应的反射对象、类型转换等。经过这些操作就不如直接读取变量值来得快。</p>
-<h2 id="参考资料">参考资料</h2>
+<h1 id="参考资料">参考资料</h1>
 <p><a href="http://longlog.me/2019/10/23/go-addressable/">http://longlog.me/2019/10/23/go-addressable/</a></p>
 <p><a href="https://i6448038.github.io/2020/02/15/golang-reflection/">图解go反射实现原理</a></p>
 <p><a href="http://legendtkl.com/2016/08/06/reflect-inside/">http://legendtkl.com/2016/08/06/reflect-inside/</a></p>
@@ -611,7 +613,7 @@
   <span class="copyright-year">
     &copy; 
     2019 - 
-    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>jakseer</span>
   </span>
 </div>
 
