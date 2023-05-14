@@ -2,22 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.jakseer.com/tags/go/</loc>
+    <lastmod>2023-03-15T20:55:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.com/post/91ba4f44/</loc>
+    <lastmod>2023-03-15T20:55:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.jakseer.com/</loc>
-    <lastmod>2022-12-20T21:33:35+08:00</lastmod>
+    <lastmod>2023-03-15T20:55:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.jakseer.com/post/</loc>
-    <lastmod>2022-12-20T21:33:35+08:00</lastmod>
+    <lastmod>2023-03-15T20:55:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://blog.jakseer.com/tags/</loc>
-    <lastmod>2022-12-20T21:33:35+08:00</lastmod>
+    <lastmod>2023-03-15T20:55:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.jakseer.com/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2023-03-15T20:55:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -60,13 +81,6 @@
   <url>
     <loc>https://blog.jakseer.com/post/f8cc12bc/</loc>
     <lastmod>2022-12-04T21:46:49+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.jakseer.com/tags/go/</loc>
-    <lastmod>2022-06-25T11:07:02+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

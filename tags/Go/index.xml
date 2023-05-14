@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>jakseer</copyright>
-    <lastBuildDate>Sat, 25 Jun 2022 11:07:02 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Mar 2023 20:55:41 +0800</lastBuildDate><atom:link href="https://blog.jakseer.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go 的内存管理</title>
+      <link>https://blog.jakseer.com/post/91ba4f44/</link>
+      <pubDate>Wed, 15 Mar 2023 20:55:41 +0800</pubDate>
+      
+      <guid>https://blog.jakseer.com/post/91ba4f44/</guid>
+      <description>简介 Go 的内存分配器采用了多级内存分配模块的核心设计思想，旨在减少内存分配时锁的使用以及系统调用的次数。 在 Go中，内存管理分为栈内存管理和堆内</description>
+    </item>
+    
     <item>
       <title>Go 之 Interface 关键字</title>
       <link>https://blog.jakseer.com/post/5rppivf4/</link>

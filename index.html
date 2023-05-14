@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.107.0 with theme even" />
+<meta name="generator" content="Hugo 0.111.3 with theme even" />
 
 
 <link rel="canonical" href="https://blog.jakseer.com/" />
@@ -45,7 +45,6 @@
 <meta property="og:description" content="Jakseer" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://blog.jakseer.com/" />
-
 <meta itemprop="name" content="Jakseer&#39;s Blog">
 <meta itemprop="description" content="Jakseer"><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Jakseer&#39;s Blog"/>
@@ -124,6 +123,28 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    
+    <h1 class="post-title"><a class="post-link" href="/post/91ba4f44/" target="_blank">Go 的内存管理</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2023-03-15 </span>
+      
+        <span class="more-meta"> 1824 words </span>
+        <span class="more-meta"> 4 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      简介 Go 的内存分配器采用了多级内存分配模块的核心设计思想，旨在减少内存分配时锁的使用以及系统调用的次数。 在 Go中，内存管理分为栈内存管理和堆内
+    </div>
+    <div class="read-more">
+      <a href="/post/91ba4f44/" class="read-more-link">Read more...</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     
@@ -208,28 +229,6 @@
     </div>
     <div class="read-more">
       <a href="/post/8sicjqkm/" class="read-more-link">Read more...</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    
-    <h1 class="post-title"><a class="post-link" href="/post/v95rj5yn/" target="_blank">Go sync.Mutex 解析</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2022-01-15 </span>
-      
-        <span class="more-meta"> 1172 words </span>
-        <span class="more-meta"> 3 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      简介 sync.Mutex 是 go 标准库中使用的排它锁。当一个 goroutine 获取锁后，其它 goroutine 则无法获取锁而被阻塞，直到锁被释放而成功抢到锁。 本文是对 sync.Mutex 源码的总结，不会涉及到具体
-    </div>
-    <div class="read-more">
-      <a href="/post/v95rj5yn/" class="read-more-link">Read more...</a>
     </div>
   </div>
 </article>
